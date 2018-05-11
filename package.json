@@ -1,0 +1,16 @@
+{
+  "name": "uas_webportal",
+  "version": "1.0.0",
+  "description": "UAS web portal development",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "angular": "^1.6.10",
+    "bootstrap": "^4.1.1",
+    "jquery": "^3.3.1"
+  }
+}
