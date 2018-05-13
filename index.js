@@ -3,6 +3,10 @@ const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = express()
 
+console.log("starting request")
+
+console.log("Starting server")
+
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
