@@ -3,15 +3,14 @@ const path = require('path')
 const PORT = process.env.PORT || 5000
 var app = express()
 
-console.log("starting request")
-
 console.log("Starting server")
 
 app.get('/', function(req, res) {
-    res.sendFile(path.join(__dirname + '/index.html'));
+  console.log("starting request")
+  res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.listen(5000);
+app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
 // express()
