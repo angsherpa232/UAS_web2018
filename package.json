@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "UAS web portal development",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "engines": {
+    "node": "8.11.1"
   },
   "author": "",
   "license": "ISC",
@@ -14,10 +14,6 @@
     "jquery": "^3.3.1",
 	  "express": "^4.15.2"
   },
-  "engines": {
-    "node": "6.11.0",
-    "npm": "3.10.10"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/angsherpa232/UAS_web2018.git"
@@ -26,8 +22,7 @@
     "url": "https://github.com/angsherpa232/UAS_web2018/issues"
   },
   "scripts": {
-   "start": "node index.js",
-   "postinstall": "ng build --aot -prod"
+   "start": "node index.js"
    },
   "homepage": "https://github.com/angsherpa232/UAS_web2018#readme"
 }
