@@ -2,17 +2,18 @@
   "name": "uas_webportal",
   "version": "1.0.0",
   "description": "UAS web portal development",
-  "main": "index.js",
-  "engines": {
-    "node": "8.11.1"
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "angular": "^1.6.10",
+    "angular-route": "^1.7.0",
     "bootstrap": "^4.1.1",
-    "jquery": "^3.3.1",
-	  "express": "^4.15.2"
+    "express": "^4.16.2",
+    "jquery": "^3.3.1"
   },
   "repository": {
     "type": "git",
@@ -21,8 +22,5 @@
   "bugs": {
     "url": "https://github.com/angsherpa232/UAS_web2018/issues"
   },
-  "scripts": {
-   "start": "node index.js"
-   },
   "homepage": "https://github.com/angsherpa232/UAS_web2018#readme"
 }

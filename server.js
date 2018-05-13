@@ -5,6 +5,12 @@ const path = require('path')
 
 console.log("Starting server")
 
+
+
+app.use(express.static(__dirname + '/public'));
+app.get(express.static(path.join(__dirname + '/node_modules')));
+app.get(express.static(path.join(__dirname + '/content/app/components/main')));
+
 // Allow cross origin
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -16,7 +22,7 @@ app.set('port', port);
 
 app.get('/', function(req, res) {
   console.log("starting request")
-  res.sendFile(path.join(__dirname + '/views/index.html'));
+  res.render(path.join(__dirname + '/index.html'));
 });
 
 app.listen(port, function() {
