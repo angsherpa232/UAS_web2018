@@ -22,7 +22,8 @@
     "url": "https://github.com/angsherpa232/UAS_web2018/issues"
   },
   "scripts": {
-   "start": "node index.js"
+   "start": "node index.js",
+   "postinstall": "ng build --aot -prod"
    },
   "homepage": "https://github.com/angsherpa232/UAS_web2018#readme"
 }
