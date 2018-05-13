@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/angsherpa232/UAS_web2018/issues"
   },
+  "scripts": {
+   "start": "node index.html"
+   },
   "homepage": "https://github.com/angsherpa232/UAS_web2018#readme"
 }
