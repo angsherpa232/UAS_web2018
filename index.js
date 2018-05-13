@@ -1,6 +1,6 @@
 const express = require('express')
 const path = require('path')
-const PORT = process.env.PORT || 5000
+const port = process.env.PORT || 5000
 var app = express()
 
 console.log("Starting server")
@@ -10,7 +10,11 @@ app.get('/', function(req, res) {
   res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
+app.listen(port, function() {
+  console.log("Node app is running at localhost:" + app.get('port'))
+});
+
+// app.listen(PORT, () => console.log(`Listening on ${ PORT }`))
 
 
 // express()
