@@ -14,6 +14,9 @@ uas2018.config(['$routeProvider', function ($routeProvider){
 		templateUrl: './components/map/map_2d.html',
 		controller: 'uas2018_map_controller'
 	})
+	.when('/processing', {
+		templateUrl: './components/processing/processing.html',
+	})
 	.otherwise({
 		redirectTo: '/home'
 	})
