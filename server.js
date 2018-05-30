@@ -2,11 +2,18 @@ var express = require('express');
 var app = express();
 const port = process.env.PORT || 5000;
 const path = require('path');
+
 /* var logfmt = require('logfmt'); */
 /* var wh = require('connect-wwwhisper'); */
 console.log("Starting server");
 
 /* app.use(logfmt.requestLogger()); */
+
+//var logfmt = require('logfmt');
+//var wh = require('connect-wwwhisper');
+console.log("Starting server");
+
+//app.use(logfmt.requestLogger());
 //app.use(wh());
 
 app.use(express.static(path.join(__dirname + '/public')));
