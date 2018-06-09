@@ -1,4 +1,5 @@
 // declare modules
+/* var key = angular.module('keys',['keys']); */
 var uas2018 = angular.module('uas2018',[]);
 
 uas2018.controller('uas2018_controller',['$scope', function ($scope){

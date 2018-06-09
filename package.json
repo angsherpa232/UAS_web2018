@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/cornflourblue/angular-authentication-example#readme",
   "dependencies": {
+    "body-parser": "^1.18.3",
     "consolidate": "^0.15.1",
     "esri-leaflet": "^2.1.4",
     "express": "^4.16.3",

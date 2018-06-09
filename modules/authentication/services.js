@@ -1,4 +1,4 @@
-﻿'use strict';
+﻿/* 'use strict'; */
 
 angular.module('Authentication')
 
@@ -11,23 +11,37 @@ angular.module('Authentication')
 
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
-            $timeout(function () {
+         /*    $timeout(function () {
                 var response = { success: username === 'test' && password === 'test' };
                 if (!response.success) {
                     response.message = 'Username or password is incorrect';
                 }
                 callback(response);
             }, 1000);
-
+ */
 
             /* Use this for real authentication
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
+			var loginData = {
+               username: username,
+               password: password
+             }
 
-        };
+            $http({
+              url:'/login',
+              method: 'POST',
+              data: loginData,
+              headers: {'Content-Type': 'application/json'}
+            })
+               .success(function (response) {
+				   var response = { success: username === username && password === password };
+                   callback(response);
+                   /* console.log('inside the services') */
+               })
+			   .error(function (response){
+				   response.message = 'Username or password is incorrect';
+			   });
+		}
 
         service.SetCredentials = function (username, password) {
             var authdata = Base64.encode(username + ':' + password);
