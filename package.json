@@ -1,7 +1,7 @@
 {
-  "name": "angular-authentication-example",
+  "name": "uas2018",
   "version": "1.0.0",
-  "description": "angular-authentication-example\r ==============================",
+  "description": "Web Portal App for Unmanned Aerial Systems",
   "main": "serverd.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/cornflourblue/angular-authentication-example.git"
+    "url": "git+https://github.com/angsherpa232/UAS_web2018"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/cornflourblue/angular-authentication-example/issues"
+    "url": "https://github.com/angsherpa232/UAS_web2018/issues"
   },
-  "homepage": "https://github.com/cornflourblue/angular-authentication-example#readme",
+  "homepage": "https://github.com/angsherpa232/UAS_web2018#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "consolidate": "^0.15.1",
