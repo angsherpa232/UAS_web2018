@@ -11,21 +11,34 @@ angular.module('Authentication')
 
             /* Dummy authentication for testing, uses $timeout to simulate api call
              ----------------------------------------------*/
-            $timeout(function () {
-                var response = { success: username === 'test' && password === 'test' };
-                if (!response.success) {
-                    response.message = 'Username or password is incorrect';
-                }
-                callback(response);
-            }, 1000);
+            // $timeout(function () {
+            //     var response = { success: username === 'test' && password === 'test' };
+            //     if (!response.success) {
+            //         response.message = 'Username or password is incorrect';
+            //     }
+            //     callback(response);
+            // }, 1000);
 
 
             /* Use this for real authentication
              ----------------------------------------------*/
-            //$http.post('/api/authenticate', { username: username, password: password })
-            //    .success(function (response) {
-            //        callback(response);
-            //    });
+             var loginData = {
+               username: username,
+               password: password
+             }
+
+            $http({
+              url:'/login',
+              method: 'POST',
+              data: loginData,
+              headers: {'Content-Type': 'application/json'}
+            })
+              // '/login', { username: username, password: password })
+               .success(function (response) {
+                 var response = { success: username === username && password === password };
+                   callback(response);
+                   console.log(response)
+               });
 
         };
 

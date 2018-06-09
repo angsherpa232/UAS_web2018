@@ -3,6 +3,9 @@ var app = express();
 const port = process.env.PORT || 5000;
 const path = require('path');
 
+var bodyParser = require("body-parser");
+app.use(bodyParser.json());
+
 /* var logfmt = require('logfmt'); */
 /* var wh = require('connect-wwwhisper'); */
 console.log("Starting server");
@@ -38,11 +41,25 @@ var engine = require('consolidate');
 app.engine('html', engine.mustache);
 app.set('view engine', 'html');
 
-
 app.get('/', function(req, res) {
   console.log("starting request")
   res.render(path.join(__dirname + '/index.html'));
 });
+
+var loginName = 'ang';
+var loginPassword = 'ang';
+
+app.post('/login', function(req, res, next){
+  //res.send(req.body.username)
+  // res.send(req.body)
+  if (loginName == req.body.username && loginPassword == req.body.password){
+    res.render(path.join(__dirname + '/index.html'));
+    console.log('superwank')
+    //next()
+  }else{
+    console.log('wank')
+  }
+})
 
 
 
