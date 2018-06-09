@@ -46,18 +46,16 @@ app.get('/', function(req, res) {
   res.render(path.join(__dirname + '/index.html'));
 });
 
-var loginName = 'ang';
-var loginPassword = 'ang';
+var loginName = 'test';
+var loginPassword = 'test';
 
 app.post('/login', function(req, res, next){
   //res.send(req.body.username)
   // res.send(req.body)
   if (loginName == req.body.username && loginPassword == req.body.password){
     res.render(path.join(__dirname + '/index.html'));
-    console.log('superwank')
     //next()
   }else{
-    console.log('wank')
   }
 })
 

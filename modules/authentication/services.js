@@ -36,8 +36,7 @@ angular.module('Authentication')
               // '/login', { username: username, password: password })
                .success(function (response) {
                  var response = { success: username === username && password === password };
-                   callback(response);
-                   console.log(response)
+                   callback(response); 
                });
 
         };
