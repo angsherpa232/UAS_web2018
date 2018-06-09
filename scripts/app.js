@@ -119,7 +119,7 @@ angular.module('UAS_2018', [
             templateUrl: './home/views/3d_map.html'
         })
 
-        .otherwise({ redirectTo: '/login' });
+        .otherwise({ redirectTo: '/' });
 }])
 
 .run(['$rootScope', '$location', '$cookieStore', '$http',
