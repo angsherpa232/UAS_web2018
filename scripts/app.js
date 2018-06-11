@@ -5,8 +5,15 @@ uas2018.controller('uas2018_controller',['$scope', function ($scope){
   console.log('Hello I am main controller for now. Modify me as you want. Happy coding for UAS 2018')
 }]);
 
+
 uas2018.controller('uas2018_map_controller',['$scope', function($scope){
   console.log('This is new controller');
+
+// uas2018.controller('LoginController', ['$scope', function($scope){
+// console.log('this is wesome logon')
+// }]);
+
+
 
   var topo = L.esri.basemapLayer("Topographic");
 
@@ -87,6 +94,12 @@ angular.module('UAS_2018', [
     'uas2018'
 ])
 
+.controller('MyCtrl',['$scope', function($scope){
+  console.log('This is logout controller');
+    $scope.x = true;
+    console.log($scope.x);
+}])
+
 .config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
   // $locationProvider.hashPrefix('');
     $routeProvider
@@ -96,7 +109,7 @@ angular.module('UAS_2018', [
         })
 
         .when('/logout', {
-            controller: 'LoginController',
+            controller: 'MyCtrl',
             templateUrl: './authentication/views/login.html'
         })
 

@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html ng-app="UAS_2018">
+<html lang="en" ng-app="UAS_2018">
 <head>
-
     <meta charset="utf-8" />
     <title>UAS 2018</title>
+    <link rel="stylesheet" href="./styles.css" type="text/css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/styles.css" type="text/css">
+
     <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="//code.angularjs.org/1.2.20/angular.js"></script>
     <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
@@ -19,8 +19,16 @@
 
 </head>
 <body>
+  <!-- <div ng-include="'./home/views/header_poten.html'"></div> -->
+  <!-- <div ng-controller="LoginControllerd" ng-include="x ? './home/views/header_poten.html': './home/views/header_poten.html'"></div> -->
 
-    <div ng-view></div>
+    <div ng-controller="MyCtrl">
+          <div ng-if="x" ng-include="'./home/views/header_poten.html'"></div>
+    </div>
+    <!-- <script type="text/ng-template" id="partial.html">
+        Content of the template. THis is awesome.
+    </script> -->
+  <div ng-view></div>
 
 
 </body>
