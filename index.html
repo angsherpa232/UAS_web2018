@@ -19,16 +19,9 @@
 
 </head>
 <body ng-controller="uas2018_controller">
-  <!-- <div ng-include="'./home/views/header_poten.html'"></div> -->
-  <!-- <div ng-controller="LoginControllerd" ng-include="x ? './home/views/header_poten.html': './home/views/header_poten.html'"></div> -->
 
-    <!-- <div ng-controller="MyCtrl">
-          <div ng-if="x">
-            <div ng-include="'./home/views/header_poten.html'"></div>
-          </div>
-    </div> -->
-
-    <div ng-include = "x ? './home/views/header_poten.html' : './home/views/taking.html'"></div>
+<!-- Ternary method for swaping header file as the users log-in or log-out -->
+    <div ng-include = "x ? './home/views/header_poten.html' : ''"></div>
 
     <!-- <script type="text/ng-template" id="partial.html">
         Content of the template. THis is awesome.

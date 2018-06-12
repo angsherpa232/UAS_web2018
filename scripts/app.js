@@ -4,11 +4,10 @@ var uas2018 = angular.module('uas2018',[]);
 uas2018.controller('uas2018_controller',['$scope', '$location', function ($scope, $location){
   console.log('Hello I am main controller for now. Modify me as you want. Happy coding for UAS 2018')
   console.log($location.path());
-  if ($location.path() != '/login'){
-    $scope.x = true;
-    // window.location.reload();
-  } else {
+  if ($location.path() == '/login'){
     $scope.x = false;
+  } else {
+    $scope.x = true;
   }
 }]);
 
@@ -148,7 +147,6 @@ angular.module('UAS_2018', [
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
-
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {

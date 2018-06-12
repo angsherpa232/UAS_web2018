@@ -14,6 +14,8 @@ angular.module('Authentication')
                 if (response.success) {
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
                     $location.path('/');
+
+                    //This reload is particulary for ng-include section once the user is logged-on
                     window.location.reload();
                 } else {
                     $scope.error = response.message;

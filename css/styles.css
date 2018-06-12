@@ -1,5 +1,5 @@
 body{
-              font-family: arial;
+            font-family: arial;
               margin: 0;
           }
           nav{
@@ -30,6 +30,31 @@ body{
               padding: 0 10px;
               color: #333;
           }
+
+/*Styling the authentication form begins*/
+.title {
+  color: blue;
+  font-size: 44px;
+  text-align: center;
+}
+
+
+.form-group {
+  margin: 0 auto;
+  align: center;
+  width:20rem;
+}
+
+.form-actions {
+  margin: 0 585px;
+  align: center;
+}
+
+.login_body {
+  background-color: #bda8bd;
+}
+
+/*Styling the authentication-form ends */
 
  h1,h2,h3{
 margin: 0;
