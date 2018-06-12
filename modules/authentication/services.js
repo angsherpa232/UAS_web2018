@@ -36,7 +36,7 @@ angular.module('Authentication')
               // '/login', { username: username, password: password })
                .success(function (response) {
                  var response = { success: username === username && password === password };
-                   callback(response); 
+                   callback(response);
                });
 
         };
@@ -59,9 +59,11 @@ angular.module('Authentication')
             $rootScope.globals = {};
             $cookieStore.remove('globals');
             $http.defaults.headers.common.Authorization = 'Basic ';
+            
         };
 
         return service;
+
     }])
 
 .factory('Base64', function () {
