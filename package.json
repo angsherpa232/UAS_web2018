@@ -1,31 +1,29 @@
 {
-  "name": "uas_webportal",
+  "name": "uas2018",
   "version": "1.0.0",
-  "description": "UAS web portal development",
-  "main": "server.js",
+  "description": "Web Portal App for Unmanned Aerial Systems",
+  "main": "serverd.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "angular": "^1.6.10",
-    "angular-route": "^1.7.0",
-    "bootstrap": "^4.1.1",
-    "esri-leaflet": "^2.1.4",
-    "express": "^4.16.2",
-    "jquery": "^3.3.1",
-    "leaflet": "^1.3.1"
+    "start": "node serverd.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/angsherpa232/UAS_web2018.git"
+    "url": "git+https://github.com/angsherpa232/UAS_web2018"
   },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/angsherpa232/UAS_web2018/issues"
   },
   "homepage": "https://github.com/angsherpa232/UAS_web2018#readme",
-  "devDependencies": {},
-  "keywords": []
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "consolidate": "^0.15.1",
+    "esri-leaflet": "^2.1.4",
+    "express": "^4.16.3",
+    "leaflet": "^1.3.1",
+    "mustache": "^2.3.0"
+  }
 }

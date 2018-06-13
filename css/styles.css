@@ -1,0 +1,159 @@
+body{
+            font-family: arial;
+              margin: 0;
+          }
+          nav{
+              background: #ff5353;
+              padding: 20px 10px;
+          }
+          nav ul{
+              max-width: 960px;
+              margin: 0 auto;
+              padding: 0;
+          }
+          nav li{
+              list-style-type: none;
+              display: inline-block;
+              margin: 0 10px 0 0;
+          }
+          nav a{
+              color: #fff;
+              font-size: 18px;
+              background: rgba(255,255,255,0.2);
+              text-decoration: none;
+              padding: 10px;
+              display: block;
+          }
+          main, header{
+              max-width: 960px;
+              margin: 30px auto;
+              padding: 0 10px;
+              color: #333;
+          }
+
+/*Styling the authentication form begins*/
+.title {
+  color: blue;
+  font-size: 44px;
+  text-align: center;
+}
+
+
+.form-group {
+  margin: 0 auto;
+  align: center;
+  width:20rem;
+}
+
+.form-actions {
+  margin: 0 585px;
+  align: center;
+}
+
+.login_body {
+  background-color: #bda8bd;
+}
+
+/*Styling the authentication-form ends */
+
+ h1,h2,h3{
+margin: 0;
+}
+
+.process {
+font-size: 40px;
+}
+
+.process span {
+font-size: 50px;
+animation-name: blink;
+animation-duration: 1.4s;
+animation-iteration-count: infinite;
+animation-fill-mode: both;
+}
+
+.process span:nth-child(2) {
+animation-delay: .2s;
+}
+
+.process span:nth-child(3) {
+animation-delay: .4s;
+}
+
+@keyframes blink {
+0% {
+opacity: .2;
+}
+20% {
+opacity: 1;
+}
+100% {
+opacity: .2;
+}
+}
+
+
+@keyframes blink {
+/**
+ * At the start of the animation the dot
+ * has an opacity of .2
+ */
+0% {
+  opacity: .2;
+}
+/**
+ * At 20% the dot is fully visible and
+ * then fades out slowly
+ */
+20% {
+  opacity: 1;
+}
+/**
+ * Until it reaches an opacity of .2 and
+ * the animation can start again
+ */
+100% {
+  opacity: .2;
+}
+}
+
+.process span {
+/**
+ * Use the blink animation, which is defined above
+ */
+animation-name: blink;
+/**
+ * The animation should take 1.4 seconds
+ */
+animation-duration: 1.4s;
+/**
+ * It will repeat itself forever
+ */
+animation-iteration-count: infinite;
+/**
+ * This makes sure that the starting style (opacity: .2)
+ * of the animation is applied before the animation starts.
+ * Otherwise we would see a short flash or would have
+ * to set the default styling of the dots to the same
+ * as the animation. Same applies for the ending styles.
+ */
+animation-fill-mode: both;
+}
+
+.process span:nth-child(2) {
+/**
+ * Starts the animation of the third dot
+ * with a delay of .2s, otherwise all dots
+ * would animate at the same time
+ */
+animation-delay: .2s;
+}
+
+.process span:nth-child(3) {
+/**
+ * Starts the animation of the third dot
+ * with a delay of .4s, otherwise all dots
+ * would animate at the same time
+ */
+animation-delay: .4s;
+}
