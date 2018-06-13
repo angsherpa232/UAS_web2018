@@ -1,5 +1,23 @@
+<!-- This controls the infinite reloading of the page once the users logout. This is introduced for ng-include -->
+  <script type='text/javascript'>
+ (function()
+ {
+  if( window.localStorage ){
+    if(!localStorage.getItem('firstReLoad')){
+     localStorage['firstReLoad'] = true;
+     window.location.reload();
+    } else {
+     localStorage.removeItem('firstReLoad');
+    }
+  }
+ })();
+</script>
+
+</head>
+<header class="title"> UAS 2018 login page</header>
+<div class="login_body">
 <div ng-show="error" class="alert alert-danger">{{error}}</div>
-<form name="form" ng-submit="login()" role="form">
+<form class="form_" name="form" ng-submit="login()" role="form">
     <div class="form-group">
         <label for="username">Username</label>
         <i class="fa fa-key"></i>
@@ -13,6 +31,7 @@
         <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
     </div>
     <div class="form-actions">
-        <button type="submit" class="btn btn-danger">Login</button>
+        <button  type="submit" class="btn btn-danger">Login</button>
     </div>
 </form>
+</div>
