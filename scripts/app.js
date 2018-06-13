@@ -1,29 +1,12 @@
 // declare modules
 var uas2018 = angular.module('uas2018',[]);
 
-uas2018.controller('uas2018_controller',['$scope', '$location', function ($scope, $location){
+uas2018.controller('uas2018_controller',['$scope', function ($scope){
   console.log('Hello I am main controller for now. Modify me as you want. Happy coding for UAS 2018')
-  console.log($location.path());
-  if ($location.path() == '/login'){
-    $scope.x = false;
-  } else {
-    $scope.x = true;
-  }
 }]);
-
-uas2018.controller('MyCtrl',['$scope','$location',function($scope, $location){
-  console.log('This is logout controller');
-  window.location.reload();
-}])
 
 uas2018.controller('uas2018_map_controller',['$scope', function($scope){
   console.log('This is new controller');
-
-// uas2018.controller('LoginController', ['$scope', function($scope){
-// console.log('this is wesome logon')
-// }]);
-
-
 
   var topo = L.esri.basemapLayer("Topographic");
 
@@ -104,7 +87,6 @@ angular.module('UAS_2018', [
     'uas2018'
 ])
 
-
 .config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
   // $locationProvider.hashPrefix('');
     $routeProvider
@@ -114,8 +96,8 @@ angular.module('UAS_2018', [
         })
 
         .when('/logout', {
-            controller: 'MyCtrl'
-            // templateUrl: './home/views/logout.html'
+            controller: 'LoginController',
+            templateUrl: './authentication/views/login.html'
         })
 
         .when('/', {
@@ -143,7 +125,6 @@ angular.module('UAS_2018', [
 .run(['$rootScope', '$location', '$cookieStore', '$http',
     function ($rootScope, $location, $cookieStore, $http) {
         // keep user logged in after page refresh
-
         $rootScope.globals = $cookieStore.get('globals') || {};
         if ($rootScope.globals.currentUser) {
             $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
@@ -151,10 +132,8 @@ angular.module('UAS_2018', [
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
             // redirect to login page if not logged in
-
             if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
                 $location.path('/login');
-
             }
         });
     }]);
