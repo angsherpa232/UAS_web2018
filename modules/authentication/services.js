@@ -1,4 +1,4 @@
-﻿'use strict';
+﻿/* 'use strict'; */
 
 angular.module('Authentication')
 
@@ -8,6 +8,7 @@ angular.module('Authentication')
         var service = {};
 
         service.Login = function (username, password, callback) {
+
 
     
             /* Use this for real authentication
@@ -23,6 +24,7 @@ angular.module('Authentication')
               data: loginData,
               headers: {'Content-Type': 'application/json'}
             })
+
               // '/login', { username: username, password: password })
                .success(function (response) {
                  var response = { success: username === username && password === password };
@@ -30,6 +32,7 @@ angular.module('Authentication')
                });
 
         };
+
 
         service.SetCredentials = function (username, password) {
             var authdata = Base64.encode(username + ':' + password);

@@ -2,6 +2,11 @@ var express = require('express');
 var app = express();
 const port = process.env.PORT || 5000;
 const path = require('path');
+const keys = require('./config/keys');
+var bodyParser = require("body-parser");
+app.use(bodyParser.json({type: 'application/json'}));
+
+console.log(keys)
 
 var bodyParser = require("body-parser");
 app.use(bodyParser.json());
@@ -26,7 +31,6 @@ app.use(express.static(path.join(__dirname + '/node_modules')));
 
 
 
-
 // Allow cross origin
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
@@ -35,7 +39,7 @@ app.use(function(req, res, next) {
 });
 
 app.set('port', port);
-
+app.set('views', __dirname + "/views")
 
 //View engine for rendering html
 var engine = require('consolidate');
@@ -47,6 +51,7 @@ app.get('/', function(req, res) {
   res.render(path.join(__dirname + '/index.html'));
 });
 
+
 var loginName = 'test';
 var loginPassword = 'test';
 
@@ -57,6 +62,7 @@ app.post('/login', function(req, res, next){
   }else{
   }
 })
+
 
 
 
