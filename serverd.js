@@ -20,7 +20,6 @@ console.log("Starting server");
 //app.use(wh());
 
 app.use(express.static(path.join(__dirname + '/modules')));
-app.use(express.static(path.join(__dirname + '/css')));
 app.use(express.static(path.join(__dirname + '/scripts')));
 app.use(express.static(path.join(__dirname + '/node_modules')));
 
@@ -51,9 +50,11 @@ var loginName = 'test';
 var loginPassword = 'test';
 
 app.post('/login', function(req, res, next){
-
+  //res.send(req.body.username)
+  // res.send(req.body)
   if (loginName == req.body.username && loginPassword == req.body.password){
     res.render(path.join(__dirname + '/index.html'));
+    //next()
   }else{
   }
 })
