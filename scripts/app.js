@@ -12,19 +12,52 @@ uas2018.controller('uas2018_controller',['$scope', '$location', function ($scope
   }
 }]);
 
-uas2018.controller('MyCtrl',['$scope','$location',function($scope, $location){
-  console.log('This is logout controller');
-  window.location.reload();
+
+angular.module('Authentication', []);
+angular.module('Home', []);
+
+angular.module('UAS_2018', [
+    'Authentication',
+    'Home',
+    'ngRoute',
+    'ngCookies',
+    'uas2018'
+])
+
+
+.config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
+  // $locationProvider.hashPrefix('');
+    $routeProvider
+        .when('/login', {
+            controller: 'LoginController',
+            templateUrl: './authentication/views/login.html'
+        })
+
+        .when('/', {
+            controller: 'HomeController',
+            templateUrl: './home/views/home.html'
+        })
+
+        .when('/processing', {
+            templateUrl: './home/views/processing.html'
+        })
+
+        .when('/map', {
+            controller: 'uas2018_map_controller',
+            templateUrl: './home/views/map_2d.html'
+        })
+
+        .when('/3D', {
+            controller: 'HomeController',
+            templateUrl: './home/views/3d_map.html'
+        })
+
+        .otherwise({ redirectTo: '/' });
 }])
 
-uas2018.controller('uas2018_map_controller',['$scope', function($scope){
-  console.log('This is new controller');
 
-// uas2018.controller('LoginController', ['$scope', function($scope){
-// console.log('this is wesome logon')
-// }]);
-
-
+.controller('uas2018_map_controller',['$scope', function($scope){
+  console.log('This is map controller');
 
   var topo = L.esri.basemapLayer("Topographic");
 
@@ -90,56 +123,9 @@ uas2018.controller('uas2018_map_controller',['$scope', function($scope){
 
     //Initiate layers control method and add to map
     L.control.layers(baseLayers, overlays).addTo(map);
-}]);
-
-
-
-angular.module('Authentication', []);
-angular.module('Home', []);
-
-angular.module('UAS_2018', [
-    'Authentication',
-    'Home',
-    'ngRoute',
-    'ngCookies',
-    'uas2018'
-])
-
-
-.config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
-  // $locationProvider.hashPrefix('');
-    $routeProvider
-        .when('/login', {
-            controller: 'LoginController',
-            templateUrl: './authentication/views/login.html'
-        })
-
-        .when('/logout', {
-            controller: 'MyCtrl'
-            // templateUrl: './home/views/logout.html'
-        })
-
-        .when('/', {
-            controller: 'HomeController',
-            templateUrl: './home/views/home.html'
-        })
-
-        .when('/processing', {
-            templateUrl: './home/views/processing.html'
-        })
-
-        .when('/map', {
-            controller: 'uas2018_map_controller',
-            templateUrl: './home/views/map_2d.html'
-        })
-
-        .when('/3D', {
-            controller: 'HomeController',
-            templateUrl: './home/views/3d_map.html'
-        })
-
-        .otherwise({ redirectTo: '/' });
 }])
+
+
 
 .run(['$rootScope', '$location', '$cookieStore', '$http',
     function ($rootScope, $location, $cookieStore, $http) {

@@ -3,13 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <title>UAS 2018</title>
-    <link rel="stylesheet" href="./styles.css" type="text/css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./styles.css" type="text/css">
 
     <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="//code.angularjs.org/1.2.20/angular.js"></script>
     <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
     <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
+    <link rel="stylesheet" href="./leaflet/dist/leaflet.css" type="text/css" />
     <script src="./leaflet/dist/leaflet.js"></script>
     <script src="./esri-leaflet/dist/esri-leaflet.js"></script>
     <script src="./app.js"></script>
@@ -19,16 +21,11 @@
 	<!-- <script src="./config/keys.js"></script> -->
 
 </head>
-<body ng-controller="uas2018_controller">
+<body>
 
 <!-- Ternary method for swaping header file as the users log-in or log-out -->
-    <div ng-include = "x ? './home/views/header.html' : ''"></div>
-
-    <!-- <script type="text/ng-template" id="partial.html">
-        Content of the template. THis is awesome.
-    </script> -->
-  <div ng-view></div>
-
+    <header  ng-controller="uas2018_controller" ng-include = "x ? './home/views/header.html' : ''"></header>
+  <main ng-view></main>
 
 </body>
 </html>

@@ -26,7 +26,6 @@ app.use(function(req, res, next) {
 });
 
 app.set('port', port);
-app.set('views', __dirname + "/views")
 
 //View engine for rendering html
 var engine = require('consolidate');
