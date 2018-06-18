@@ -1,15 +1,17 @@
 // declare modules
 /* var key = angular.module('keys',['keys']); */
-var uas2018 = angular.module('uas2018',[]);
+var uas2018 = angular.module('uas2018', []);
 
-uas2018.controller('uas2018_controller',['$scope', '$location', function ($scope, $location){
+uas2018.controller('uas2018_controller', ['$scope', '$location', function($scope, $location) {
   console.log('Hello I am main controller for now. Modify me as you want. Happy coding for UAS 2018')
-  console.log($location.path());
-  if ($location.path() == '/login'){
-    $scope.x = false;
-  } else {
-    $scope.x = true;
+  if ($location.path() != '/login') {
+    $scope.$on('$viewContentLoading', function() {
+      console.log('wank')
+      console.log($('#menu'))
+      $('#menu').removeClass('cloak')
+    });
   }
+
 }]);
 
 
@@ -105,7 +107,7 @@ angular.module('UAS_2018', [
 
     //Flight plan from last year
     var flightPlanLayer = L.esri.featureLayer({
-      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/arcgis/rest/services/FightPath/FeatureServer/1",
+      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/arcgis/rest/services/UAS18_flight_path/FeatureServer",
       style: function (feature) {
         return {
           "color": $scope.getColor(feature.properties.Altitude),

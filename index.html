@@ -1,31 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="UAS_2018">
-<head>
-    <meta charset="utf-8" />
-    <title>UAS 2018</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="./styles.css" type="text/css">
 
-    <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
-    <script src="//code.angularjs.org/1.2.20/angular.js"></script>
-    <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
-    <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
-    <link rel="stylesheet" href="./leaflet/dist/leaflet.css" type="text/css" />
-    <script src="./leaflet/dist/leaflet.js"></script>
-    <script src="./esri-leaflet/dist/esri-leaflet.js"></script>
-    <script src="./app.js"></script>
-    <script src="./authentication/services.js"></script>
-    <script src="./authentication/controllers.js"></script>
-    <script src="./home/controllers.js"></script>
-	<!-- <script src="./config/keys.js"></script> -->
+<head>
+  <meta charset="utf-8" />
+  <title>UAS 2018</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="./styles.css" type="text/css">
+
+  <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
+  <script src="//code.angularjs.org/1.2.20/angular.js"></script>
+  <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
+  <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
+  <link rel="stylesheet" href="./leaflet/dist/leaflet.css" type="text/css" />
+  <script src="./leaflet/dist/leaflet.js"></script>
+  <script src="./esri-leaflet/dist/esri-leaflet.js"></script>
+  <script src="./app.js"></script>
+  <script src="./authentication/services.js"></script>
+  <script src="./authentication/controllers.js"></script>
+  <script src="./home/controllers.js"></script>
+  <!-- <script src="./config/keys.js"></script> -->
 
 </head>
-<body>
 
-<!-- Ternary method for swaping header file as the users log-in or log-out -->
-    <header  ng-controller="uas2018_controller" ng-include = "x ? './home/views/header.html' : ''"></header>
+<body ng-controller="uas2018_controller">
+  <header id="menu" ng-controller="uas2018_controller" ng-include="'./home/views/header.html'" class="cloak"></header>
   <main ng-view></main>
 
 </body>
+
 </html>
