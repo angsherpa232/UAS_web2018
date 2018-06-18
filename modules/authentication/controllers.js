@@ -16,7 +16,10 @@ angular.module('Authentication')
                     $location.path('/');
 
                     //This reload is particulary for ng-include section once the user is logged-on
-                    window.location.reload();
+                    //window.location.reload();
+                    setTimeout(function(){
+                      window.location.reload();
+                    });
                 } else {
                     $scope.error = response.message;
                     $scope.dataLoading = false;
