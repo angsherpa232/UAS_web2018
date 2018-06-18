@@ -1,13 +1,14 @@
 // declare modules
 /* var key = angular.module('keys',['keys']); */
+
 var uas2018 = angular.module('uas2018', []);
 
-uas2018.controller('uas2018_controller', ['$scope', '$location', function($scope, $location) {
+uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
   console.log('Hello I am main controller for now. Modify me as you want. Happy coding for UAS 2018')
+  $rootScope.auth = false
   if ($location.path() != '/login') {
+    $rootScope.auth = true
     $scope.$on('$viewContentLoaded', function() {
-      console.log('wank')
-      console.log($('#menu'))
       $('#menu').removeClass('cloak')
     });
   }
@@ -25,6 +26,12 @@ angular.module('UAS_2018', [
     'ngCookies',
     'uas2018'
 ])
+
+// .factory('logged',
+//     ['$rootScope',
+//     function ($rootScope) {
+//
+//       }])
 
 
 .config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
@@ -127,8 +134,6 @@ angular.module('UAS_2018', [
     L.control.layers(baseLayers, overlays).addTo(map);
 }])
 
-
-
 .run(['$rootScope', '$location', '$cookieStore', '$http',
     function ($rootScope, $location, $cookieStore, $http) {
         // keep user logged in after page refresh
@@ -139,6 +144,7 @@ angular.module('UAS_2018', [
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            console.log($rootScope.auth)
             // redirect to login page if not logged in
 
             if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
@@ -146,4 +152,6 @@ angular.module('UAS_2018', [
 
             }
         });
+
+
     }]);
