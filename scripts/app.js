@@ -5,7 +5,7 @@ var uas2018 = angular.module('uas2018', []);
 uas2018.controller('uas2018_controller', ['$scope', '$location', function($scope, $location) {
   console.log('Hello I am main controller for now. Modify me as you want. Happy coding for UAS 2018')
   if ($location.path() != '/login') {
-    $scope.$on('$viewContentLoading', function() {
+    $scope.$on('$viewContentLoaded', function() {
       console.log('wank')
       console.log($('#menu'))
       $('#menu').removeClass('cloak')
