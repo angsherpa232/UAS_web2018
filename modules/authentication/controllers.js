@@ -12,7 +12,6 @@ angular.module('Authentication')
             AuthenticationService.Login($scope.username, $scope.password, function (response) {
                 if (response.success) {
                     AuthenticationService.SetCredentials($scope.username, $scope.password);
-                    $rootScope.auth = true
                     $location.path('/');
                     //This reload is particulary for ng-include section once the user is logged-on
                     //window.location.reload();

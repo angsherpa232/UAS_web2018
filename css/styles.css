@@ -56,7 +56,7 @@ main {
 }
 
 
-#map, #sensorMap {
+#map, #sensormap {
   width: 100%;
   height: 90%;
   position: absolute;

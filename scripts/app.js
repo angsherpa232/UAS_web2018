@@ -145,17 +145,11 @@ angular.module('UAS_2018', [
 
     // Sensor data integration
 
-    // var gSensors = [];
-
     var gSensors = $.ajax({
         url: "./home/resources/sensorData.json",
         async: false,
         success: function(res) {
           return res
-            //   for (i = 0; i < res.length; i++) {
-            //            gSensors.push(res[i]);
-            //   }
-            //   return gSensors
             }
       }).responseJSON
 
@@ -164,8 +158,9 @@ angular.module('UAS_2018', [
       var tiles = L.esri.basemapLayer("Topographic");
 
       var sensorMap = L.map('sensormap', {
-        center: [51.944990, 7.572810],
-        zoom: 17,
+        center: [gSensors[0].Latitude, gSensors[0].Longitude],
+        zoom: 5,
+        layers: [tiles],
         maxzoom: 22,
         maxNativeZoom: 18
       });
@@ -175,6 +170,16 @@ angular.module('UAS_2018', [
       };
 
       L.control.layers(basemap).addTo(sensorMap);
+
+      var markers = new L.markerClusterGroup(); //clustering function
+
+      var markerList = [];
+
+      for (var i = 0; i < jsonDataObject.length; i++) {
+          var marker = L.marker(L.latLng(parseFloat(gSensors[i].Latitude), parseFloat(gSensors[i].Longitude)));
+          marker.bindPopup(gSensors[i].Title);
+          markerList.push(marker);
+        }
 
     //var sensorMap = L.map('sensormap').setView([gSensors[0].Latitude, gSensors[0].Longitude], 8);
 
