@@ -1,6 +1,7 @@
 <html>
 
 <head>
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
   <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
@@ -12,7 +13,7 @@
 
   <!--  Google Chart  library-->
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-  
+
 
 
   <style>
@@ -29,7 +30,7 @@
       padding: 0;
       margin: 0;
     }
-	
+
 	#side_popup {
 	position: relative;
       height: 100%;
@@ -37,7 +38,7 @@
 	  z-index: 2;
 	  float:right;
     }
-	
+
 	#chart_div {
 	  position: relative;
       height: 300px;
@@ -51,15 +52,15 @@
 
 <body>
 	<div id="side_popup">
-		
+
 		<div id="CheckboxDIV" >
 			<div>
 				<input type="checkbox" id="Temp" name="Temperature" value="Temp">
 				<label for="subscribeNews">Temperature</label>
-				
+
 				<input type="checkbox" id="Humid" name="Relative Humidity" value="Humi">
 				<label for="subscribeNews">Relative Humidity</label>
-				
+
 			</div>
 			<div>
 				<button onclick="drawChart(1)">OK</button>
@@ -68,14 +69,14 @@
 		</div>
 		<div id="chart_div"></div>
 	</div>
-	
+
   <div id="map"></div>
   <script>
     //geolocation
     function sensor() {
 
 		var map = new L.Map('map');
-		
+
 		/*
 		var myCenter = new L.LatLng( 51.9, 7.6);
 		var map = new L.Map('map', {
@@ -90,11 +91,11 @@
 			  'Imagery © <a href="http://mapbox.com">Mapbox</a>',
 			id: 'mapbox.streets'
 		  }).addTo(map);
-		
+
 		var url = 'http://localhost:8080/markers_project.geojson';
-		// load GeoJSON from an external file 
-		$.getJSON(url,function(data){ 
-			// add GeoJSON layer to the map once the file is loaded 
+		// load GeoJSON from an external file
+		$.getJSON(url,function(data){
+			// add GeoJSON layer to the map once the file is loaded
 			rodents =   L.geoJson(data,{
 			  pointToLayer: function(feature,latlng){
 				var marker = L.marker(latlng);
@@ -109,16 +110,16 @@
 
 			  }
 			});
-			
+
 			var clusters = L.markerClusterGroup();
 			clusters.addLayer(rodents);
-			map.addLayer(clusters); 
+			map.addLayer(clusters);
 
 			map.fitBounds(rodents.getBounds());
 
 		});
 
-		
+
     }
     sensor();
 
@@ -126,7 +127,7 @@
 var script = document.createElement('script');
 var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
 url.push('sql=');
-var query = "SELECT * FROM 1Jtg_LywbCaFVZ6_LDaUZfytZDLB2DGEWxR6O-9AV  WHERE 'ID' IN ('1') order By 'Time(s)' ASC "; // Opposite LIKE '1' 
+var query = "SELECT * FROM 1Jtg_LywbCaFVZ6_LDaUZfytZDLB2DGEWxR6O-9AV  WHERE 'ID' IN ('1') order By 'Time(s)' ASC "; // Opposite LIKE '1'
 var encodedQuery = encodeURIComponent(query);
 url.push(encodedQuery);
 url.push('&callback=GetDataFT'); //Calls the function after receiving data from Fusion Table
@@ -134,8 +135,8 @@ url.push('&key=AIzaSyCoC9A3WgFneccRufbysInygnWrhCie-T0');
 script.src = url.join('');
 var body = document.getElementsByTagName('body')[0];
 body.appendChild(script);
-		
-		
+
+
 var PointsToPlot = [];
 function GetDataFT(data){
 	//debug
@@ -143,7 +144,7 @@ function GetDataFT(data){
 	var rows = data['rows'];
 
 	PointsToPlot = [];
-	
+
 
 	for (var i in rows) {
 		// Hold X and Y
@@ -167,7 +168,7 @@ google.charts.setOnLoadCallback(drawChart);
 
 
 function drawChart(x) {
-	if (x != 1){		
+	if (x != 1){
 		//====================== CHART PART ======================//
 		var data = new google.visualization.DataTable();
 		data.addColumn('number', 'X');
@@ -213,7 +214,7 @@ function drawChart(x) {
 		script.src = url.join('');
 		var body = document.getElementsByTagName('body')[0];
 		body.appendChild(script);
-		
+
 		//====================== CHART PART ======================//
 		var data = new google.visualization.DataTable();
 		data.addColumn('number', 'X');
@@ -246,7 +247,7 @@ function drawChart(x) {
 
 		var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
 		chart.draw(data, options);
-	
+
 	}
 }
 

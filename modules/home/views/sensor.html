@@ -1,0 +1,77 @@
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+  <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+  <!--  <link rel="stylesheet" href="http://pixel.uji.es/teaching/leaflet/markercluster/dist/MarkerCluster.css" /> -->
+  <link rel="stylesheet" href="http://pixel.uji.es/teaching/leaflet/markercluster/dist/MarkerCluster.Default.css" />
+  <script src="http://pixel.uji.es/teaching/leaflet/markercluster/dist/leaflet.markercluster-src.js"></script>
+  <script src="https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js"></script>
+  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+  <!--  Google Chart  library-->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+
+  <style>
+    body {
+      padding: 0;
+      margin: 0;
+    }
+
+    html,
+    body,
+    #map {
+	position: relative;
+      height: 100%;
+      padding: 0;
+      margin: 0;
+    }
+
+	#side_popup {
+	position: relative;
+      height: 100%;
+	  width: 400px;
+	  z-index: 2;
+	  float:right;
+    }
+
+	#chart_div {
+	  position: relative;
+      height: 300px;
+	  width: 400px;
+	  z-index: 2;
+	  float:left;
+    }
+  </style>
+
+</head>
+
+<body ng-controller = "sensor_controller">
+	<!-- <div id="side_popup">
+
+		<div id="CheckboxDIV" >
+			<div>
+				<input type="checkbox" id="Temp" name="Temperature" value="Temp">
+				<label for="subscribeNews">Temperature</label>
+
+				<input type="checkbox" id="Humid" name="Relative Humidity" value="Humi">
+				<label for="subscribeNews">Relative Humidity</label>
+
+			</div>
+			<div>
+				<button onclick="drawChart(1)">OK</button>
+			</div>
+			ID number: <div id="show_id" style="background-color:black;color:white;">ID Value</div>
+		</div>
+		<div id="chart_div"></div>
+	</div> -->
+
+  <div id="sensormap"></div>
+
+</body>
+
+</html>
