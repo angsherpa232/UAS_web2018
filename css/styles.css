@@ -40,11 +40,19 @@ header {
   color: #333;
 }
 
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+.cloak{
+  display: none;
+}
+
 main {
   width: 100%;
   margin: 30px auto;
   border-radius: 10px;
-  color: #333;  
+  color: #333;
 }
 
 
@@ -182,3 +190,7 @@ animation-delay: .2s;
  */
 animation-delay: .4s;
 }
+
+/* .ng-cloak {
+  display: none !important;
+} */

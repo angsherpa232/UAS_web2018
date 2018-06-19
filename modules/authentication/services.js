@@ -2,15 +2,21 @@
 
 angular.module('Authentication')
 
+// .factory('loginService',
+//     ['$rootScope',
+//     function ($rootScope) {
+//         $rootScope.auth = false
+//     }])
+
 .factory('AuthenticationService',
     ['Base64', '$http', '$cookieStore', '$rootScope', '$timeout',
     function (Base64, $http, $cookieStore, $rootScope, $timeout) {
+        $rootScope.auth = false
         var service = {};
-
         service.Login = function (username, password, callback) {
 
 
-    
+
             /* Use this for real authentication
              ----------------------------------------------*/
              var loginData = {

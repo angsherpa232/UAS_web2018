@@ -1,15 +1,18 @@
 // declare modules
 /* var key = angular.module('keys',['keys']); */
-var uas2018 = angular.module('uas2018',[]);
 
-uas2018.controller('uas2018_controller',['$scope', '$location', function ($scope, $location){
+var uas2018 = angular.module('uas2018', []);
+
+uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
   console.log('Hello I am main controller for now. Modify me as you want. Happy coding for UAS 2018')
-  console.log($location.path());
-  if ($location.path() == '/login'){
-    $scope.x = false;
-  } else {
-    $scope.x = true;
+  $rootScope.auth = false
+  if ($location.path() != '/login') {
+    $rootScope.auth = true
+    $scope.$on('$viewContentLoaded', function() {
+      $('#menu').removeClass('cloak')
+    });
   }
+
 }]);
 
 
@@ -23,6 +26,12 @@ angular.module('UAS_2018', [
     'ngCookies',
     'uas2018'
 ])
+
+// .factory('logged',
+//     ['$rootScope',
+//     function ($rootScope) {
+//
+//       }])
 
 
 .config(['$routeProvider','$locationProvider', function ($routeProvider,$locationProvider) {
@@ -105,7 +114,7 @@ angular.module('UAS_2018', [
 
     //Flight plan from last year
     var flightPlanLayer = L.esri.featureLayer({
-      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/arcgis/rest/services/FightPath/FeatureServer/1",
+      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/arcgis/rest/services/UAS18_flight_path/FeatureServer",
       style: function (feature) {
         return {
           "color": $scope.getColor(feature.properties.Altitude),
@@ -125,8 +134,6 @@ angular.module('UAS_2018', [
     L.control.layers(baseLayers, overlays).addTo(map);
 }])
 
-
-
 .run(['$rootScope', '$location', '$cookieStore', '$http',
     function ($rootScope, $location, $cookieStore, $http) {
         // keep user logged in after page refresh
@@ -137,6 +144,7 @@ angular.module('UAS_2018', [
         }
 
         $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            console.log($rootScope.auth)
             // redirect to login page if not logged in
 
             if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
@@ -144,4 +152,6 @@ angular.module('UAS_2018', [
 
             }
         });
+
+
     }]);
