@@ -104,6 +104,7 @@ angular.module('UAS_2018', [
       "Gray": darkgrey
     };
 
+
     $scope.flightPlanOnEachFeature = function(feature, layer) {
       // console.log(feature.properties.Altitude)
       var popupContent = "Altitude: " + feature.properties.Altitude;
@@ -127,6 +128,7 @@ angular.module('UAS_2018', [
         };
       },
       onEachFeature: $scope.flightPlanOnEachFeature
+
     });
 
     //Add here if additional overlays are to be added
