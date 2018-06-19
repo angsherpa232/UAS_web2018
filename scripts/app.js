@@ -184,46 +184,137 @@ angular.module('UAS_2018', [
         sensorMap.addLayer(markers);
   }])
 
+  .controller('chart_controller', ['$scope', '$http', function($scope, $http) {
+    var script = document.createElement('script');
+    var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
+    url.push('sql=');
+    var query = "SELECT * FROM 1Jtg_LywbCaFVZ6_LDaUZfytZDLB2DGEWxR6O-9AV  WHERE 'ID' IN ('1') order By 'Time(s)' ASC "; // Opposite LIKE '1'
+    var encodedQuery = encodeURIComponent(query);
+    url.push(encodedQuery);
+    url.push('&callback=GetDataFT'); //Calls the function after receiving data from Fusion Table
+    url.push('&key=AIzaSyCoC9A3WgFneccRufbysInygnWrhCie-T0');
+    script.src = url.join('');
+    var body = document.getElementsByTagName('body')[0];
+    body.appendChild(script);
 
-    // function sensor() {
-    //
-    //   var jsonDataString = $.ajax({
-    //     url: "http://localhost:5000/config/sensorData.js",
-    //     async: false
-    //   }).responseText;
-    //
-    //   console.log(jsonDataString)
-    //
-    //   var jsonDataObject = JSON.parse(jsonDataString);
-    //   //console.log(jsonDataString);
-    //   //set view based on current location
-    //
-    //   var map = L.map('sensormap').setView([jsonDataObject[0].Latitude, jsonDataObject[0].Longitude], 8);
-    //
-    //   L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-    //     maxZoom: 18,
-    //     attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors,' +
-    //       '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-    //       'Imagery © <a href="http://mapbox.com">Mapbox</a>',
-    //     id: 'mapbox.streets'
-    //   }).addTo(map);
-    //
-    //   var markers = new L.markerClusterGroup(); //clustering function
-    //
-    //   var markerList = [];
-    //
-    //   for (var i = 0; i < jsonDataObject.length; i++) {
-    //     var marker = L.marker(L.latLng(parseFloat(jsonDataObject[i].Latitude), parseFloat(jsonDataObject[i].Longitude)));
-    //     marker.bindPopup(jsonDataObject[i].Title);
-    //     markerList.push(marker);
-    //   }
-    //   markers.addLayers(markerList);
-    //   map.addLayer(markers);
-    //   console.log("yey")
-  //   }
-  //
-  //   sensor();
-  // }])
+
+    var PointsToPlot = [];
+    function GetDataFT(data){
+    	//debug
+    	console.log( data);
+    	var rows = data['rows'];
+
+    	PointsToPlot = [];
+
+
+    	for (var i in rows) {
+    		// Hold X and Y
+    		var chartValue = [];
+
+    		var Temperature = parseFloat(rows[i][0]);
+    		var Relat_Humid = parseFloat(rows[i][1]);
+    		var Time = parseFloat(rows[i][6]);
+
+    		chartValue.push(Time);
+    		chartValue.push(Temperature);
+    		chartValue.push(Relat_Humid);
+    		PointsToPlot.push(chartValue);
+
+    	}
+    	console.log( PointsToPlot );
+    }
+
+    google.charts.load('current', {packages: ['corechart', 'line']});
+    google.charts.setOnLoadCallback(drawChart);
+
+
+    function drawChart(x) {
+    	if (x != 1){
+    		//====================== CHART PART ======================//
+    		var data = new google.visualization.DataTable();
+    		data.addColumn('number', 'X');
+    		data.addColumn('number', 'Temperature');
+    		data.addColumn('number', 'Relative Humidity');
+
+    		data.addRows(PointsToPlot)
+
+    		var options = {
+    			//title: 'Company Performance',
+    			//legend: { position: 'bottom' },
+    			curveType: 'function',
+    			hAxis: {
+    				title: 'Time',
+    				logScale: false
+    			},
+    			/*
+    			vAxis: {
+    			  title: 'Popularity',
+    			  logScale: false
+    			},
+    			*/
+    			explorer: {
+    				actions: ['dragToZoom', 'rightClickToReset'],
+    				axis: 'horizontal',
+    				keepInBounds: true,
+    				maxZoomIn: 4.0},
+    			colors: ['#a52714', '#097138']
+    		};
+
+    		var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    		chart.draw(data, options);
+    	}else{
+    		//====================== FT PART ======================//
+    		var script = document.createElement('script');
+    		var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
+    		url.push('sql=');
+    		var query = "SELECT * FROM 1Jtg_LywbCaFVZ6_LDaUZfytZDLB2DGEWxR6O-9AV  WHERE 'ID' LIKE '1' order By 'Time(s)' ASC ";
+    		var encodedQuery = encodeURIComponent(query);
+    		url.push(encodedQuery);
+    		url.push('&callback=GetDataFT'); //Calls the function after receiving data from Fusion Table
+    		url.push('&key=AIzaSyCoC9A3WgFneccRufbysInygnWrhCie-T0');
+    		script.src = url.join('');
+    		var body = document.getElementsByTagName('body')[0];
+    		body.appendChild(script);
+
+    		//====================== CHART PART ======================//
+    		var data = new google.visualization.DataTable();
+    		data.addColumn('number', 'X');
+    		data.addColumn('number', 'Temperature');
+    		data.addColumn('number', 'Relative Humidity');
+
+    		data.addRows(PointsToPlot)
+
+    		var options = {
+    			//title: 'Company Performance',
+    			//legend: { position: 'bottom' },
+    			curveType: 'function',
+    			hAxis: {
+    				title: 'Time',
+    				logScale: false
+    			},
+    			/*
+    			vAxis: {
+    			  title: 'Popularity',
+    			  logScale: false
+    			},
+    			*/
+    			explorer: {
+    				actions: ['dragToZoom', 'rightClickToReset'],
+    				axis: 'horizontal',
+    				keepInBounds: true,
+    				maxZoomIn: 4.0},
+    			colors: ['#a52714', '#097138']
+    		};
+
+    		var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+    		chart.draw(data, options);
+
+    	}
+    }
+
+  }])
+
+
 
   .run(['$rootScope', '$location', '$cookieStore', '$http',
     function($rootScope, $location, $cookieStore, $http) {
