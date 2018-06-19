@@ -88,7 +88,7 @@ angular.module('UAS_2018', [
 
     var imagery = L.esri.basemapLayer("Imagery");
 
-    //Main map object
+    // Main map object
     var map = L.map('map', {
       center: [51.944990, 7.572810],
       zoom: 17,
@@ -97,7 +97,7 @@ angular.module('UAS_2018', [
       maxNativeZoom: 18
     });
 
-    //Default base layers when the app initiates
+    // Default base layers when the app initiates
     var baseLayers = {
       "Imagery": imagery,
       "Topographic": topo,
@@ -145,15 +145,38 @@ angular.module('UAS_2018', [
 
     // Sensor data integration
 
-    var gSensors = []
+    // var gSensors = [];
 
-    $http.get('./home/resources/sensorData.json')
-       .then(function(res){
-         for (i = 0; i < res.data.length; i++){
-           gSensors.push(res.data[i])
-         }
-        });
-        console.log(gSensors)
+    var gSensors = $.ajax({
+        url: "./home/resources/sensorData.json",
+        async: false,
+        success: function(res) {
+          return res
+            //   for (i = 0; i < res.length; i++) {
+            //            gSensors.push(res[i]);
+            //   }
+            //   return gSensors
+            }
+      }).responseJSON
+
+      console.log(gSensors)
+
+      var tiles = L.esri.basemapLayer("Topographic");
+
+      var sensorMap = L.map('sensormap', {
+        center: [51.944990, 7.572810],
+        zoom: 17,
+        maxzoom: 22,
+        maxNativeZoom: 18
+      });
+
+      var basemap = {
+        "Topographic": tiles
+      };
+
+      L.control.layers(basemap).addTo(sensorMap);
+
+    //var sensorMap = L.map('sensormap').setView([gSensors[0].Latitude, gSensors[0].Longitude], 8);
 
   }])
 
