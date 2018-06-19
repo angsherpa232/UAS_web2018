@@ -165,6 +165,8 @@ angular.module('UAS_2018', [
         maxNativeZoom: 18
       });
 
+      // $scope.sensorMap = sensorMap;
+
       var basemap = {
         "Topographic": tiles
       };
@@ -175,14 +177,14 @@ angular.module('UAS_2018', [
 
       var markerList = [];
 
-      for (var i = 0; i < jsonDataObject.length; i++) {
+      for (var i = 0; i < gSensors.length; i++) {
           var marker = L.marker(L.latLng(parseFloat(gSensors[i].Latitude), parseFloat(gSensors[i].Longitude)));
           marker.bindPopup(gSensors[i].Title);
           markerList.push(marker);
         }
-
-    //var sensorMap = L.map('sensormap').setView([gSensors[0].Latitude, gSensors[0].Longitude], 8);
-
+        markers.addLayers(markerList);
+        sensorMap.addLayer(markers);
+        console.log(markerList)
   }])
 
 
