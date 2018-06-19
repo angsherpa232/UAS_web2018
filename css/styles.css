@@ -60,6 +60,14 @@ main {
   left: 0;
 }
 
+#sensormap {
+  width: 100%;
+  height: 90%;
+  position: absolute;
+  top: 86px;
+  right: 400px;
+}
+
 
 /*Styling the authentication form begins*/
 .title {
@@ -187,6 +195,21 @@ animation-delay: .2s;
 animation-delay: .4s;
 }
 
+#side_popup {
+position: relative;
+    height: 100%;
+  width: 400px;
+  z-index: 2;
+  float:right;
+  }
+
+#chart_div {
+  position: relative;
+    height: 300px;
+  width: 400px;
+  z-index: 2;
+  float:left;
+  }
 /* .ng-cloak {
   display: none !important;
 } */

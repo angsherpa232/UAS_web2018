@@ -6,8 +6,6 @@ const keys = require('./config/keys');
 var bodyParser = require("body-parser");
 app.use(bodyParser.json({type: 'application/json'}));
 
-console.log(keys)
-
 var bodyParser = require("body-parser");
 app.use(bodyParser.json());
 
