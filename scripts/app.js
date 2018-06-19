@@ -153,8 +153,6 @@ angular.module('UAS_2018', [
             }
       }).responseJSON
 
-      console.log(gSensors)
-
       var tiles = L.esri.basemapLayer("Topographic");
 
       var sensorMap = L.map('sensormap', {
@@ -184,7 +182,6 @@ angular.module('UAS_2018', [
         }
         markers.addLayers(markerList);
         sensorMap.addLayer(markers);
-        console.log(markerList)
   }])
 
 
