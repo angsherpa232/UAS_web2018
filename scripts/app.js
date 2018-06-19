@@ -99,29 +99,29 @@ angular.module('UAS_2018', [
         "Gray": darkgrey
     };
 
-    $scope.flightPlanOnEachFeature = function (feature, layer) {
-      // console.log(feature.properties.Altitude)
-      var popupContent = "Altitude: " + feature.properties.Altitude;
-      layer.bindPopup(popupContent);
-    };
+    // $scope.flightPlanOnEachFeature = function (feature, layer) {
+    //   // console.log(feature.properties.Altitude)
+    //   var popupContent = "Altitude: " + feature.properties.Altitude;
+    //   layer.bindPopup(popupContent);
+    // };
 
-    $scope.getColor = function (x) {
-      return x < 46 ? '#ffeda0':
-      x < 48.1 ? '#feb24c':
-      x < 50.8 ? '#f03b20':
-      '#f01010';
-    };
+    // $scope.getColor = function (x) {
+    //   return x < 46 ? '#ffeda0':
+    //   x < 48.1 ? '#feb24c':
+    //   x < 50.8 ? '#f03b20':
+    //   '#f01010';
+    // };
 
     //Flight plan from last year
     var flightPlanLayer = L.esri.featureLayer({
-      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/arcgis/rest/services/UAS18_flight_path/FeatureServer",
-      style: function (feature) {
-        return {
-          "color": $scope.getColor(feature.properties.Altitude),
-          "opacity": 1,
-        };
-      },
-      onEachFeature: $scope.flightPlanOnEachFeature
+      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/arcgis/rest/services/FightPath/FeatureServer/1"
+      // style: function (feature) {
+      //   return {
+      //     "color": $scope.getColor(feature.properties.Altitude),
+      //     "opacity": 1,
+      //   };
+      // },
+      // onEachFeature: $scope.flightPlanOnEachFeature
     });
 
     //Add here if additional overlays are to be added
