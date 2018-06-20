@@ -8,6 +8,7 @@ uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', f
   if ($location.path() != '/login') {
     $scope.$on('$viewContentLoaded', function() {
       $('#menu').removeClass('cloak')
+      $('#footer').removeClass('cloak')
     });
   }
 
