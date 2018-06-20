@@ -5,23 +5,29 @@
   <meta charset="utf-8" />
   <title>UAS 2018</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="./styles.css" type="text/css">
-  <link rel="stylesheet" href="./leaflet/dist/leaflet.css" type="text/css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.3.0/MarkerCluster.Default.css" />
 
   <script src="./jquery/dist/jquery.js"></script>
   <!-- <script src="./jquery-mobile/js/jquery.mobile.js"></script>
   <link rel="stylesheet" href="./jquery-mobile/css/themes/default/jquery.mobile.css"> -->
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
+  <link rel="stylesheet" href="./bootstrap/dist/css/bootstrap.min.css" />
+  <script src="./bootstrap/dist/js/bootstrap.js"></script>
+
   <script src="//code.angularjs.org/1.2.20/angular.js"></script>
   <script src="//code.angularjs.org/1.2.20/angular-route.js"></script>
   <script src="//code.angularjs.org/1.2.13/angular-cookies.js"></script>
+
   <script src="./leaflet/dist/leaflet.js"></script>
   <script src="./esri-leaflet/dist/esri-leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.3.0/leaflet.markercluster-src.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.3.0/leaflet.markercluster.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.3.0/MarkerCluster.Default.css" />
+  <link rel="stylesheet" href="./leaflet/dist/leaflet.css" type="text/css" />
+
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
   <script src="./app.js"></script>
   <script src="./authentication/services.js"></script>
   <script src="./authentication/controllers.js"></script>
@@ -31,7 +37,7 @@
 </head>
 
 <body ng-controller="uas2018_controller">
-  <header id="menu" ng-controller="uas2018_controller" ng-include="'./home/views/header.html'" class="cloak"></header>
+  <div id="menu" ng-controller="uas2018_controller" ng-include="'./home/views/header.html'" class="cloak"></div>
   <main ng-view></main>
 
 </body>
