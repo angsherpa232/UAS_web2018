@@ -148,173 +148,131 @@ angular.module('UAS_2018', [
 
     // Sensor data integration
 
-    var gSensors = $.ajax({
-        url: "./home/resources/sensorData.json",
-        async: false,
-        success: function(res) {
-          return res
-            }
-      }).responseJSON
+    var tiles = L.esri.basemapLayer("Topographic");
 
-      var tiles = L.esri.basemapLayer("Topographic");
+    var sensorMap = L.map('sensormap', {
+      center: [51.944649, 7.572640],
+      zoom: 12,
+      layers: [tiles],
+      maxzoom: 22,
+      maxNativeZoom: 18
+    });
 
-      var sensorMap = L.map('sensormap', {
-        center: [gSensors[0].Latitude, gSensors[0].Longitude],
-        zoom: 5,
-        layers: [tiles],
-        maxzoom: 22,
-        maxNativeZoom: 18
-      });
+    // $scope.sensorMap = sensorMap;
 
-      // $scope.sensorMap = sensorMap;
+    var basemap = {
+      "Topographic": tiles
+    };
 
-      var basemap = {
-        "Topographic": tiles
-      };
+    L.control.layers(basemap).addTo(sensorMap);
 
-      L.control.layers(basemap).addTo(sensorMap);
+    var marker_id;
 
-      var markers = new L.markerClusterGroup(); //clustering function
+    var dataURL = "./home/resources/markers_project.geojson"
 
-      var markerList = [];
+    var jsonData = $.ajax({
+      url: dataURL,
+      async: false,
+      success: function(res) {
+        return res
+      }
+    }).responseJSON
 
-      for (var i = 0; i < gSensors.length; i++) {
-          var marker = L.marker(L.latLng(parseFloat(gSensors[i].Latitude), parseFloat(gSensors[i].Longitude)));
-          marker.bindPopup(gSensors[i].Title);
-          markerList.push(marker);
-        }
-        markers.addLayers(markerList);
-        sensorMap.addLayer(markers);
-  }])
+    // var gSensors = jsonData.features
+    //
+    // console.log(gSensors[0].geometry)
 
-  .controller('chart_controller', ['$scope', '$http', function($scope, $http) {
-    var script = document.createElement('script');
-    var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
-    url.push('sql=');
-    var query = "SELECT * FROM 1Jtg_LywbCaFVZ6_LDaUZfytZDLB2DGEWxR6O-9AV  WHERE 'ID' IN ('1') order By 'Time(s)' ASC "; // Opposite LIKE '1'
-    var encodedQuery = encodeURIComponent(query);
-    url.push(encodedQuery);
-    url.push('&callback=GetDataFT'); //Calls the function after receiving data from Fusion Table
-    url.push('&key=AIzaSyCoC9A3WgFneccRufbysInygnWrhCie-T0');
-    script.src = url.join('');
-    var body = document.getElementsByTagName('body')[0];
-    body.appendChild(script);
+    var markers = L.geoJson(jsonData, {
+      pointToLayer: function(feature, latlng) {
+        var marker = L.marker(latlng);
+        //marker.bindPopup(feature.properties.id + '<br/>' + feature.properties.geoid);
+        return marker;
+      },
+      onEachFeature: function(feature, layer) {
+        layer.on('click', function(e) {
+          //console.log(feature.properties.id);
 
+          //global variable receives the id of the marker clicked by the user
+          marker_id = feature.properties.id
 
-    var PointsToPlot = [];
-    function GetDataFT(data){
-    	//debug
-    	console.log( data);
-    	var rows = data['rows'];
+          //Run the function that request the data based on the marker clicked by the user
+          request_fusiontable_data(marker_id);
 
-    	PointsToPlot = [];
+          //ensure that all times a marked is clicked,
+          //all the checkbox from the class ".cb_chart_var" initiate as checked
+          $(".cb_chart_var").prop("checked", true)
+        }); //end Event listener 'click' for the marker
+      } //end onEachFeature
+    })
 
+    //creates a cluster object
+    var clusters = L.markerClusterGroup();
 
-    	for (var i in rows) {
-    		// Hold X and Y
-    		var chartValue = [];
+    //Add the variable that contains all the markers to the cluster object
+    clusters.addLayer(markers);
 
-    		var Temperature = parseFloat(rows[i][0]);
-    		var Relat_Humid = parseFloat(rows[i][1]);
-    		var Time = parseFloat(rows[i][6]);
+    //Add the clusters to the map
+    sensorMap.addLayer(clusters);
 
-    		chartValue.push(Time);
-    		chartValue.push(Temperature);
-    		chartValue.push(Relat_Humid);
-    		PointsToPlot.push(chartValue);
+    //Centralize and zoom the map to fit all the markers in the screen, automatically.
+    sensorMap.fitBounds(markers.getBounds());
 
-    	}
-    	console.log( PointsToPlot );
-    }
-
-    google.charts.load('current', {packages: ['corechart', 'line']});
-    google.charts.setOnLoadCallback(drawChart);
+    console.log(markers)
 
 
-    function drawChart(x) {
-    	if (x != 1){
-    		//====================== CHART PART ======================//
-    		var data = new google.visualization.DataTable();
-    		data.addColumn('number', 'X');
-    		data.addColumn('number', 'Temperature');
-    		data.addColumn('number', 'Relative Humidity');
+    // $.getJSON(dataURL,function(data){
+    //
+    // 	  //add all the marker in one variable containing all the functionalities for them.
+    // 	  var markers =   L.geoJson(data,{
+    // 	  pointToLayer: function(feature,latlng){
+    // 		var marker = L.marker(latlng);
+    // 		//marker.bindPopup(feature.properties.id + '<br/>' + feature.properties.geoid);
+    // 		return marker;
+    //   },
+    //   onEachFeature: function (feature, layer) {
+    // 	     layer.on('click', function (e) {
+    //
+    // 		         //console.log(feature.properties.id);
+    // 		         //global variable receives the id of the marker clicked by the user
+    // 		          marker_id = feature.properties.id
+    //
+    //     				 //Run the function that request the data based on the marker clicked by the user
+    //     				 // request_fusiontable_data(marker_id);
+    //
+    //     				 //ensure that all times a marked is clicked,
+    //     				 //all the checkbox from the class ".cb_chart_var" initiate as checked
+    //     				 $(".cb_chart_var").prop("checked", true)
+    // 	      });   //end Event listener 'click' for the marker
+    //      }    //end onEachFeature
+    //   });
+    //   var clusters = L.markerClusterGroup();
+    //
+    //   //Add the variable that contains all the markers to the cluster object
+    //   clusters.addLayer(markers);
+    //
+    //   //Add the clusters to the map
+    //   map.addLayer(clusters);
+    //
+    //   //Centralize and zoom the map to fit all the markers in the screen, automatically.
+    //   map.fitBounds(markers.getBounds());
+    // })
+    // console.log(gSensors)
+    //
+    // console.log(gSensors.features.length)
 
-    		data.addRows(PointsToPlot)
 
-    		var options = {
-    			//title: 'Company Performance',
-    			//legend: { position: 'bottom' },
-    			curveType: 'function',
-    			hAxis: {
-    				title: 'Time',
-    				logScale: false
-    			},
-    			/*
-    			vAxis: {
-    			  title: 'Popularity',
-    			  logScale: false
-    			},
-    			*/
-    			explorer: {
-    				actions: ['dragToZoom', 'rightClickToReset'],
-    				axis: 'horizontal',
-    				keepInBounds: true,
-    				maxZoomIn: 4.0},
-    			colors: ['#a52714', '#097138']
-    		};
 
-    		var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    		chart.draw(data, options);
-    	}else{
-    		//====================== FT PART ======================//
-    		var script = document.createElement('script');
-    		var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
-    		url.push('sql=');
-    		var query = "SELECT * FROM 1Jtg_LywbCaFVZ6_LDaUZfytZDLB2DGEWxR6O-9AV  WHERE 'ID' LIKE '1' order By 'Time(s)' ASC ";
-    		var encodedQuery = encodeURIComponent(query);
-    		url.push(encodedQuery);
-    		url.push('&callback=GetDataFT'); //Calls the function after receiving data from Fusion Table
-    		url.push('&key=AIzaSyCoC9A3WgFneccRufbysInygnWrhCie-T0');
-    		script.src = url.join('');
-    		var body = document.getElementsByTagName('body')[0];
-    		body.appendChild(script);
-
-    		//====================== CHART PART ======================//
-    		var data = new google.visualization.DataTable();
-    		data.addColumn('number', 'X');
-    		data.addColumn('number', 'Temperature');
-    		data.addColumn('number', 'Relative Humidity');
-
-    		data.addRows(PointsToPlot)
-
-    		var options = {
-    			//title: 'Company Performance',
-    			//legend: { position: 'bottom' },
-    			curveType: 'function',
-    			hAxis: {
-    				title: 'Time',
-    				logScale: false
-    			},
-    			/*
-    			vAxis: {
-    			  title: 'Popularity',
-    			  logScale: false
-    			},
-    			*/
-    			explorer: {
-    				actions: ['dragToZoom', 'rightClickToReset'],
-    				axis: 'horizontal',
-    				keepInBounds: true,
-    				maxZoomIn: 4.0},
-    			colors: ['#a52714', '#097138']
-    		};
-
-    		var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
-    		chart.draw(data, options);
-
-    	}
-    }
-
+    // var markers = new L.markerClusterGroup(); //clustering function
+    //
+    // var markerList = [];
+    //
+    // for (var i = 0; i < gSensors.length; i++) {
+    //   var marker = L.marker(L.latLng(parseFloat(gSensors[i].geometry.coordinates[1]), parseFloat(gSensors[i].geometry.coordinates[0])));
+    //   marker.bindPopup(gSensors[i].properties.NamePlace);
+    //   markerList.push(marker);
+    // }
+    // markers.addLayers(markerList);
+    // sensorMap.addLayer(markers);
   }])
 
 
