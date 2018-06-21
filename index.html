@@ -37,12 +37,12 @@
 </head>
 
 <body ng-controller="uas2018_controller">
-  <div id="menu" ng-controller="uas2018_controller" ng-include="'./home/views/header.html'" class="cloak"></div>
+  <div id="menu" ng-controller="uas2018_controller" ng-include = "x ? './home/views/header.html' : ''"></div>
 
     <main ng-view></main>
-  
 
-  <div id="footer" ng-controller="uas2018_controller" ng-include="'./home/views/footer.html'" class="cloak"></div>
+
+  <div id="footer" ng-controller="uas2018_controller" ng-include = "x ? './home/views/footer.html' : ''"></div>
 </body>
 
 </html>
