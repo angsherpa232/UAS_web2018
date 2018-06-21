@@ -245,6 +245,8 @@ h1, h2, h3 {
   width: 400px;
   z-index: 2;
   float: right;
+  opacity    : 0.6;
+  filter     : alpha(opacity=60);
 }
 
 #chart_div {
@@ -253,6 +255,7 @@ h1, h2, h3 {
   width: 400px;
   z-index: 2;
   float: right;
+
 }
 
 /* .ng-cloak {
