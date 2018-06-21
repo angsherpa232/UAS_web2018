@@ -220,7 +220,7 @@ angular.module('UAS_2018', [
 
         $('#side_popup').show().css({
           left: ($('#side_popup').width())
-        }).animate({left: 0	}, 300);
+        }).animate({left: 0}, 600);
 
         console.log("marker ID: "+marker_id)
       }); //end Event listener 'click' for the marker
@@ -400,6 +400,9 @@ angular.module('UAS_2018', [
     var options = {
       //Give a title to the chart
       title: 'Data retrieved from Sensebox',
+
+      width:900,
+      height:500,
 
       //Control the position of the legend
       legend: {
