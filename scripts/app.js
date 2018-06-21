@@ -5,12 +5,11 @@ var uas2018 = angular.module('uas2018', []);
 
 uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
   console.log('Hello I am main controller for now. Modify me as you want. Happy coding for UAS 2018')
-  if ($location.path() != '/login') {
-    $scope.$on('$viewContentLoaded', function() {
-      $('#menu').removeClass('cloak')
-      $('#footer').removeClass('cloak')
-    });
-  }
+  if ($location.path() == '/login'){
+    $scope.x = false;
+  } else {
+    $scope.x = true;
+}
 
 }]);
 
