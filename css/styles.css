@@ -8,8 +8,8 @@ html, body {
 }
 
 /* #nav {
-  position:relative;
-  background-color:#F8F8F8;
+position:relative;
+background-color:#F8F8F8;
 } */
 
 .nav-tabs {
@@ -24,18 +24,18 @@ html, body {
 }
 
 .copyright {
-    color: #fff;
-    line-height: 30px;
-    min-height: 30px;
-    padding: 7px 0;
+  color: #fff;
+  line-height: 30px;
+  min-height: 30px;
+  padding: 7px 0;
 }
 
 .design {
-    color: #fff;
-    line-height: 30px;
-    min-height: 30px;
-    padding: 7px 0;
-    text-align: right;
+  color: #fff;
+  line-height: 30px;
+  min-height: 30px;
+  padding: 7px 0;
+  text-align: right;
 }
 
 .container{
@@ -43,42 +43,42 @@ html, body {
 }
 
 /* .center {
-    padding: 70px 0;
-    border: 3px solid green;
-    text-align: center;
+padding: 70px 0;
+border: 3px solid green;
+text-align: center;
 } */
 
 /* nav{
-    background: #ff5353;
-    padding: 20px 10px;
-      }
+background: #ff5353;
+padding: 20px 10px;
+}
 
 nav ul{
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 0;
-      }
+max-width: 960px;
+margin: 0 auto;
+padding: 0;
+}
 
 nav li{
-    list-style-type: none;
-    display: inline-block;
-    margin: 0 10px 0 0;
+list-style-type: none;
+display: inline-block;
+margin: 0 10px 0 0;
 }
 
 nav a{
-  color: #fff;
-  font-size: 18px;
-  background: rgba(255,255,255,0.2);
-  text-decoration: none;
-  padding: 10px;
-  display: block;
+color: #fff;
+font-size: 18px;
+background: rgba(255,255,255,0.2);
+text-decoration: none;
+padding: 10px;
+display: block;
 } */
 
 /* header {
-  max-width: 100%;
-  margin: 0;
-  padding: 0;
-  color: #333;
+max-width: 100%;
+margin: 0;
+padding: 0;
+color: #333;
 } */
 
 .cloak {
@@ -101,11 +101,15 @@ main {
 }
 
 #sensormap {
-  width: 100%;
-  height: 90%;
+  height: 100%;
   position: absolute;
-  top: 86px;
+  padding: 0;
+  margin: 0;
+  top: 25px;
   right: 400px;
+  /*top: 86px;
+  right: 400px;
+  */
 }
 
 /*Styling the authentication form begins*/
@@ -171,23 +175,23 @@ h1, h2, h3 {
 
 @keyframes blink {
   /**
- * At the start of the animation the dot
- * has an opacity of .2
- */
+  * At the start of the animation the dot
+  * has an opacity of .2
+  */
   0% {
     opacity: .2;
   }
   /**
- * At 20% the dot is fully visible and
- * then fades out slowly
- */
+  * At 20% the dot is fully visible and
+  * then fades out slowly
+  */
   20% {
     opacity: 1;
   }
   /**
- * Until it reaches an opacity of .2 and
- * the animation can start again
- */
+  * Until it reaches an opacity of .2 and
+  * the animation can start again
+  */
   100% {
     opacity: .2;
   }
@@ -195,46 +199,47 @@ h1, h2, h3 {
 
 .process span {
   /**
- * Use the blink animation, which is defined above
- */
+  * Use the blink animation, which is defined above
+  */
   animation-name: blink;
   /**
- * The animation should take 1.4 seconds
- */
+  * The animation should take 1.4 seconds
+  */
   animation-duration: 1.4s;
   /**
- * It will repeat itself forever
- */
+  * It will repeat itself forever
+  */
   animation-iteration-count: infinite;
   /**
- * This makes sure that the starting style (opacity: .2)
- * of the animation is applied before the animation starts.
- * Otherwise we would see a short flash or would have
- * to set the default styling of the dots to the same
- * as the animation. Same applies for the ending styles.
- */
+  * This makes sure that the starting style (opacity: .2)
+  * of the animation is applied before the animation starts.
+  * Otherwise we would see a short flash or would have
+  * to set the default styling of the dots to the same
+  * as the animation. Same applies for the ending styles.
+  */
   animation-fill-mode: both;
 }
 
 .process span:nth-child(2) {
   /**
- * Starts the animation of the third dot
- * with a delay of .2s, otherwise all dots
- * would animate at the same time
- */
+  * Starts the animation of the third dot
+  * with a delay of .2s, otherwise all dots
+  * would animate at the same time
+  */
   animation-delay: .2s;
 }
 
 .process span:nth-child(3) {
   /**
- * Starts the animation of the third dot
- * with a delay of .4s, otherwise all dots
- * would animate at the same time
- */
+  * Starts the animation of the third dot
+  * with a delay of .4s, otherwise all dots
+  * would animate at the same time
+  */
   animation-delay: .4s;
 }
 
 #side_popup {
+  display:none;
   position: relative;
   height: 100%;
   width: 400px;
@@ -247,9 +252,9 @@ h1, h2, h3 {
   height: 300px;
   width: 400px;
   z-index: 2;
-  float: left;
+  float: right;
 }
 
 /* .ng-cloak {
-  display: none !important;
+display: none !important;
 } */
