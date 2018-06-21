@@ -1,19 +1,11 @@
-<div id="side_popup" ng-controller = "chart_controller">
+<div id="side_popup" class="container" >
   <div id="CheckboxDIV" >
-    <div>
-      <input type="checkbox" id="Temp" name="Temperature" value="Temp">
-      <label for="subscribeNews">Temperature</label>
-
-      <input type="checkbox" id="Humid" name="Relative Humidity" value="Humi">
-      <label for="subscribeNews">Relative Humidity</label>
-
-    </div>
-    <div>
-      <button onclick="drawChart(1)">OK</button>
-    </div>
-    ID number: <div id="show_id" style="background-color:black;color:white;">ID Value</div>
+      <input type="checkbox" class="cb_chart_var" id="cb_temp" name="Temperature" value="1" checked>
+        <label for="cb_temp">Temperature</label>
+      <input type="checkbox" class="cb_chart_var" id="cb_humid" name="Relative Humidity" value="2" checked>
+        <label for="cb_humid">Relative Humidity</label>
   </div>
   <div id="chart_div"></div>
 </div>
 
-<div id="sensormap"></div>
+<div id="sensormap" class="container"></div>
