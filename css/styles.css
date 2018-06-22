@@ -22,7 +22,7 @@ p {
 .hero-text {
   position: absolute;
   bottom: 0;
-  background-color: rgba(211, 211, 211, 0.5);
+  background-color: rgba(211, 211, 211, 0.8);
   color: black;
   right: 5%;
   left: 5%;
@@ -49,8 +49,12 @@ background-color:#F8F8F8;
 }
 
 #loginBox {
-  width: 360px;
-  margin: 7% auto;
+  width: inherit;
+  margin: auto;
+  background-color: rgba(211, 211, 211, 0.8);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .copyright {

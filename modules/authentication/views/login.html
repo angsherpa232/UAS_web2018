@@ -16,38 +16,49 @@
 <div class="navbar navbar-expand-md fixed-top bg-dark">
   <h1 class="text-primary">EnviroDrone</h1>
 </div>
-<div role="main" class="container" class=".center-block">
-  <div ng-show="error" class="alert alert-danger">{{error}}</div>
-  <form class="form_" name="form" ng-submit="login()" role="form">
-    <div class="form-group">
-      <label for="username">Username</label>
-      <i class="fa fa-key"></i>
-      <input type="text" name="username" id="username" class="form-control" ng-model="username" required />
-      <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
     </div>
-    <div class="form-group">
-      <label for="password">Password</label>
-      <i class="fa fa-lock"></i>
-      <input type="password" name="password" id="password" class="form-control" ng-model="password" required />
-      <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+    <div id="loginBox" class="col-sm">
+      <div role="main" class="container" class=".center-block" >
+        <div ng-show="error" class="alert alert-danger">{{error}}</div>
+        <form class="form_" name="form" ng-submit="login()" role="form">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <i class="fa fa-key"></i>
+            <input type="text" name="username" id="username" class="form-control" ng-model="username" required />
+            <span ng-show="form.username.$dirty && form.username.$error.required" class="help-block">Username is required</span>
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <i class="fa fa-lock"></i>
+            <input type="password" name="password" id="password" class="form-control" ng-model="password" required />
+            <span ng-show="form.password.$dirty && form.password.$error.required" class="help-block">Password is required</span>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Login</button>
+          </div>
+        </form>
+      </div>
     </div>
-    <div class="form-actions">
-      <button type="submit" class="btn btn-danger">Login</button>
+    <div class="col-sm">
     </div>
-  </form>
+  </div>
 </div>
+
 <div class="navbar navbar-expand-md fixed-bottom bg-dark">
     <div class="row">
-      <p class="copyright">© 2018 UAS Web Crew, All rights reserved</p>
-      <!-- <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+      <!-- <p class="copyright">© 2018 UAS Web Crew, All rights reserved</p>
+      <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <div class="copyright">
           © 2018 UAS Web Crew, All rights reserved
         </div>
-      </div> -->
+      </div>
       <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
         <div class="design">
           <a>Web Design & Development by UAS Web Crew</a>
         </div>
-      </div>
+      </div> -->
     </div>
 </div>
