@@ -5,12 +5,42 @@ html, body {
   width: 100%;
   height: 100%;
   position: relative;
+  background-image: url("./home/resources/m1.jpg");
+  background-repeat: no-repeat;
+  background-attachment: scroll;
+  background-size: 100% 100%;
+}
+.nav1 {
+  position: relative;
+  /* background-color: rgba(0, 0, 0, 0.5); */
+}
+
+p {
+  font-size: 24px;
+}
+
+.hero-text {
+  position: absolute;
+  bottom: 0;
+  background-color: rgba(211, 211, 211, 0.5);
+  color: black;
+  right: 5%;
+  left: 5%;
+  width: 87%;
+  height: 97%;
+  padding: 40px;
 }
 
 /* #nav {
 position:relative;
 background-color:#F8F8F8;
 } */
+
+.top-left {
+  position: absolute;
+  top: 8px;
+  left: 16px;
+}
 
 .nav-tabs {
   position: absolute;
@@ -38,7 +68,7 @@ background-color:#F8F8F8;
   text-align: right;
 }
 
-.container{
+.container {
   padding: fixed;
   padding: 60px 15px 0
 }
@@ -75,11 +105,11 @@ padding: 10px;
 display: block;
 } */
 
-/* header {
-max-width: 100%;
-margin: 0;
-padding: 0;
-color: #333;
+/* .header {
+  opacity: 0.5;
+  margin: auto;
+  padding: 0;
+  background-color:black;
 } */
 
 .cloak {
@@ -106,7 +136,6 @@ main {
   height: 90%;
   position: fixed;
   top: 60px;
-
   /*top: 86px;
   right: 400px;
   */
@@ -240,7 +269,7 @@ h1, h2, h3 {
 
 #side_popup {
   background-color: white;
-  display:none;
+  display: none;
   position: relative;
   height: 700px;
   width: 800px;
@@ -248,8 +277,8 @@ h1, h2, h3 {
   float: right;
 }
 
-#chart_div{
-  height:500px;
+#chart_div {
+  height: 500px;
   width: auto;
   margin: 0;
 }
@@ -263,7 +292,6 @@ h1, h2, h3 {
   z-index: 2;
   float: right;
 } */
-
 
 /* .ng-cloak {
 display: none !important;
