@@ -1,13 +1,122 @@
 {
-"type": "FeatureCollection",
-"name": "markers_project",
-"crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
-"features": [
-{ "type": "Feature", "properties": { "id": 1, "NamePlace": "Agriculture", "geoid": 1 }, "geometry": { "type": "Point", "coordinates": [ 7.584498426679856, 51.958665430664908 ] } },
-{ "type": "Feature", "properties": { "id": 2, "NamePlace": "Preserved Area", "geoid": 1 }, "geometry": { "type": "Point", "coordinates": [ 7.592862500065045, 51.947911622026808 ] } },
-{ "type": "Feature", "properties": { "id": 3, "NamePlace": "Road", "geoid": 1 }, "geometry": { "type": "Point", "coordinates": [ 7.594190130761106, 51.976190155852919 ] } },
-{ "type": "Feature", "properties": { "id": 4, "NamePlace": "Highway", "geoid": 2 }, "geometry": { "type": "Point", "coordinates": [ 7.561530415637988, 51.925740189402575 ] } },
-{ "type": "Feature", "properties": { "id": 5, "NamePlace": "Grass land", "geoid": 2 }, "geometry": { "type": "Point", "coordinates": [ 7.558609628106653, 51.937157813388708 ] } },
-{ "type": "Feature", "properties": { "id": 6, "NamePlace": "Forest", "geoid": 2 }, "geometry": { "type": "Point", "coordinates": [ 7.567903042979085, 51.90502915054401 ] } }
-]
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.573168,51.9449069]
+      },
+      "properties": {
+        "id": 1,
+        "Station": "A",
+        "Type": "Water parameters",
+        "Observation": "In the study area near the bank"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.5861805,51.9383872]
+      },
+      "properties": {
+        "id": 2,
+        "Station": "B",
+        "Type": "Water parameters",
+        "Observation": "At the south of the study area"
+      }
+    },
+{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.562963,51.953751]
+      },
+      "properties": {
+        "id": 3,
+        "Station": "C",
+        "Type": "Water parameters",
+        "Observation": "At the north of the study area near by the stairs"
+      }
+    },
+{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.5731583,51.9448833]
+      },
+      "properties": {
+        "id": 4,
+        "Station": "D",
+        "Type": "Water parameters",
+        "Observation": "In the study area in the river. New measurement"
+      }
+    },
+{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.5733905,51.9445952]
+      },
+      "properties": {
+        "id": 5,
+        "Station": "E",
+        "Type": "Air Quality",
+        "Observation": "First point flight"
+      }
+    },
+{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.5716252,51.9458066]
+      },
+      "properties": {
+        "id": 6,
+        "Station": "F",
+        "Type": "Air Quality",
+        "Observation": "Second point flight"
+      }
+    },
+{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.5731639,51.9442087]
+      },
+      "properties": {
+        "id": 7,
+        "Station": "G",
+        "Type": "Water Level",
+        "Observation": "Located on the bridge"
+      }
+    },
+{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.5733905,51.9446535]
+      },
+      "properties": {
+        "id": 8,
+        "Station": "H",
+        "Type": "Weather Station",
+        "Observation": "Weather Station 1 of the flight day"
+      }
+    },
+{
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [7.5725349,51.9453747]
+      },
+      "properties": {
+        "id": 9,
+        "Station": "I",
+        "Type": "Weather Station",
+        "Observation": "Weather Station 2 located on the field"
+      }
+    }
+  ]
 }
