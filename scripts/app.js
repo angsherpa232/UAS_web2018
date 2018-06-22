@@ -64,6 +64,10 @@ angular.module('UAS_2018', [
     controller: 'sensor_controller',
     templateUrl: './home/views/sensor.html'
   })
+  .when('/about_us', {
+      controller: 'HomeController',
+      templateUrl: './home/views/about_us.html'
+    })
 
   .otherwise({
     redirectTo: '/'
