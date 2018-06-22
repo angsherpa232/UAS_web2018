@@ -14,6 +14,11 @@ html, body {
   position: relative;
 }
 
+#logoHead{
+  width: 2%;
+  height: 2%;
+}
+
 p {
   font-size: 24px;
 }
