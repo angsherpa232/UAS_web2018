@@ -2,12 +2,6 @@
 
 angular.module('Authentication')
 
-// .factory('loginService',
-//     ['$rootScope',
-//     function ($rootScope) {
-//         $rootScope.auth = false
-//     }])
-
 .factory('AuthenticationService',
     ['Base64', '$http', '$cookieStore', '$rootScope', '$timeout',
     function (Base64, $http, $cookieStore, $rootScope, $timeout) {
@@ -28,7 +22,6 @@ angular.module('Authentication')
               headers: {'Content-Type': 'application/json'}
             })
 
-              // '/login', { username: username, password: password })
                .success(function (response) {
                  var response = { success: username === username && password === password };
                    callback(response);
@@ -60,7 +53,6 @@ angular.module('Authentication')
     }])
 
 .factory('Base64', function () {
-    /* jshint ignore:start */
 
     var keyStr = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
 

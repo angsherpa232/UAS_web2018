@@ -36,8 +36,8 @@ app.get('/', function(req, res) {
 });
 
 
-var loginName = 'test';
-var loginPassword = 'test';
+var loginName = keys.users.username;
+var loginPassword = keys.users.password;
 
 app.post('/login', function(req, res, next){
 

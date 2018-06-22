@@ -1,6 +1,3 @@
-// declare modules
-/* var key = angular.module('keys',['keys']); */
-
 var uas2018 = angular.module('uas2018', []);
 
 uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
@@ -25,15 +22,8 @@ angular.module('UAS_2018', [
   'uas2018'
 ])
 
-// .factory('logged',
-//     ['$rootScope',
-//     function ($rootScope) {
-//
-//       }])
-
 
 .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
-  // $locationProvider.hashPrefix('');
   $routeProvider
   .when('/login', {
     controller: 'LoginController',
@@ -110,7 +100,6 @@ angular.module('UAS_2018', [
 
 
   $scope.flightPlanOnEachFeature = function(feature, layer) {
-    // console.log(feature.properties.Altitude)
     var popupContent = "Altitude: " + feature.properties.Altitude;
     layer.bindPopup(popupContent);
   };
@@ -151,19 +140,6 @@ angular.module('UAS_2018', [
   //load google packages for the chart
   google.charts.load('current', {packages: ['corechart', 'line']});
 
-  // Sensor data integration
-
-  // var tiles = L.esri.basemapLayer("Topographic");
-  //
-  // var sensorMap = L.map('sensormap', {
-  //   // center: [jsonData.features[0].geometry.coordinates[1], jsonData.features[0].geometry.coordinates[0]],
-  //   zoom: 12,
-  //   layers: [tiles],
-  //   maxzoom: 22,
-  //   maxNativeZoom: 18
-  // });
-
-
   //Load the tiles for the map
   var sensorMap = new L.Map('sensormap');
 
@@ -175,19 +151,6 @@ angular.module('UAS_2018', [
     'Imagery © <a href="http://mapbox.com">Mapbox</a>',
     id: 'mapbox.streets'
   }).addTo(sensorMap);
-
-
-  // $scope.sensorMap = sensorMap;
-
-  // var basemap = {
-  //   "Topographic": tiles
-  // };
-  //
-  // L.control.layers(basemap).addTo(sensorMap);
-
-  // var gSensors = jsonData.features
-  //
-  // console.log(gSensors[0].geometry)
 
   var marker_id;
 
