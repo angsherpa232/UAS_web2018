@@ -5,18 +5,24 @@ html, body {
   width: 100%;
   height: 100%;
   position: relative;
-  background-image: url('./home/resources/m1.JPG') !important;
+  background-image: url('./home/resources/m2.JPG') !important;
   background-repeat: no-repeat;
   background-attachment: scroll;
   background-size: 100% 100%;
 }
 .nav1 {
   position: relative;
-  /* background-color: rgba(0, 0, 0, 0.5); */
+}
+
+#logoHead{
+  width: 4%;
+  height: 4%;
+    padding-right: 6px !important;
 }
 
 p {
-  font-size: 24px;
+  font-size: 18px;
+  text-align: justify;
 }
 
 .hero-text {
@@ -31,11 +37,6 @@ p {
   padding: 40px;
 }
 
-/* #nav {
-position:relative;
-background-color:#F8F8F8;
-} */
-
 .top-left {
   position: absolute;
   top: 8px;
@@ -46,15 +47,6 @@ background-color:#F8F8F8;
   position: absolute;
   bottom: 0;
   left: 96px;
-}
-
-#loginBox {
-  width: inherit;
-  margin: auto;
-  background-color: rgba(211, 211, 211, 0.8);
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
 }
 
 .copyright {
@@ -76,45 +68,6 @@ background-color:#F8F8F8;
   padding: fixed;
   padding: 60px 15px 0
 }
-
-/* .center {
-padding: 70px 0;
-border: 3px solid green;
-text-align: center;
-} */
-
-/* nav{
-background: #ff5353;
-padding: 20px 10px;
-}
-
-nav ul{
-max-width: 960px;
-margin: 0 auto;
-padding: 0;
-}
-
-nav li{
-list-style-type: none;
-display: inline-block;
-margin: 0 10px 0 0;
-}
-
-nav a{
-color: #fff;
-font-size: 18px;
-background: rgba(255,255,255,0.2);
-text-decoration: none;
-padding: 10px;
-display: block;
-} */
-
-/* .header {
-  opacity: 0.5;
-  margin: auto;
-  padding: 0;
-  background-color:black;
-} */
 
 .cloak {
   display: none;
@@ -140,12 +93,18 @@ main {
   height: 90%;
   position: fixed;
   top: 60px;
-  /*top: 86px;
-  right: 400px;
-  */
 }
 
 /*Styling the authentication form begins*/
+
+#loginBox {
+  width: inherit;
+  margin: auto;
+  background-color: rgba(211, 211, 211, 0.8);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
 
 .title {
   color: blue;
@@ -275,7 +234,7 @@ h1, h2, h3 {
   background-color: white;
   display: none;
   position: relative;
-  height: 700px;
+  height: 750px;
   width: 800px;
   z-index: 2;
   float: right;
@@ -283,20 +242,6 @@ h1, h2, h3 {
 
 #chart_div {
   height: 500px;
-  width: auto;
+  width: 750px;
   margin: 0;
 }
-
-/* #chart_div {
-  background-color: white;
-  position: relative;
-  height: 500px;
-  width: 800px;
-  margin: 0;
-  z-index: 2;
-  float: right;
-} */
-
-/* .ng-cloak {
-display: none !important;
-} */
