@@ -17,7 +17,7 @@ html, body {
 #logoHead{
   width: 4%;
   height: 4%;
-    padding-right: 6px !important;
+  /* padding-right: 6px !important; */
 }
 
 p {
