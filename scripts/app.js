@@ -46,7 +46,7 @@ angular.module('UAS_2018', [
 
   .when('/3D', {
     controller: 'HomeController',
-    templateUrl: './home/views/3d_map.html'
+    templateUrl: './home/views/map_3d.html'
   })
 
   .when('/sensor', {
@@ -116,12 +116,12 @@ angular.module('UAS_2018', [
   var markers = L.geoJson(jsonData, {
     pointToLayer: function(feature, latlng) {
       var marker = L.marker(latlng);
-      //marker.bindPopup(feature.properties.id + '<br/>' + feature.properties.geoid);
+      marker.bindPopup("Station ID: " + feature.properties.id + '<br/>' + "Station name: " + feature.properties.Station + '<br/>' + "Station type: " + feature.properties.Type);
       return marker;
     },
     onEachFeature: function(feature, layer) {
       layer.on('click', function(e) {
-        //console.log(feature.properties.id);
+        console.log(feature);
 
         //global variable receives the id of the marker clicked by the user
         marker_id = feature.properties.id
@@ -137,7 +137,8 @@ angular.module('UAS_2018', [
           left: ($('#side_popup').width())
         }).animate({left: 0}, 600);
 
-        console.log("marker ID: "+marker_id)
+        console.log("marker ID: "+ marker_id)
+
       }); //end Event listener 'click' for the marker
     } //end onEachFeature
   })
@@ -148,20 +149,12 @@ angular.module('UAS_2018', [
   //Add the variable that contains all the markers to the cluster object
   clusters.addLayer(markers);
 
-  //Add the clusters to the map
-  // map.addLayer(clusters);
-
-  //Centralize and zoom the map to fit all the markers in the screen, automatically.
-  // map.fitBounds(markers.getBounds());
-
   //event listener for hiding the sidebar_popup when the user clicks in the map
   map.on('click', function(e) {
     $('#side_popup').hide().css({
       right: ($('#side_popup').width())
     }).animate({left: 0	}, 600);
   });
-
-  console.log("markers loaded")
 
   //Jquery function that map changes in the "#CheckboxDIV",
   //when a checkbox from the class ".cb_chart_var" is clicked
@@ -229,7 +222,6 @@ angular.module('UAS_2018', [
     //Process the data got from the fusion table
 
     var rows = data['rows'];
-    console.log(rows);
     //Creates an empty array to insert the array of coordinates to be plotted in the chart
     var PointsToPlot = [];
 
