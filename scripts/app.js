@@ -367,7 +367,7 @@ angular.module('UAS_2018', [
       //Give a title to the chart
       title: 'Data retrieved from Sensebox',
 
-      width:900,
+      width:750,
       height:500,
 
       //Control the position of the legend
