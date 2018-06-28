@@ -78,10 +78,10 @@ angular.module('UAS_2018', [
   // Main map object
   var map = L.map('map', {
     center: [51.944990, 7.572810],
-    zoom: 18,
+    zoom: 17,
     layers: [imagery],
-    maxZoom: 18,
-    maxNativeZoom: 18
+    maxZoom: 19,
+    maxNativeZoom: 19
   });
 
   // Default base layers when the app initiates
@@ -455,9 +455,9 @@ var sidebar_opened = 0;
   var NDVIlayer = L.esri.tiledMapLayer({
                 url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
                 zIndex: 200,
-                // maxZoom: 22,
+                maxZoom: 19,
                 // minZoom:10,
-                maxNativeZoom: 18
+                maxNativeZoom: 19
             }).addTo(map);
 
   //Add here if additional overlays are to be added
