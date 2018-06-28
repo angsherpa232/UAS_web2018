@@ -109,10 +109,50 @@ angular.module('UAS_2018', [
   }).responseJSON
 
 var sidebar_opened = 0;
+
   var markers = L.geoJson(jsonData, {
     pointToLayer: function(feature, latlng) {
-      var marker = L.marker(latlng);
+
+       switch ( feature.properties.Station ) {
+        case "A":
+        case "B":
+        case "C":
+        case "D":
+            //Water parameters points:
+            marker_color = "pin_blue";
+            break;
+        case "E":
+        case "F":
+            //Air Quality points:
+            marker_color = "pin_lime";
+            break;
+        case "G":
+            //Water Level point:
+            marker_color = "pin_bluelight";
+            break;
+        case "H":
+        case "I":
+            //Weather stations points:
+            marker_color = "pin_yellow";
+            break;
+        default:
+            marker_color = "pin_white";
+      }
+
+      var marker = L.marker(latlng, {
+        icon: L.icon({
+         iconUrl: "./home/resources/"+marker_color+".png",
+         iconSize: [23,30]
+        })
+      } );
       marker.bindPopup("Station ID: " + feature.properties.id + '<br/>' + "Station name: " + feature.properties.Station + '<br/>' + "Station type: " + feature.properties.Type);
+      marker.on('mouseover', function (e) {
+          this.openPopup();
+      });
+      marker.on('mouseout', function (e) {
+          this.closePopup();
+      });
+
       return marker;
     },
     onEachFeature: function(feature, layer) {
@@ -150,6 +190,11 @@ var sidebar_opened = 0;
 
   //Add the variable that contains all the markers to the cluster object
   clusters.addLayer(markers);
+
+  //Add the clusters to the map
+  map.addLayer(clusters);
+  //Centralize and zoom the map to fit all the markers in the screen, automatically.
+  map.fitBounds(markers.getBounds());
 
   //event listener for hiding the sidebar_popup when the user clicks in the map
   map.on('click', function(e) {
