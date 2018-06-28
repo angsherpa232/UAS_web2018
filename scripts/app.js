@@ -80,8 +80,8 @@ angular.module('UAS_2018', [
     center: [51.944990, 7.572810],
     zoom: 17,
     layers: [imagery],
-    maxzoom: 22,
-    maxNativeZoom: 18
+    maxzoom: 24,
+    maxNativeZoom: 20
   });
 
   // Default base layers when the app initiates
@@ -91,16 +91,11 @@ angular.module('UAS_2018', [
     "Gray": darkgrey
   };
 
-  //Dummy markers for testing phase
-  // var east_guard = L.marker([51.945227, 7.572934]).bindPopup('I am a east guard.');
-  // north_east_guard = L.marker([51.945031, 7.572239]).bindPopup('I am a north east guard.'),
-  // west_guard = L.marker([51.944450, 7.572828]).bindPopup('I am a west guard.'),
-  // west_south_guard = L.marker([51.944867, 7.573800]).bindPopup('I am a west south guard.');
+  ///////////////////////Map Layers/////////////////////////
 
-  // var guards = L.layerGroup([east_guard, north_east_guard, west_guard, west_south_guard]);
+  //////SenseBox ground sensors///////
 
-
-  // Load ground sensor data, create markers and add as map layer
+  // Load ground sensor coordinate data, create markers and add as map layer
   var marker_id;
 
   var dataURL = "./home/resources/markers_project.geojson"
@@ -164,7 +159,7 @@ angular.module('UAS_2018', [
   });
 
 
-
+  //// Linking SenseBox data to map markers and drawing charts ////
 
   function request_fusiontable_data(marker_id) {
     //Initiate all the checkbox, of the same class, already clicked.
@@ -351,12 +346,14 @@ angular.module('UAS_2018', [
     chart.draw(data, options);
   }
 
+  ////// Flight plan layer //////
 
   $scope.flightPlanOnEachFeature = function(feature, layer) {
     var popupContent = "Altitude: " + feature.properties.Altitude;
     layer.bindPopup(popupContent);
   };
 
+  // Sets color based on altitude
   $scope.getColor = function(x) {
     return x < 46 ? '#ffeda0' :
     x < 48.1 ? '#feb24c' :
@@ -364,7 +361,7 @@ angular.module('UAS_2018', [
     '#f01010';
   };
 
-  //Flight plan from last year
+  //Flight plan
   var flightPlanLayer = L.esri.featureLayer({
     url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/Flight_Path_40m/FeatureServer/0",
     style: function(feature) {
@@ -374,13 +371,22 @@ angular.module('UAS_2018', [
       };
     },
     onEachFeature: $scope.flightPlanOnEachFeature
-
   });
+
+  ////// NDVI layer //////
+
+  var NDVIlayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
+                zIndex: 200,
+                maxZoom: 22,
+                maxNativeZoom: 18
+            }).addTo(map);
 
   //Add here if additional overlays are to be added
   var overlays = {
     "Ground Sensors": clusters,
-    "Flight plan": flightPlanLayer
+    "Flight plan": flightPlanLayer,
+    "NDVI": NDVIlayer
   };
 
   //Initiate layers control method and add to map
