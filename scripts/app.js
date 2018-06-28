@@ -78,10 +78,10 @@ angular.module('UAS_2018', [
   // Main map object
   var map = L.map('map', {
     center: [51.944990, 7.572810],
-    zoom: 17,
+    zoom: 18,
     layers: [imagery],
-    maxzoom: 24,
-    maxNativeZoom: 20
+    maxZoom: 18,
+    maxNativeZoom: 18
   });
 
   // Default base layers when the app initiates
@@ -119,30 +119,30 @@ var sidebar_opened = 0;
         case "C":
         case "D":
             //Water parameters points:
-            marker_color = "pin_blue";
+            marker_color = "marker-icon-blue";
             break;
         case "E":
         case "F":
             //Air Quality points:
-            marker_color = "pin_lime";
+            marker_color = "marker-icon-red";
             break;
         case "G":
             //Water Level point:
-            marker_color = "pin_bluelight";
+            marker_color = "marker-icon-blue";
             break;
         case "H":
         case "I":
             //Weather stations points:
-            marker_color = "pin_yellow";
+            marker_color = "marker-icon-orange";
             break;
         default:
-            marker_color = "pin_white";
+            marker_color = "marker-icon-grey";
       }
 
       var marker = L.marker(latlng, {
         icon: L.icon({
          iconUrl: "./home/resources/"+marker_color+".png",
-         iconSize: [23,30]
+         iconSize: [25, 41]
         })
       } );
       marker.bindPopup("Station ID: " + feature.properties.id + '<br/>' + "Station name: " + feature.properties.Station + '<br/>' + "Station type: " + feature.properties.Type);
@@ -186,15 +186,15 @@ var sidebar_opened = 0;
   })
 
   //creates a cluster object
-  var clusters = L.markerClusterGroup();
+  var sensorLayer = L.markerClusterGroup();
 
   //Add the variable that contains all the markers to the cluster object
-  clusters.addLayer(markers);
+  sensorLayer.addLayer(markers);
 
-  //Add the clusters to the map
-  map.addLayer(clusters);
+  // //Add the clusters to the map
+  // map.addLayer(sensorLayer);
   //Centralize and zoom the map to fit all the markers in the screen, automatically.
-  map.fitBounds(markers.getBounds());
+  // map.fitBounds(markers.getBounds());
 
   //event listener for hiding the sidebar_popup when the user clicks in the map
   map.on('click', function(e) {
@@ -455,13 +455,14 @@ var sidebar_opened = 0;
   var NDVIlayer = L.esri.tiledMapLayer({
                 url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
                 zIndex: 200,
-                maxZoom: 22,
+                // maxZoom: 22,
+                // minZoom:10,
                 maxNativeZoom: 18
             }).addTo(map);
 
   //Add here if additional overlays are to be added
   var overlays = {
-    "Ground Sensors": clusters,
+    "Ground Sensors": sensorLayer,
     "Flight plan": flightPlanLayer,
     "NDVI": NDVIlayer
   };
@@ -477,7 +478,7 @@ var sidebar_opened = 0;
     // map.setView(this.getBounds().getCenter());
     // console.log(this.getBounds())
     if(layer.name == "Ground Sensors"){
-    map.fitBounds(clusters.getBounds());
+    map.fitBounds(sensorLayer.getBounds());
   } else {
   // } else if (layer.name == "Flight plan") {
     // map.fitBounds(flightPlanLayer.getBounds().pad(0.5));
