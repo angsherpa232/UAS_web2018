@@ -3,13 +3,15 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 100%;
+  height: 97%;
   position: relative;
   background-image: url('./home/resources/m2.JPG') !important;
   background-repeat: no-repeat;
   background-attachment: scroll;
-  background-size: 100% 100%;
+  background-size: 100% 99%;
+  background-position: center;
 }
+
 .nav1 {
   position: relative;
 }
@@ -17,13 +19,26 @@ html, body {
 #logoHead{
   width: 4%;
   height: 4%;
-  /* padding-right: 6px !important; */
+
 }
 
 p {
   font-size: 18px;
   text-align: justify;
 }
+
+/* CSS for Control Layers icons in LEAFLET*/
+.leaflet-control-container {
+display: block;
+}
+.leaflet-control-zoom {
+left: 5px;
+
+}
+.leaflet-control-layers {
+left: 5px;
+}
+
 
 .hero-text {
   position: absolute;
@@ -69,6 +84,7 @@ p {
   padding: 60px 15px 0
 }
 
+
 .cloak {
   display: none;
 }
@@ -82,18 +98,18 @@ main {
 
 #map {
   width: 100%;
-  height: 100%;
+  height: 90.6%;
   position: fixed;
-  top: 60px;
+  top: 50px;
   left: 0;
 }
 
-#sensormap {
+/* #sensormap {
   width: 100%;
-  height: 90%;
+  height: 80%;
   position: fixed;
-  top: 60px;
-}
+  top: 50px;
+} */
 
 /*Styling the authentication form begins*/
 
@@ -231,11 +247,11 @@ h1, h2, h3 {
 }
 
 #side_popup {
-  background-color: white;
-  display: none;
+  display:none;
+  background-color: rgba(255, 255, 255, 0.8);
   position: relative;
   height: 750px;
-  width: 800px;
+  width: 780px;
   z-index: 2;
   float: right;
 }
