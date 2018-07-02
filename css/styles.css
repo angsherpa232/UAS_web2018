@@ -7,8 +7,8 @@ html, body {
   position: relative;
   background-image: url('./home/resources/m2.JPG') !important;
   background-repeat: no-repeat;
-  background-attachment: scroll;
-  background-size: 100% 99%;
+  background-attachment: fixed;
+  background-size: cover;
   background-position: center;
 }
 
@@ -17,9 +17,9 @@ html, body {
 }
 
 #logoHead{
-  width: 4%;
-  height: 4%;
-
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
 }
 
 p {
@@ -98,18 +98,11 @@ main {
 
 #map {
   width: 100%;
-  height: 90.6%;
+  height: 91%;
   position: fixed;
   top: 50px;
   left: 0;
 }
-
-/* #sensormap {
-  width: 100%;
-  height: 80%;
-  position: fixed;
-  top: 50px;
-} */
 
 /*Styling the authentication form begins*/
 
