@@ -133,7 +133,7 @@ angular.module('UAS_2018', [
   // Load ground sensor coordinate data, create markers and add as map layer
   var marker_id;
 
-  var dataURL = "./home/resources/markers_project.geojson"
+  var dataURL = "./home/resources/result1.geojson"
 
   var jsonData = $.ajax({
     url: dataURL,
