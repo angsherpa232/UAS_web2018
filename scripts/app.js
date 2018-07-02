@@ -118,6 +118,14 @@ angular.module('UAS_2018', [
     "Gray": darkgrey
   };
 
+  var sidebar = L.control.sidebar('sidebar', {
+    position: 'right'
+    // height: 750;
+    // width: 780;
+  });
+
+  map.addControl(sidebar);
+
   ///////////////////////Map Layers/////////////////////////
 
   //////SenseBox ground sensors///////
@@ -186,6 +194,7 @@ angular.module('UAS_2018', [
     onEachFeature: function(feature, layer) {
       layer.on('click', function(e) {
         console.log(feature);
+        sidebar.show();
 
         //global variable receives the id of the marker clicked by the user
         marker_id = feature.properties.id;
@@ -202,9 +211,9 @@ angular.module('UAS_2018', [
 
         if (sidebar_opened == 0) {
             sidebar_opened = 1;
-            $('#side_popup').show().css({
-              left: ($('#side_popup').width())
-            }).animate({left: 0}, 600);
+            // $('#side_popup').show().css({
+            //   left: ($('#side_popup').width())
+            // }).animate({left: 0}, 600);
         }
 
         console.log("marker ID: "+ marker_id)
@@ -226,10 +235,11 @@ angular.module('UAS_2018', [
 
   //event listener for hiding the sidebar_popup when the user clicks in the map
   map.on('click', function(e) {
-    sidebar_opened = 0;
-    $('#side_popup').hide().css({
-      right: ($('#side_popup').width())
-    }).animate({left: 0	}, 600);
+    sidebar.hide();
+    // sidebar_opened = 0;
+    // $('#side_popup').hide().css({
+    //   right: ($('#side_popup').width())
+    // }).animate({left: 0	}, 600);
 
   });
 
