@@ -17,9 +17,9 @@ html, body {
 }
 
 #logoHead{
-  width: 4%;
-  height: 4%;
-
+  width: 2.5%;
+  height: 2.5%;
+  margin-right: 10px;
 }
 
 p {

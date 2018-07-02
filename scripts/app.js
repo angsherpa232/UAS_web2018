@@ -1,7 +1,6 @@
 var uas2018 = angular.module('uas2018', []);
 
 uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
-  console.log('Hello I am main controller for now. Modify me as you want. Happy coding for UAS 2018')
   if ($location.path() == '/login'){
     $scope.x = false;
   } else {
@@ -65,7 +64,6 @@ angular.module('UAS_2018', [
 
 
 .controller('uas2018_map_controller', ['$scope', '$http', function($scope, $http) {
-  console.log('This is map controller');
 
   //load google packages for the chart
   google.charts.load('current', {packages: ['corechart', 'line']});
@@ -83,6 +81,35 @@ angular.module('UAS_2018', [
     maxZoom: 19,
     maxNativeZoom: 19
   });
+
+  var mapHome = {
+    lat: 51.944990,
+    lng: 7.572810,
+    zoom: 17
+  };
+
+  L.easyButton('<span><img src="./home/resources/icons/meeting-point-32.png" width=15 height=15></img></span>',function(btn,map){
+    map.setView([mapHome.lat, mapHome.lng], mapHome.zoom);
+  },'Zoom To Home', {position: 'bottomleft'}).addTo(map);
+
+  // /*Zoom button*/
+  // var legendCenterButton = L.control({position: 'bottomright'})
+  //
+  // legendCenterButton.onAdd = function () {
+  //     var div = L.DomUtil.create('center', 'center-button');
+  //
+  //     var zooming = '<span ng-click="zoomRiver()">';
+  //     zooming += '<img style="width: 24px; height: 24px;" src="app/components/assets/button_icons/meeting-point-32.png"/>';
+  //     zooming += '</span>';
+  //     div.innerHTML = zooming;
+  //
+  //     var linkFunction = $compile(angular.element(div));
+  //     var newScope = $scope.$new();
+  //
+  //     return linkFunction(newScope)[0];
+  // };
+  // legendCenterButton.addTo(map); //Added by default
+  // /*End Zoom button*/
 
   // Default base layers when the app initiates
   var baseLayers = {
@@ -108,7 +135,8 @@ angular.module('UAS_2018', [
     }
   }).responseJSON
 
-var sidebar_opened = 0;
+  // Boolean value for closed (0) and opened (1) chart sidebar
+  var sidebar_opened = 0;
 
   var markers = L.geoJson(jsonData, {
     pointToLayer: function(feature, latlng) {
@@ -141,7 +169,7 @@ var sidebar_opened = 0;
 
       var marker = L.marker(latlng, {
         icon: L.icon({
-         iconUrl: "./home/resources/"+marker_color+".png",
+         iconUrl: "./home/resources/icons/"+marker_color+".png",
          iconSize: [25, 41]
         })
       } );
