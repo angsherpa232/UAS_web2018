@@ -488,21 +488,61 @@ angular.module('UAS_2018', [
     onEachFeature: $scope.flightPlanOnEachFeature
   });
 
+
+  ////// DEM layer //////
+  var DEMlayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/DEM_2018/MapServer",
+                zIndex: 200,
+                maxZoom: 19
+            })
+
+
+  ////// Hillshade layer //////
+  var hillshadelayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Hillshade_2018/MapServer",
+                // zIndex: 200,
+                maxZoom: 19
+                // maxNativeZoom:21
+            }).addTo(map);
+
+
   ////// NDVI layer //////
 
   var NDVIlayer = L.esri.tiledMapLayer({
                 url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
                 zIndex: 200,
                 maxZoom: 19,
-                // minZoom:10,
                 maxNativeZoom: 19
-            }).addTo(map);
+            })
+
+  ////// Slope layer //////
+
+  var slopelayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Slope_2018/MapServer",
+                zIndex: 200,
+                maxZoom: 19,
+                maxNativeZoom: 19
+            })
+
+
+  ////// Aspect  layer //////
+
+  var aspectlayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Aspect_2018/MapServer",
+                zIndex: 200,
+                maxZoom: 19,
+                maxNativeZoom: 19
+            })
 
   //Add here if additional overlays are to be added
   var overlays = {
-    "Ground Sensors": sensorLayer,
+    "Digital Elevation Model": DEMlayer,
+    "Hillshade": hillshadelayer,
+    "NDVI": NDVIlayer,
+    "Slope": slopelayer,
+    "Aspect": aspectlayer,
     "Flight plan": flightPlanLayer,
-    "NDVI": NDVIlayer
+    "Ground Sensors": sensorLayer
   };
 
   //Initiate layers control method and add to map
