@@ -118,6 +118,14 @@ angular.module('UAS_2018', [
     "Gray": darkgrey
   };
 
+  var sidebar = L.control.sidebar('sidebar', {
+    position: 'right'
+    // height: 750;
+    // width: 780;
+  });
+
+  map.addControl(sidebar);
+
   ///////////////////////Map Layers/////////////////////////
 
   //////SenseBox ground sensors///////
@@ -186,6 +194,7 @@ angular.module('UAS_2018', [
     onEachFeature: function(feature, layer) {
       layer.on('click', function(e) {
         console.log(feature);
+        sidebar.show();
 
         //global variable receives the id of the marker clicked by the user
         marker_id = feature.properties.id;
@@ -202,9 +211,9 @@ angular.module('UAS_2018', [
 
         if (sidebar_opened == 0) {
             sidebar_opened = 1;
-            $('#side_popup').show().css({
-              left: ($('#side_popup').width())
-            }).animate({left: 0}, 600);
+            // $('#side_popup').show().css({
+            //   left: ($('#side_popup').width())
+            // }).animate({left: 0}, 600);
         }
 
         console.log("marker ID: "+ marker_id)
@@ -226,10 +235,11 @@ angular.module('UAS_2018', [
 
   //event listener for hiding the sidebar_popup when the user clicks in the map
   map.on('click', function(e) {
-    sidebar_opened = 0;
-    $('#side_popup').hide().css({
-      right: ($('#side_popup').width())
-    }).animate({left: 0	}, 600);
+    sidebar.hide();
+    // sidebar_opened = 0;
+    // $('#side_popup').hide().css({
+    //   right: ($('#side_popup').width())
+    // }).animate({left: 0	}, 600);
 
   });
 
@@ -478,21 +488,61 @@ angular.module('UAS_2018', [
     onEachFeature: $scope.flightPlanOnEachFeature
   });
 
+
+  ////// DEM layer //////
+  var DEMlayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/DEM_2018/MapServer",
+                zIndex: 200,
+                maxZoom: 19
+            })
+
+
+  ////// Hillshade layer //////
+  var hillshadelayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Hillshade_2018/MapServer",
+                // zIndex: 200,
+                maxZoom: 19
+                // maxNativeZoom:21
+            }).addTo(map);
+
+
   ////// NDVI layer //////
 
   var NDVIlayer = L.esri.tiledMapLayer({
                 url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
                 zIndex: 200,
                 maxZoom: 19,
-                // minZoom:10,
                 maxNativeZoom: 19
-            }).addTo(map);
+            })
+
+  ////// Slope layer //////
+
+  var slopelayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Slope_2018/MapServer",
+                zIndex: 200,
+                maxZoom: 19,
+                maxNativeZoom: 19
+            })
+
+
+  ////// Aspect  layer //////
+
+  var aspectlayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Aspect_2018/MapServer",
+                zIndex: 200,
+                maxZoom: 19,
+                maxNativeZoom: 19
+            })
 
   //Add here if additional overlays are to be added
   var overlays = {
-    "Ground Sensors": sensorLayer,
+    "Digital Elevation Model": DEMlayer,
+    "Hillshade": hillshadelayer,
+    "NDVI": NDVIlayer,
+    "Slope": slopelayer,
+    "Aspect": aspectlayer,
     "Flight plan": flightPlanLayer,
-    "NDVI": NDVIlayer
+    "Ground Sensors": sensorLayer
   };
 
   //Initiate layers control method and add to map
