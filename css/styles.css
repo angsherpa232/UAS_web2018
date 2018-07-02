@@ -12,6 +12,10 @@ html, body {
   background-position: center;
 }
 
+#bg {
+  margin: auto;
+}
+
 .nav1 {
   position: relative;
 }
@@ -65,11 +69,15 @@ left: 5px;
 }
 
 .copyright {
+  padding-bottom: 0px;
   color: #fff;
-  line-height: 30px;
-  min-height: 30px;
-  padding: 7px 0;
+  font-size: 15px;
+  display: block;
 }
+
+/* .col-md-3-5 {
+  width: 33.3%
+} */
 
 .design {
   color: #fff;
@@ -79,14 +87,23 @@ left: 5px;
   text-align: right;
 }
 
-.container {
+/* .container {
   padding: fixed;
   padding: 60px 15px 0
-}
+} */
 
 
 .cloak {
   display: none;
+}
+
+footer{
+  margin:0;
+}
+
+.centerBlock {
+  display: table;
+  margin: auto;
 }
 
 main {
@@ -98,7 +115,7 @@ main {
 
 #map {
   width: 100%;
-  height: 91%;
+  height: 88%;
   position: fixed;
   top: 50px;
   left: 0;
