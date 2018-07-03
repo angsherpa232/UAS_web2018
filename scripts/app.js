@@ -673,13 +673,25 @@ angular.module('UAS_2018', [
 //Processing end
 
 /// Buffer input begins //////
-$scope.disable = "btn btn-primary disabled";
-$scope.enable = "btn btn-primary enabled";
-
+$scope.buffer_radius = '';
 $scope.bufferFunction = function () {
-    console.log("The input value has changed. The new value is:"+$scope.buffer_radius);
+    console.log("The input value has changed. The new value is:"+$scope._value);
+    if ($scope.buffer_radius == ''){
+      $scope._value='btn btn-primary disabled';
+    } else {
+      $scope._value='btn btn-primary enabled';
+    }
 }
 /// Buffer input end /////
+
+/// Execute buffer ///
+$scope.executeBuffer = function () {
+  if ($scope.buffer_radius != ''){
+    console.log('this is working');
+    //THERE IS WHERE THE BUFFER OPERATION GOES IN
+  };
+}
+/// Execute buffer ///
 
   // Load basemaps
   var topo = L.esri.basemapLayer("Topographic");
