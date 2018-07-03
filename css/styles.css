@@ -25,6 +25,12 @@ html, body {
   overflow: auto;
 }
 
+.homeText{
+  margin: auto;
+  overflow: auto;
+  padding: 30px;
+}
+
 .scroll{
   overflow-y:auto;
 }
@@ -66,7 +72,7 @@ left: 5px;
   left: 5%;
   width: 87%;
   height: 97%;
-  padding: 40px;
+  padding: 80px;
 }
 
 .top-left {
@@ -106,7 +112,8 @@ left: 5px;
 } */
 
 #teamDiv{
-  padding-top: 80px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 
