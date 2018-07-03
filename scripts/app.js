@@ -9,6 +9,16 @@ uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', f
 
 }]);
 
+// uas2018.controller('text_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
+//   $('.pagelink').click(function() {
+//     $('body').animate({
+//       scrollTop: eval($('#' + $(this).attr('target')).offset().top - 70)
+//     }, 1000);
+//   });
+// }]);
+
+
+
 
 angular.module('Authentication', []);
 angular.module('Home', []);

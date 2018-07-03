@@ -14,6 +14,19 @@ html, body {
 
 #bg {
   margin: auto;
+  overflow: auto;
+}
+
+#bg3D {
+  background-color: rgba(211, 211, 211, 0.8);
+  padding-top:50px;
+  padding-bottom:30px;
+  margin: 0px;
+  overflow: auto;
+}
+
+.scroll{
+  overflow-y:auto;
 }
 
 .nav1 {
@@ -91,6 +104,10 @@ left: 5px;
   padding: fixed;
   padding: 60px 15px 0
 } */
+
+#teamDiv{
+  padding-top: 80px;
+}
 
 
 .cloak {
