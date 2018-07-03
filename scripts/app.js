@@ -673,8 +673,11 @@ angular.module('UAS_2018', [
 //Processing end
 
 /// Buffer input begins //////
-function bufferFunction(val) {
-    alert("The input value has changed. The new value is: " + val);
+$scope.disable = "btn btn-primary disabled";
+$scope.enable = "btn btn-primary enabled";
+
+$scope.bufferFunction = function () {
+    console.log("The input value has changed. The new value is:"+$scope.buffer_radius);
 }
 /// Buffer input end /////
 
