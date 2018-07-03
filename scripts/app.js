@@ -461,37 +461,27 @@ angular.module('UAS_2018', [
 
   }
 
-  ////// Flight plan layer //////
-
-  $scope.flightPlanOnEachFeature = function(feature, layer) {
-    var popupContent = "Altitude: " + feature.properties.Altitude;
-    layer.bindPopup(popupContent);
-  };
-
-  // Sets color based on altitude
-  $scope.getColor = function(x) {
-    return x < 46 ? '#ffeda0' :
-    x < 48.1 ? '#feb24c' :
-    x < 50.8 ? '#f03b20' :
-    '#f01010';
-  };
-
-  //Flight plan
-  var flightPlanLayer = L.esri.featureLayer({
-    url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/Flight_Path_40m/FeatureServer/0",
-    style: function(feature) {
-      return {
-        "color": $scope.getColor(feature.properties.Altitude),
-        "opacity": 1,
-      };
-    },
-    onEachFeature: $scope.flightPlanOnEachFeature
-  });
 
 
-  ////// DEM layer //////
-  var DEMlayer = L.esri.tiledMapLayer({
-                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/DEM_2018/MapServer",
+  //////Orthophoto RGB//////
+
+  var orthophotoRGB = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_RGB/MapServer",
+                zIndex: 200,
+                maxZoom: 19
+            }).addTo(map);
+
+  //////Orthophoto RGB//////
+
+  var orthophotoMS = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_Multispectral/MapServer",
+                zIndex: 200,
+                maxZoom: 19
+            })
+
+  ////// DSM layer //////
+  var DSMlayer = L.esri.tiledMapLayer({
+                url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/DSM/MapServer",
                 zIndex: 200,
                 maxZoom: 19
             })
@@ -503,7 +493,7 @@ angular.module('UAS_2018', [
                 // zIndex: 200,
                 maxZoom: 19
                 // maxNativeZoom:21
-            }).addTo(map);
+            })
 
 
   ////// NDVI layer //////
@@ -534,36 +524,195 @@ angular.module('UAS_2018', [
                 maxNativeZoom: 19
             })
 
+  ////// Flight plan layer //////
+
+  $scope.flightPlanOnEachFeature = function(feature, layer) {
+    var popupContent = "Altitude: " + feature.properties.Altitude;
+    layer.bindPopup(popupContent);
+  };
+
+  // Sets color based on altitude
+  $scope.getColor = function(x) {
+    return x < 46 ? '#ffeda0' :
+    x < 48.1 ? '#feb24c' :
+    x < 50.8 ? '#f03b20' :
+    '#f01010';
+  };
+
+  //Flight plan
+  var flightPlanLayer = L.esri.featureLayer({
+    url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPath/FeatureServer/0",
+    // style: function(feature) {
+    //   return {
+    //     "color": $scope.getColor(feature.properties.Altitude),
+    //     "opacity": 1,
+    //   };
+    // },
+    // onEachFeature: $scope.flightPlanOnEachFeature
+  });
+
+  //Flight Point
+  var flightPointLayer = L.esri.featureLayer({
+    url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPoints/FeatureServer/0",
+  });
+
+  /////// classification //////
+
+  $scope.classUasOnEachFeature = function(feature, layer) {
+    var popupContent = "Class: " + feature.properties.class;
+    layer.bindPopup(popupContent);
+  };
+
+  $scope.getClassificationColor = function(className) {
+    var color = "#FFFFFF";
+    if (className === "Water") {
+      color = "#6699ff";
+    }
+    if (className === "Vegetation over water") {
+      color = "#1cccbf";
+    }
+    if (className === "Trees") {
+      color = "#006600";
+    }
+    if (className === "Bushes") {
+      color = "#009933";
+    }
+    if (className === "freshly cut grass") {
+      color = "#ffff00";
+    }
+    if (className === "Grasslands") {
+      color = "#33cc33";
+    }
+    if (className === "Bare soil") {
+      color = "#744634";
+    }
+    if (className === "Asphalt") {
+      color = "#9999ff";
+    }
+
+    return color;
+  }
+
+  //Land cover UAS
+  var landCoverUASLayer = L.esri.featureLayer({
+    url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover/FeatureServer/0",
+    style: function(feature) {
+      return {
+        "color": $scope.getClassificationColor(feature.properties.class),
+        "opacity": 0.5,
+      };
+    },
+    onEachFeature: $scope.classUasOnEachFeature
+  });
+
+  //Land cover CORINE
+  var landCoverCORINELayer = L.esri.featureLayer({
+    url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover_CORINE/FeatureServer/0",
+  })
+
+  var classUasURL = "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover/FeatureServer/0?f=pjson"
+
+  var classData = $.ajax({
+    url: classUasURL,
+    async: false,
+    success: function(res) {
+      return res
+    }
+  }).responseText
+
+  var classJSON = JSON.parse(classData)
+
+  console.log(classJSON.types[0].id)
+
+  // L.esri.get('https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover_CORINE/FeatureServer/0', {}, function (error, response) {
+  //
+  //
+  //
+  //   var featureCollection = {
+  //     type: 'FeatureCollection',
+  //     features: []
+  //   };
+  // })
+
+  function getClassificationColor(className) {
+    var color = "#FFFFFF"
+    if (className === "Water") {
+      color = "#6699ff";
+    }
+    if (className === "Vegetation over water") {
+      color = "#1cccbf";
+    }
+    if (className === "Trees") {
+      color = "#006600";
+    }
+    if (className === "Bushes") {
+      color = "#009933";
+    }
+    if (className === "freshly cut grass") {
+      color = "#ffff00";
+    }
+    if (className === "Grasslands") {
+      color = "#33cc33";
+    }
+    if (className === "Bare soil") {
+      color = "#744634";
+    }
+    if (className === "Asphalt") {
+      color = "#9999ff";
+    }
+
+    return color;
+  }
+
+    function style(feature) {
+      return {
+        //fillColor: getColor(feature.properties.crime_rate),
+        fillColor: getClassificationColor(feature.properties.Class),
+        weight: 0.5,
+        opacity: 1,
+        color: 'black',
+        dashArray: '0.1',
+        fillOpacity: 0.6
+      };
+    }
+
+    function onEachFeature(feature, layer) {
+    // does this feature have a property named popupContent?
+    if (feature.properties && feature.properties.Class) {
+        layer.bindPopup(feature.properties.Class);
+    }
+  }
+
+
+
+
   //Add here if additional overlays are to be added
   var overlays = {
-    "Digital Elevation Model": DEMlayer,
+    "Orthophoto RGB": orthophotoRGB,
+    "Orthophoto Multispectral": orthophotoMS,
+    "Digital Surface Model": DSMlayer,
     "Hillshade": hillshadelayer,
     "NDVI": NDVIlayer,
     "Slope": slopelayer,
     "Aspect": aspectlayer,
     "Flight plan": flightPlanLayer,
+    "Flight Points": flightPointLayer,
+    "Land Cover UAS": landCoverUASLayer,
+    // "Land Cover CORINE": landCoverCORINELayer,
     "Ground Sensors": sensorLayer
   };
 
   //Initiate layers control method and add to map
   L.control.layers(baseLayers, overlays, {position: 'topleft'}).addTo(map);
 
-
+  // set view for layers
   map.on('overlayadd', function(layer) {
     console.log(layer.name)
     console.log(layer)
-    // map.fitBounds(layer.getBounds().pad(0.5))
-    // map.setView(this.getBounds().getCenter());
-    // console.log(this.getBounds())
     if(layer.name == "Ground Sensors"){
     map.fitBounds(sensorLayer.getBounds());
   } else {
-  // } else if (layer.name == "Flight plan") {
-    // map.fitBounds(flightPlanLayer.getBounds().pad(0.5));
     map.setView([51.944990, 7.572810], 17);
-  // } else {
-  //   map.fitBounds(layer.getBounds())
-  // console.log("raster!")
   }
     });
 }])
