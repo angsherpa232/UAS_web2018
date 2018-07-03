@@ -12,6 +12,11 @@ html, body {
   background-position: center;
 }
 
+img {
+  height: 100%;
+  width: 100%;
+}
+
 #bg {
   margin: auto;
   overflow: auto;
