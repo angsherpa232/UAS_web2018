@@ -104,6 +104,14 @@ main {
   left: 0;
 }
 
+
+#process_input {
+  background-color: black;
+  display: block;
+  color: white;
+  position: absolute;
+}
+
 /*Styling the authentication form begins*/
 
 #loginBox {

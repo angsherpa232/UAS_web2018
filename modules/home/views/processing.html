@@ -21,12 +21,20 @@
 
 <div id="sidebar">
   <div id="CheckboxDIV">
-    <input type="checkbox" class="cb_chart_var" id="cb_temp" name="Temperature" value="1" checked>
-    <label for="cb_temp">Temperature</label>
-    <input type="checkbox" class="cb_chart_var" id="cb_humid" name="Relative Humidity" value="2" checked>
-    <label for="cb_humid">Relative Humidity</label>
   </div>
   <div id="chart_div"></div>
 </div>
 
-<div id="map"></div>
+
+
+<div class="container">
+  <div class="row">
+    <div id='map' class="col-md-12"></div>
+    <div id='process_input'>
+  <label for='buffer'>Buffer (meter)</label>
+  <input type='number' id='buffer' name='buffer' value='' placeholder='Eg: 0.003' onchange="bufferFunction(this.value)"></input>
+  <button type="button" class="btn btn-primary disabled">Disabled Primary</button>
+</div>
+    </div>
+  </div>
+</div>

@@ -40,17 +40,8 @@ var capabilities,data,jobId,
 // console.log(xml);
   };
 
-
-
-var resultCallback = function(response){
-  // console.log(response);
-  data = response.executeResponse.responseDocument.outputs[0].data.complexData.value;
-  console.log(data);
-  return data;
-}
-
 // wpsService.getResult_WPS_2_0(resultCallback, '888e6472-cad7-4245-8124-72e04b45bf68');
-<!-- wpsService.getResult_WPS_2_0(resultCallback,'f7fdb7b3-9f4d-4abb-8495-3964e5694842'); -->
+// <!-- wpsService.getResult_WPS_2_0(resultCallback,'f7fdb7b3-9f4d-4abb-8495-3964e5694842'); -->
 
 //Execute process callback function
 var executeCallback = function (response){
@@ -59,14 +50,18 @@ var executeCallback = function (response){
 	jobId = response.executeResponse.responseDocument.jobId;
 	return jobId;
 	}
-	
- <!-- jobId = response.executeResponse.responseDocument.jobId; -->
- <!-- return jobId; -->
-  // console.log(response.responseDocument);
-  // console.log(response.executeResponse.responseDocument);
+jobId = response.executeResponse.responseDocument.jobId;
+return jobId;
 };
 
 setTimeout(function(){wpsService.getStatus_WPS_2_0(statusCallback, jobId)},1150);
+
+var resultCallback = function(response){
+  // console.log(response);
+  data = response.executeResponse.responseDocument.outputs[0].data.complexData.value;
+  console.log(data);
+  return data;
+}
 
 var statusCallback = function(response){
   <!-- var jobId = response.executeResponse.responseDocument.jobId; -->
@@ -79,10 +74,7 @@ var statusCallback = function(response){
   }
 }
 
-<!-- setTimeout(function(){console.log(data)},1000); -->
-<!-- wpsService.getStatus_WPS_2_0(statusCallback, "f7fdb7b3-9f4d-4abb-8495-3964e5694842"); -->
-
-
+/////////////////// INPUT //////////////////////
 //Input generator for literal dataType
 var inputGenerator = new InputGenerator();
 //Literal input
@@ -97,6 +89,8 @@ var complexInput = inputGenerator.createComplexDataInput_wps_1_0_and_2_0('data',
 					'application/vnd.geo+json', undefined, undefined, true, 'https://api.myjson.com/bins/ccsyq');
 
 
+
+////////////////// OUTPUT /////////////////////
 //Output generator for complex dataType
 var outputGenerator = new OutputGenerator();
 

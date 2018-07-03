@@ -134,7 +134,7 @@ angular.module('UAS_2018', [
   // Load ground sensor coordinate data, create markers and add as map layer
   var marker_id;
 
-  var dataURL = "./home/resources/result1.geojson"
+  var dataURL = "./home/resources/markers_project.geojson"
 
   var jsonData = $.ajax({
     url: dataURL,
@@ -579,10 +579,9 @@ angular.module('UAS_2018', [
 //   version: "2.0.0"
 // });
 //
-// var capabilities,
+// var capabilities,data,jobId,
 //   processDescription; // the process description
 //
-// var jobId;
 //
 //   var capabilitiesCallback = function(response) {
 //
@@ -605,27 +604,31 @@ angular.module('UAS_2018', [
 // // console.log(xml);
 //   };
 //
-//
-//
-// var resultCallback = function(response){
-//   // console.log(response);
-//   var data = response.executeResponse.responseDocument.outputs[0].data.complexData.value;
-//   return data;
-// }
-//
 // // wpsService.getResult_WPS_2_0(resultCallback, '888e6472-cad7-4245-8124-72e04b45bf68');
-// <!-- wpsService.getResult_WPS_2_0(resultCallback,'f7fdb7b3-9f4d-4abb-8495-3964e5694842'); -->
+// // <!-- wpsService.getResult_WPS_2_0(resultCallback,'f7fdb7b3-9f4d-4abb-8495-3964e5694842'); -->
 //
 // //Execute process callback function
 // var executeCallback = function (response){
-//   console.log(response);
-//   // console.log(response.responseDocument);
-//   // console.log(response.executeResponse.responseDocument);
+// 	var status = response.executeResponse.responseDocument.status;
+// 	if (status == "Accepted"){
+// 	jobId = response.executeResponse.responseDocument.jobId;
+// 	return jobId;
+// 	}
+// jobId = response.executeResponse.responseDocument.jobId;
+// return jobId;
 // };
 //
+// setTimeout(function(){wpsService.getStatus_WPS_2_0(statusCallback, jobId)},1150);
+//
+// var resultCallback = function(response){
+//   // console.log(response);
+//   data = response.executeResponse.responseDocument.outputs[0].data.complexData.value;
+//   console.log(data);
+//   return data;
+// }
 //
 // var statusCallback = function(response){
-//   var jobId = response.executeResponse.responseDocument.jobId;
+//   <!-- var jobId = response.executeResponse.responseDocument.jobId; -->
 //   var status = response.executeResponse.responseDocument.status;
 //   if (status == "Succeeded"){
 // 	wpsService.getResult_WPS_2_0(resultCallback,jobId);
@@ -635,8 +638,7 @@ angular.module('UAS_2018', [
 //   }
 // }
 //
-// wpsService.getStatus_WPS_2_0(statusCallback, "f7fdb7b3-9f4d-4abb-8495-3964e5694842");
-//
+// /////////////////// INPUT //////////////////////
 // //Input generator for literal dataType
 // var inputGenerator = new InputGenerator();
 // //Literal input
@@ -651,6 +653,8 @@ angular.module('UAS_2018', [
 // 					'application/vnd.geo+json', undefined, undefined, true, 'https://api.myjson.com/bins/ccsyq');
 //
 //
+//
+// ////////////////// OUTPUT /////////////////////
 // //Output generator for complex dataType
 // var outputGenerator = new OutputGenerator();
 //
@@ -658,16 +662,21 @@ angular.module('UAS_2018', [
 // // 			encoding, transmission);
 // var complexOutput = outputGenerator.createComplexOutput_WPS_2_0('result', 'application/vnd.geo+json', undefined,
 // 			undefined, 'value');
-
-
-// wpsService.getCapabilities_GET(capabilitiesCallback);
-// wpsService.describeProcess_GET(describeProcessCallback,'org.n52.wps.server.algorithm.SimpleBufferAlgorithm');
-
-//WPS execute
-// wpsService.execute(callbackFunction, processIdentifier, responseFormat, executionMode, lineage, inputs, outputs);
+//
+//
+// // wpsService.getCapabilities_GET(capabilitiesCallback);
+// // wpsService.describeProcess_GET(describeProcessCallback,'org.n52.wps.server.algorithm.SimpleBufferAlgorithm');
+//
+// //WPS execute
+// // wpsService.execute(callbackFunction, processIdentifier, responseFormat, executionMode, lineage, inputs, outputs);
 // wpsService.execute(executeCallback, 'org.n52.wps.server.algorithm.SimpleBufferAlgorithm', 'document', 'async', false, [literalInput,complexInput], [complexOutput]);
-
 //Processing end
+
+/// Buffer input begins //////
+function bufferFunction(val) {
+    alert("The input value has changed. The new value is: " + val);
+}
+/// Buffer input end /////
 
   // Load basemaps
   var topo = L.esri.basemapLayer("Topographic");
@@ -716,7 +725,7 @@ angular.module('UAS_2018', [
   // Load ground sensor coordinate data, create markers and add as map layer
   var marker_id;
 
-  var dataURL = "./home/resources/markers_project.geojson"
+  var dataURL = "./home/resources/result1.geojson"
 
   var jsonData = $.ajax({
     url: dataURL,
