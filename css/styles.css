@@ -12,6 +12,11 @@ html, body {
   background-position: center;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
+
 img {
   height: 100%;
   width: 100%;
@@ -144,10 +149,22 @@ main {
 
 #map {
   width: 100%;
-  height: 88%;
+  height: 91%;
   position: fixed;
   top: 50px;
   left: 0;
+}
+
+
+#process_input {
+  background-color: #476855;
+  display: block;
+  color: white;
+  position: absolute;
+  bottom: 70%;
+  left: 0.5%;
+  border: 2px solid #becec9;
+  border-radius: 0.4rem;
 }
 
 /*Styling the authentication form begins*/
