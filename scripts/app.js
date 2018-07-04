@@ -458,8 +458,6 @@ angular.module('UAS_2018', [
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     //Plot the coordinates on it.
     chart.draw(data, options);
-
-
   }
 
   ////// Flight plan layer //////
@@ -598,7 +596,7 @@ var baseLayers = {
   var assetLayerGroup = L.layerGroup().addTo(map);
 
 //// Retrieving geojson file begins ///////
-var dataURL = "./home/resources/demo_3Points.geojson"
+var dataURL = "./home/resources/demo_pts_line.geojson"
 $.ajax({
   url: dataURL,
   async: false,
@@ -704,14 +702,14 @@ $scope.executeBuffer = function () {
     var inputGenerator = new InputGenerator();
     //Literal input
     // var literalInput = inputGenerator.createLiteralDataInput_wps_1_0_and_2_0(identifier, dataType, uom, value);
-    var literalInput = inputGenerator.createLiteralDataInput_wps_1_0_and_2_0('width', undefined, 'meters', $scope.buffer_radius);
+    var literalInput = inputGenerator.createLiteralDataInput_wps_1_0_and_2_0('width', 'xs:double', 'meters', parseInt($scope.buffer_radius)/100000);
 
     //Input generator for complex dataType
     //Complex dataType
     // var complexInput = inputGenerator.createComplexDataInput_wps_1_0_and_2_0(identifier,
     // 					mimeType, schema, encoding, asReference, complexPayload);
     var complexInput = inputGenerator.createComplexDataInput_wps_1_0_and_2_0('data',
-    					'application/vnd.geo+json', undefined, undefined, true, 'https://api.myjson.com/bins/oj3ag');
+    					'application/vnd.geo+json', undefined, undefined, true, 'https://api.myjson.com/bins/gvrbw');
 
 
     ////////////////// OUTPUT /////////////////////
