@@ -76,7 +76,7 @@ angular.module('UAS_2018', [
 .controller('uas2018_map_controller', ['$scope', '$http', function($scope, $http) {
 
   //load google packages for the chart
-  google.charts.load('current', {packages: ['corechart', 'line', 'timeline']});
+  google.charts.load('current', {packages: ['corechart', 'line', 'timeline', 'gauge']});
 
   // Load basemaps
   var topo = L.esri.basemapLayer("Topographic");
@@ -244,58 +244,153 @@ angular.module('UAS_2018', [
   $("#CheckboxDIV").on("change", ".cb_chart_var", function() {
     //for each click(change) in the checkbox a new requestion to the fusion table is made.
     process_marker_click(station_value);
-    //console.log( $(this).attr("name") );
-
-
   });
 
-
-
+  $("#RadioDIV").on("change", ".radiobut", function() {
+    //for each click(change) in the checkbox a new requestion to the fusion table is made.
+    AirQuality_Chart();
+  });
 
 function process_marker_click(marker_station){
+  console.log("Station: "+marker_station);
   switch ( marker_station ) {
-    case "A":
-    case "B":
-    case "C":
-    case "D":
-    case "E":
-    case "F":
-    case "G":
-    case "H":
-    case "I":
-      //Weather stations points  ||  Fusiontable name: WEATHER2_Processed  ||  Fusiontable ID: 1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR
-      fusiontable_id = "1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR";
-      break;
-
-      /*
+      //Water parameters points  ||  Fusiontable name: Water_parameters_river  ||  Fusiontable ID: 1MgGVSpMf3w7HHq5t4sPCsJPc8Wat1nVioG-TAJO3
       case "A":
-      case "B":
-      case "C":
-      case "D":
-        //Water parameters points  ||  Fusiontable name: Water_parameters_river  ||  Fusiontable ID: 1MgGVSpMf3w7HHq5t4sPCsJPc8Wat1nVioG-TAJO3
-        fusiontable_id = "1MgGVSpMf3w7HHq5t4sPCsJPc8Wat1nVioG-TAJO3";
+        WaterParameters_Chart("A");
         break;
+      case "B":
+        WaterParameters_Chart("B");
+        break;
+      case "C":
+        WaterParameters_Chart("C");
+        break;
+      case "D":
+        WaterParameters_Chart("D");
+        break;
+
+      //Air Quality points  ||  Fusiontable name: AQ_Processed  || Fusiontable ID: 1AkX22UU-fqR_gIyv_hBTYR55_7ksr1jjejr1N6ur
       case "E":
       case "F":
-        //Air Quality points  ||  Fusiontable name: AQ_Processed  || Fusiontable ID: 1AkX22UU-fqR_gIyv_hBTYR55_7ksr1jjejr1N6ur
-        fusiontable_id = "1AkX22UU-fqR_gIyv_hBTYR55_7ksr1jjejr1N6ur";
+        AirQuality_Chart();
         break;
-      case "G":
-        //Water Level points  ||  Fusiontable name: Water_level_processed ||  Fusiontable ID: 1h2_7KqG_3hHQZDLJijqFqSvILuM26unc5Hnksnhn
-        fusiontable_id = "1h2_7KqG_3hHQZDLJijqFqSvILuM26unc5Hnksnhn";
+
+      //Water Level points  ||  Fusiontable name: Water_level_processed ||  Fusiontable ID: 1h2_7KqG_3hHQZDLJijqFqSvILuM26unc5Hnksnhn
+      case "G": //OK
+        WaterLevel_Chart();
         break;
+
+      //Weather stations points  ||  Fusiontable name: WEATHER1_Processed  || Fusiontable ID: 1CBn0rAtMSTFH2jNbF7wXx8bkkwjn1xLnBdMCXqV6
       case "H":
-        //Weather stations points  ||  Fusiontable name: WEATHER1_Processed  || Fusiontable ID: 1CBn0rAtMSTFH2jNbF7wXx8bkkwjn1xLnBdMCXqV6
-        fusiontable_id = "1CBn0rAtMSTFH2jNbF7wXx8bkkwjn1xLnBdMCXqV6";
+        WeatherStation_Chart("1CBn0rAtMSTFH2jNbF7wXx8bkkwjn1xLnBdMCXqV6");
         break;
-      case "I":
-        //Weather stations points  ||  Fusiontable name: WEATHER2_Processed  ||  Fusiontable ID: 1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR
-        fusiontable_id = "1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR";
+
+      //Weather stations points  ||  Fusiontable name: WEATHER2_Processed  ||  Fusiontable ID: 1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR
+      case "I": //OK
+        WeatherStation_Chart("1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR");
         break;
-        */
+    }
+
+  }
+
+  function WaterParameters_Chart(Station_name){
+    if ( !sidebar.isVisible() ){
+      document.getElementById("CheckboxDIV").innerHTML = "";
+      document.getElementById("RadioDIV").innerHTML = "";
+      document.getElementById("chart_div").innerHTML = "";
     }
 
     //===================- FUNCTION request_fusiontable_data ===================
+    var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
+    url.push('sql=');
+    var query = "SELECT * "
+    query = query + " FROM 1MgGVSpMf3w7HHq5t4sPCsJPc8Wat1nVioG-TAJO3 ";
+    query = query + " WHERE 'Station' LIKE '" + Station_name +"'";
+    query = query + " ORDER BY 'Timestamp' ASC ";
+    var encodedQuery = encodeURIComponent(query);
+    url.push(encodedQuery);
+    url.push('&key=AIzaSyCoC9A3WgFneccRufbysInygnWrhCie-T0');
+
+    var queryData = $.ajax({
+      url: url.join(''),
+      async: false,
+    }).responseText
+    var queryJson = JSON.parse(queryData)
+
+    console.log( "Data from Fusiontable:" )
+    console.log( queryJson )
+
+    var rows = queryJson['rows'];
+
+    var checkbox_div = document.getElementById("CheckboxDIV");
+
+    for(var i=0;i<rows.length;i++){
+
+      var newInput = document.createElement("span");
+      newInput.setAttribute("id", "span_"+rows[i][0]);
+      checkbox_div.appendChild(newInput);
+
+      var date_replace = new Date( rows[i][4].replace(" ", "T") )
+      document.getElementById("span_"+rows[i][0]).innerHTML = date_replace+"</br>";
+
+      var newInput = document.createElement("div");
+      newInput.setAttribute("id", "div_"+rows[i][0]);
+      checkbox_div.appendChild(newInput);
+
+      var gaugeOptions_Temp = {min: 0, max: 40,
+      yellowFrom: 20, yellowTo: 25,redFrom: 25, redTo: 40,
+      minorTicks: 10, majorTicks:5};
+
+
+      gaugeData_Temp = new google.visualization.DataTable();
+      gaugeData_Temp.addColumn('number', 'Water Temp ºC');
+      gaugeData_Temp.addColumn('number', 'Ph');
+      gaugeData_Temp.addRows(2);
+      gaugeData_Temp.setCell(0, 0, rows[i][5]);
+      gaugeData_Temp.setCell(0, 1, rows[i][6]);
+
+      var gauge_Temp = new google.visualization.Gauge(document.getElementById("div_"+rows[i][0]));
+      gauge_Temp.draw(gaugeData_Temp, gaugeOptions_Temp);
+    }
+  }
+
+  function WaterLevel_Chart(){
+    if ( !sidebar.isVisible() ){
+      document.getElementById("CheckboxDIV").innerHTML = "";
+      document.getElementById("RadioDIV").innerHTML = "";
+      document.getElementById("chart_div").innerHTML = "";
+    }
+
+    var text_html = '<iframe width="750" height="500" scrolling="no" frameborder="no" src="https://fusiontables.google.com/embedviz?containerId=googft-gviz-canvas&amp;viz=GVIZ&amp;t=LINE_AGGREGATE&amp;isXyPlot=true&amp;bsize=0.0&amp;q=select+col1%2C+col2+from+1h2_7KqG_3hHQZDLJijqFqSvILuM26unc5Hnksnhn&amp;qrs=+where+col1+%3E%3D+&amp;qre=+and+col1+%3C%3D+&amp;qe=+order+by+col1+asc&amp;uiversion=2&amp;gco_forceIFrame=true&amp;gco_hasLabelsColumn=true&amp;width=750&amp;height=500"></iframe>';
+    document.getElementById("chart_div").innerHTML = text_html;
+  }
+
+
+  function AirQuality_Chart(){
+    if ( !sidebar.isVisible() ){
+      var rb_html = '<input type="radio" class="radiobut" name="rb" value="pm25" checked> PM2.5<br>';
+      rb_html = rb_html+ '<input type="radio" class="radiobut" name="rb" value="pm10"> PM10<br>'
+      rb_html = rb_html+ '<input type="radio" class="radiobut" name="rb" value="rh"> Relative Humidity'
+      document.getElementById("CheckboxDIV").innerHTML = "";
+      document.getElementById("chart_div").innerHTML = "";
+      document.getElementById("RadioDIV").innerHTML = rb_html;
+    }
+
+    var radio_checked_value = $("input[type='radio'][class='radiobut']:checked").val();
+    switch ( radio_checked_value ) {
+      case "pm25":
+        document.getElementById("chart_div").innerHTML = '<iframe width="750" height="500" frameborder="0" scrolling="no" src="//plot.ly/~lore_abad6/4.embed"></iframe>';
+        break;
+      case "pm10":
+        document.getElementById("chart_div").innerHTML = '<iframe width="750" height="500" frameborder="0" scrolling="no" src="//plot.ly/~lore_abad6/1.embed"></iframe>';
+        break;
+      case "rh":
+        document.getElementById("chart_div").innerHTML = '<iframe width="750" height="500" frameborder="0" scrolling="no" src="//plot.ly/~lore_abad6/6.embed"></iframe>';
+        break;
+    }
+  }
+
+  function WeatherStation_Chart(fusiontable_id){
+
     var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
     url.push('sql=');
     var query = "SELECT * "
@@ -312,14 +407,16 @@ function process_marker_click(marker_station){
     var queryJson = JSON.parse(queryData)
 
     //=================== FUNCTION process_fusiontable_data ===================
-    console.log("Data Rows: ")
+    console.log( "Data from Fusiontable:" )
     console.log( queryJson )
 
     var columns = queryJson['columns'];
     var rows = queryJson['rows'];
 
     if (!sidebar.isVisible() ){
+      document.getElementById("RadioDIV").innerHTML = "";
       document.getElementById("CheckboxDIV").innerHTML = "";
+      document.getElementById("chart_div").innerHTML = "";
       var checkbox_div = document.getElementById("CheckboxDIV");
       for(var i=0;i<columns.length;i++){
         if(i===0){
@@ -328,9 +425,7 @@ function process_marker_click(marker_station){
           //var cb_name = columns[i].split("(")[0];
           var cb_name = columns[i];
           var cb_id = "cb_id_"+ i.toString() ;
-          //var cb_value = "value_"+ i.toString();
           var cb_value = i;
-          //var newDiv = document.createElement("div");
           //<input type="checkbox" class="cb_chart_var" id="cb_temp" name="Temperature" value="1" checked>
           var newInput = document.createElement("input");
           newInput.setAttribute("type",'checkbox');
@@ -348,17 +443,12 @@ function process_marker_click(marker_station){
           newlabel.innerHTML = cb_name;
           checkbox_div.appendChild(newlabel);
 
-          //checkbox_div.appendChild(newDiv);
         }
       }
 
     }
-    //var color_palette_hex = ['#DB3340', '#E8B71A', '#1FDA9A', '#28ABE3', '#8C4646'];
-
     //=================== FUNCTION drawChart ===================
     var data = new google.visualization.DataTable();
-
-
 
     var PointsToPlot = [];
     for(var i=0;i<rows.length;i++){
@@ -382,22 +472,9 @@ function process_marker_click(marker_station){
       PointsToPlot.push(eachrow);
     }
 
-
     var position_to_remove = [];
     var color_palette_hex = ['#DB3340', '#E8B71A', '#1FDA9A', '#28ABE3', '#8C4646', '#8cb709'];
     var number_of_variables = 0;
-
-    // for(var i=0;i<columns.length;i++){
-    //   if(i==0){
-    //     data.addColumn('date', columns[i]);
-    //     console.log("date");
-    //     console.log(columns[i]);
-    //   }else{
-    //     data.addColumn('number', columns[i]);
-    //     console.log("number");
-    //     console.log(columns[i]);
-    //   }
-    // }
 
     data.addColumn('date', columns[0]);
 
@@ -425,7 +502,8 @@ function process_marker_click(marker_station){
       }
     }
     data.addRows(PointsToPlot)
-
+    console.log("PointsToPlot:");
+    console.log(PointsToPlot);
 
   var options = {
           title: 'Data retrieved from Sensebox',
@@ -485,11 +563,8 @@ function process_marker_click(marker_station){
     // var chart = new google.charts.Line(document.getElementById('chart_div'));
     // chart.draw(data, google.charts.Line.convertOptions(options));
 
-
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(data, options);
-
-
 
 
 }
