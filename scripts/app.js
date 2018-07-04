@@ -611,13 +611,13 @@ angular.module('UAS_2018', [
         color = "#006600";
       }
       if (className === "Bushes") {
-        color = "#00cd01";
+        color = "#1f211e";
       }
       if (className === "freshly cut grass") {
         color = "#fad395";
       }
       if (className === "Grasslands") {
-        color = "#bedf82";
+        color = "#41a032";
       }
       if (className === "Bare soil") {
         color = "#a06d07";
