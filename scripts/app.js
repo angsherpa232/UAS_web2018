@@ -14,6 +14,7 @@ angular.module('Authentication', []);
 angular.module('Home', []);
 
 angular.module('UAS_2018', [
+
     'Authentication',
     'Home',
     'ngRoute',
@@ -61,7 +62,6 @@ angular.module('UAS_2018', [
         redirectTo: '/'
       });
   }])
-
 
   .controller('uas2018_map_controller', ['$scope', '$http', function($scope, $http) {
 
@@ -761,6 +761,7 @@ angular.module('UAS_2018', [
       if ($rootScope.globals.currentUser) {
         $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
       }
+
 
       $rootScope.$on('$locationChangeStart', function(event, next, current) {
         // redirect to login page if not logged in

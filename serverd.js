@@ -15,6 +15,7 @@ app.use(express.static(path.join(__dirname + '/modules')));
 app.use(express.static(path.join(__dirname + '/css')));
 app.use(express.static(path.join(__dirname + '/scripts')));
 app.use(express.static(path.join(__dirname + '/node_modules')));
+app.use(express.static(path.join(__dirname + '/process_resources')));
 
 // Allow cross origin
 app.use(function(req, res, next) {
