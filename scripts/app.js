@@ -71,10 +71,6 @@ angular.module('UAS_2018', [
       packages: ['corechart', 'line']
     });
 
-    // Load basemaps
-    // var topo = L.esri.basemapLayer("Topographic");
-    // var darkgrey = L.esri.basemapLayer("DarkGray");
-    // var imagery = L.esri.basemapLayer("Imagery");
 
     var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
                     '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -594,7 +590,7 @@ angular.module('UAS_2018', [
 
     // Create Popup for polygons
     $scope.classUasOnEachFeature = function(feature, layer) {
-      var popupContent = "Class: " + feature.properties.class;
+      var popupContent = feature.properties.class;
       layer.bindPopup(popupContent);
     };
 
@@ -623,12 +619,33 @@ angular.module('UAS_2018', [
         color = "#a06d07";
       }
       if (className === "Asphalt") {
-        color = "#bb1214";
+        color = "#484848";
       }
-
       return color;
     }
 
+//// Landcover legend begins //////
+   var classificationLegend = L.control({position: 'bottomright'});
+    var descriptionBox = L.control({position: 'bottomleft'});
+
+   /*Classification Legend*/
+               classificationLegend.onAdd = function () {
+                   var div = L.DomUtil.create('div', 'info legend');
+
+                   div.innerHTML = '<b>Classification: </b>' + '<br>';
+
+                   var classType = ["Agriculture", "Grass", "Road / Bare soil", "Shrub", "Trees", "Water"];
+
+                   for (var i = 0; i < classType.length; i++) {
+                       div.innerHTML +=
+                           '<i style="background:' + $scope.getClassificationColorUAS(classType[i]) + '"></i> ' +
+                           classType[i] + '<br>';
+                   }
+
+                   return div;
+               };
+
+classificationLegend.addTo(map)
     // Function to create style object for input feature
     // function style(feature) {
     //   return {
@@ -640,6 +657,8 @@ angular.module('UAS_2018', [
     //     fillOpacity: 0.8
     //   };
     // }
+
+///// Landcover legend ends //////
 
     // Compile land cover UAS layer
     var landCoverUASLayer = L.esri.featureLayer({
@@ -753,6 +772,8 @@ angular.module('UAS_2018', [
       }
     });
   }])
+
+
 
   .run(['$rootScope', '$location', '$cookieStore', '$http',
     function($rootScope, $location, $cookieStore, $http) {
