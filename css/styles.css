@@ -157,10 +157,14 @@ main {
 
 
 #process_input {
-  background-color: black;
+  background-color: #476855;
   display: block;
   color: white;
   position: absolute;
+  bottom: 85%;
+  left: 0.5%;
+  border: 2px solid #becec9;
+  border-radius: 0.4rem;
 }
 
 /*Styling the authentication form begins*/
