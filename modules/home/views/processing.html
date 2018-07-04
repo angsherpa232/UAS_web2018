@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -7,7 +7,7 @@
       </head>
   <body>
     <div class="container">
-      <!-- <img src="./home/resources/m.jpg" class="img-fluid" id ="home_image" alt="Responsive image" width: 100%\9; > -->
+      <img src="./home/resources/m.jpg" class="img-fluid" id ="home_image" alt="Responsive image" width: 100%\9; >
       <div id="bg" class="hero-text">
         <div class="container">
           <div class="row">
@@ -17,4 +17,22 @@
       </div>
     </div>
   </body>
-</html>
+</html> -->
+
+<div id="sidebar">
+  <div id="CheckboxDIV">
+  </div>
+  <div id="chart_div"></div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div id='map' class="col-md-12"></div>
+    <div id='process_input'>
+  <label for='buffer'>Buffer (meter)</label>
+  <input type='number' id='buffer' name='buffer' placeholder='Eg: 0.003' ng-init="_value='btn btn-primary disabled'" ng-model="buffer_radius" ng-change="bufferFunction()"></input>
+  <button type="button" id="buffer_button" class="{{_value}}" ng-click="executeBuffer()">Execute</button>
+  <button type="button" id="buffer_button" class="btn btn-primary enabled" ng-click="clearBuffer()">Clear</button>
+</div>
+    </div>
+  </div>
