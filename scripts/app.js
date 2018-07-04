@@ -71,17 +71,56 @@ angular.module('UAS_2018', [
     });
 
     // Load basemaps
-    var topo = L.esri.basemapLayer("Topographic");
-    var darkgrey = L.esri.basemapLayer("DarkGray");
-    var imagery = L.esri.basemapLayer("Imagery");
+    // var topo = L.esri.basemapLayer("Topographic");
+    // var darkgrey = L.esri.basemapLayer("DarkGray");
+    // var imagery = L.esri.basemapLayer("Imagery");
+
+    var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                    'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+
+    var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ';
+
+    var grayscale = L.tileLayer(mbUrl, {
+            id: 'mapbox.light',
+            attribution: mbAttr,
+            maxZoom: 22,
+            maxNativeZoom: 18
+        })
+    var streets = L.tileLayer(mbUrl, {
+            id: 'mapbox.streets',
+            attribution: mbAttr,
+            maxZoom: 22,
+            maxNativeZoom: 18
+        })
+    var outdoors = L.tileLayer(mbUrl, {
+            id: 'mapbox.outdoors',
+            attribution: mbAttr,
+            maxZoom: 22,
+            maxNativeZoom: 18
+        })
+    var satellite = L.tileLayer(mbUrl, {
+            id: 'mapbox.satellite',
+            attribution: mbAttr,
+            maxZoom: 22,
+            maxNativeZoom: 18
+        })
+    var dark = L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr, maxZoom: 22, maxNativeZoom: 18})
+
+    var satellitestreets = L.tileLayer(mbUrl, {
+            id: 'mapbox.streets-satellite',
+            attribution: mbAttr,
+            maxZoom: 22,
+            maxNativeZoom: 18
+        });
 
     // Main map object
     var map = L.map('map', {
       center: [51.944990, 7.572810],
       zoom: 17,
-      layers: [topo],
-      maxZoom: 20,
-      maxNativeZoom: 20
+      layers: [satellite],
+      maxZoom: 22,
+      maxNativeZoom: 18
     });
 
     var mapHome = {
@@ -96,30 +135,12 @@ angular.module('UAS_2018', [
       position: 'bottomleft'
     }).addTo(map);
 
-    // /*Zoom button*/
-    // var legendCenterButton = L.control({position: 'bottomright'})
-    //
-    // legendCenterButton.onAdd = function () {
-    //     var div = L.DomUtil.create('center', 'center-button');
-    //
-    //     var zooming = '<span ng-click="zoomRiver()">';
-    //     zooming += '<img style="width: 24px; height: 24px;" src="app/components/assets/button_icons/meeting-point-32.png"/>';
-    //     zooming += '</span>';
-    //     div.innerHTML = zooming;
-    //
-    //     var linkFunction = $compile(angular.element(div));
-    //     var newScope = $scope.$new();
-    //
-    //     return linkFunction(newScope)[0];
-    // };
-    // legendCenterButton.addTo(map); //Added by default
-    // /*End Zoom button*/
 
     // Default base layers when the app initiates
     var baseLayers = {
-      "Imagery": imagery,
-      "Topographic": topo,
-      "Gray": darkgrey
+      "Imagery": satellite,
+      "Streets": streets,
+      "Gray": dark
     };
 
     var sidebar = L.control.sidebar('sidebar', {
@@ -472,7 +493,8 @@ angular.module('UAS_2018', [
     var orthophotoRGB = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_RGB/MapServer",
       zIndex: 200,
-      maxZoom: 20
+      maxZoom: 22,
+      maxNativeZoom: 22
     })
 
     // .addTo(map);
@@ -482,23 +504,25 @@ angular.module('UAS_2018', [
     var orthophotoMS = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_Multispectral/MapServer",
       zIndex: 200,
-      maxZoom: 20
+      maxZoom: 22,
+      maxNativeZoom: 22
     })
 
     ////// DSM layer //////
     var DSMlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/DSM/MapServer",
       zIndex: 200,
-      maxZoom: 20
+      maxZoom: 22,
+      maxNativeZoom: 22
     })
 
 
     ////// Hillshade layer //////
     var hillshadelayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Hillshade_2018/MapServer",
-      // zIndex: 200,
-      maxZoom: 20
-      // maxNativeZoom:21
+      zIndex: 200,
+      maxZoom: 22,
+      maxNativeZoom: 19
     })
 
 
@@ -507,8 +531,8 @@ angular.module('UAS_2018', [
     var NDVIlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
       zIndex: 200,
-      maxZoom: 20,
-      maxNativeZoom: 20
+      maxZoom: 22,
+      maxNativeZoom: 22
     })
 
     ////// Slope layer //////
@@ -516,8 +540,8 @@ angular.module('UAS_2018', [
     var slopelayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Slope_2018/MapServer",
       zIndex: 200,
-      maxZoom: 20,
-      maxNativeZoom: 20
+      maxZoom: 22,
+      maxNativeZoom: 19
     })
 
 
@@ -526,8 +550,8 @@ angular.module('UAS_2018', [
     var aspectlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Aspect_2018/MapServer",
       zIndex: 200,
-      maxZoom: 20,
-      maxNativeZoom: 20
+      maxZoom: 22,
+      // maxNativeZoom: 18
     })
 
     ////// Flight plan layer //////
@@ -686,14 +710,14 @@ angular.module('UAS_2018', [
     });
     // })
 
-    $scope.getInfoBox = function() {
-        alert("inputLayer");
-    }
+    // $scope.getInfoBox = function() {
+    //     alert("inputLayer");
+    // }
 
     //Add here if additional overlays are to be added
     var overlays = {
-      "Orthophoto RGB <button id=\"ortRGBbtn\" onclick=\"getInfoBox();\" type='button' class='btn-xs btn-primary'>+</button>": orthophotoRGB,
-      "Orthophoto Multispectral <button>+</button>": orthophotoMS,
+      "Orthophoto RGB": orthophotoRGB,
+      "Orthophoto Multispectral": orthophotoMS,
       "Digital Surface Model": DSMlayer,
       "Hillshade": hillshadelayer,
       "NDVI": NDVIlayer,
@@ -710,6 +734,7 @@ angular.module('UAS_2018', [
     // elem.addEventListener("click", function(){
     //   alert("hello world")
     // })
+
     //Initiate layers control method and add to map
     L.control.layers(baseLayers, overlays, {
       position: 'topleft',
