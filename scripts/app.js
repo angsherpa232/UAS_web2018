@@ -204,14 +204,16 @@ angular.module('UAS_2018', [
     },
     onEachFeature: function(feature, layer) {
       layer.on('click', function(e) {
-        //console.log(feature);
-        sidebar.show();
+
 
         //global variable receives the id of the marker clicked by the user
         station_value = feature.properties.Station;
 
         //Run the function that request the data based on the marker clicked by the user
         process_marker_click(station_value);
+
+        //console.log(feature);
+        sidebar.show();
 
         //ensure that all times a marked is clicked,
         //all the checkbox from the class ".cb_chart_var" initiate as checked
@@ -242,7 +244,12 @@ angular.module('UAS_2018', [
   $("#CheckboxDIV").on("change", ".cb_chart_var", function() {
     //for each click(change) in the checkbox a new requestion to the fusion table is made.
     process_marker_click(station_value);
+    //console.log( $(this).attr("name") );
+
+
   });
+
+
 
 
 function process_marker_click(marker_station){
@@ -310,43 +317,48 @@ function process_marker_click(marker_station){
 
     var columns = queryJson['columns'];
     var rows = queryJson['rows'];
-    /*
-    var checkbox_div = document.getElementById("CheckboxDIV");
 
-    <input type="checkbox" class="cb_chart_var" id="cb_temp" name="Temperature" value="1" checked>
-    var newInput = document.createElement("input");
-    newInput.setAttribute("type",'checkbox');
-    newInput.setAttribute("id", 'cb_temp');
-    newInput.setAttribute("class",'cb_chart_var');
-    newInput.setAttribute("name", 'Temperature');
-    newInput.setAttribute("value",'1');
-    DivGroup.appendChild(newInput);
+    if (!sidebar.isVisible() ){
+      document.getElementById("CheckboxDIV").innerHTML = "";
+      var checkbox_div = document.getElementById("CheckboxDIV");
+      for(var i=0;i<columns.length;i++){
+        if(i===0){
+          continue;
+        }else{
+          //var cb_name = columns[i].split("(")[0];
+          var cb_name = columns[i];
+          var cb_id = "cb_id_"+ i.toString() ;
+          //var cb_value = "value_"+ i.toString();
+          var cb_value = i;
+          //var newDiv = document.createElement("div");
+          //<input type="checkbox" class="cb_chart_var" id="cb_temp" name="Temperature" value="1" checked>
+          var newInput = document.createElement("input");
+          newInput.setAttribute("type",'checkbox');
+          newInput.setAttribute("id", cb_id);
+          newInput.setAttribute("class",'cb_chart_var');
+          newInput.setAttribute("name", cb_name);
+          newInput.setAttribute("value", cb_value );
+          checkbox_div.appendChild(newInput);
 
-    <label for="cb_temp">Temperature</label>
-    var newlabel = document.createElement("label");
-    newlabel.setAttribute("for","cb_temp");
-    newlabel.innerHTML = "Temperature";
-    DivGroup.appendChild(checkbox_div);
+          document.getElementById(cb_id).checked = true;
 
-    */
+          //<label for="cb_temp">Temperature</label>
+          var newlabel = document.createElement("label");
+          newlabel.setAttribute("for",cb_id);
+          newlabel.innerHTML = cb_name;
+          checkbox_div.appendChild(newlabel);
 
+          //checkbox_div.appendChild(newDiv);
+        }
+      }
+
+    }
     //var color_palette_hex = ['#DB3340', '#E8B71A', '#1FDA9A', '#28ABE3', '#8C4646'];
 
     //=================== FUNCTION drawChart ===================
     var data = new google.visualization.DataTable();
-    for(var i=0;i<columns.length;i++){
-      if (i === 2) { break; }
-      if(i==0){
-        data.addColumn('date', columns[i]);
-        console.log("date");
-        console.log(columns[i]);
-      }else{
-        data.addColumn('number', columns[i]);
-        console.log("number");
-        console.log(columns[i]);
-      }
-    }
-    //data.addColumn({type: 'string', role: 'tooltip'});
+
+
 
     var PointsToPlot = [];
     for(var i=0;i<rows.length;i++){
@@ -355,7 +367,7 @@ function process_marker_click(marker_station){
       //console.log("i: ", i);
       for(var j=0;j<rows[i].length;j++){
         //console.log("j: ", j);
-        if (j === 2) { break; }
+        //if (j === 4) { break; }
         if (j == 0){
           var split_date_value = rows[i][0].split(" ");
           var date_split = split_date_value[0].split("/");
@@ -364,26 +376,32 @@ function process_marker_click(marker_station){
           var date_replace = new Date(parseInt(date_split[2]),  parseInt(date_split[0])-1, parseInt(date_split[1]), parseInt(time_split[0]), parseInt(time_split[1]))
           eachrow.push(date_replace);
         }else{
-          eachrow.push(rows[i][j]);
+          eachrow.push(parseFloat(rows[i][j]));
         }
       }
       PointsToPlot.push(eachrow);
     }
 
-    data.addRows(PointsToPlot)
 
-    console.log("points to plot");
-
-    /*
     var position_to_remove = [];
-
-    var color_palette_hex = ['#DB3340', '#E8B71A', '#1FDA9A', '#28ABE3', '#8C4646'];
-    data.addColumn('number', "Time");
-
+    var color_palette_hex = ['#DB3340', '#E8B71A', '#1FDA9A', '#28ABE3', '#8C4646', '#8cb709'];
     var number_of_variables = 0;
 
-    $('.cb_chart_var:checkbox').each(function() {
+    // for(var i=0;i<columns.length;i++){
+    //   if(i==0){
+    //     data.addColumn('date', columns[i]);
+    //     console.log("date");
+    //     console.log(columns[i]);
+    //   }else{
+    //     data.addColumn('number', columns[i]);
+    //     console.log("number");
+    //     console.log(columns[i]);
+    //   }
+    // }
 
+    data.addColumn('date', columns[0]);
+
+    $('.cb_chart_var:checkbox').each(function() {
       if ($(this).prop("checked")) {
         data.addColumn('number', $(this).attr("name"));
       } else {
@@ -406,29 +424,40 @@ function process_marker_click(marker_station){
         color_palette_hex.splice(position_to_remove[j] - 1, 1);
       }
     }
-  */
+    data.addRows(PointsToPlot)
 
-  var min_date = PointsToPlot[0][0];
-  var max_date = new Date(PointsToPlot[PointsToPlot.length - 1][0]);
 
   var options = {
+          title: 'Data retrieved from Sensebox',
           width: 750,
           height: 500,
-          legend: {position: 'none'},
-          enableInteractivity: true,
-          chartArea: {
-            width: '85%'
+          legend: {
+            position: 'bottom',
+            maxLines: 2
+          },
+          backgroundColor: {
+            stroke: '#4322c0',
+            strokeWidth: 3,
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+          },
+          chartArea:{
+            left:45,
+            right: 10,
+            top:35,
+            bottom:75,
+            width:"80%",
+            height:"80%"
           },
           hAxis: {
-            // viewWindow: {
-            //   min: min_test,
-            //   max: max_test
-            // },
+            //title: 'Time',
+            // direction: -1,
+            // slantedText:true,
+            // slantedTextAngle:45,
             gridlines: {
               units: {
                 days: {format: ['MMM dd']},
                 hours: {format: ['HH:mm', 'ha']},
-              }
+              },
             },
             minorGridlines: {
               units: {
@@ -436,101 +465,26 @@ function process_marker_click(marker_station){
               }
             }
           },
+          curveType: 'function',
+          vAxis: {
+            viewWindow: {
+              min: 0,
+            },
+            //logScale: true
+          },
           explorer: {
             actions: ['dragToZoom', 'rightClickToReset'],
             axis: 'horizontal',
-            keepInBounds: true
-          }
+            //keepInBounds: true
+          },
+          //enableInteractivity: false,
+          colors: color_palette_hex
+
         };
 
+    // var chart = new google.charts.Line(document.getElementById('chart_div'));
+    // chart.draw(data, google.charts.Line.convertOptions(options));
 
-/*
-  var options = {
-      title: 'Data retrieved from Sensebox',
-      width: 750,
-      height: 500,
-      legend: {
-        position: 'bottom'
-      },
-      backgroundColor: {
-        stroke: '#4322c0',
-        strokeWidth: 3,
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-      },
-      enableInteractivity: false,
-      chartArea:{
-        left:45,
-        right: 10,
-        top:35,
-        bottom:75,
-        width:"80%",
-        height:"80%"
-      },
-      hAxis: {
-        // viewWindow: {
-        //   min: new Date(2018, 5, 9, 19),
-        //   max: new Date(2018, 5, 11, 7),
-        // },
-        gridlines: {
-          count: 4,
-          units: {
-            days: {format: ['MMM dd']}
-          }
-        },
-        direction: -1,
-        slantedText:true,
-        slantedTextAngle:45
-
-      },
-      explorer: {
-        actions: ['dragToZoom', 'rightClickToReset'],
-        axis: 'horizontal',
-        keepInBounds: true
-      }
-      //colors: color_palette_hex
-    };
-    */
-    /*
-    var options = {
-      title: 'Data retrieved from Sensebox',
-
-      width:750,
-      height:500,
-
-      legend: {
-        position: 'bottom'
-      },
-
-      backgroundColor: {
-        stroke: '#4322c0',
-        strokeWidth: 3,
-        backgroundColor: 'rgba(255, 255, 255, 0.8)',
-      },
-
-      chartArea:{
-        left:45,
-        right: 10,
-        top:35,
-        bottom:75,
-        width:"80%",
-        height:"80%"
-      },
-
-      curveType: 'function',
-      hAxis: {
-        title: 'Time',
-        logScale: false
-      },
-
-      explorer: {
-        actions: ['dragToZoom', 'rightClickToReset'],
-        axis: 'horizontal',
-        keepInBounds: true
-      },
-
-      colors: color_palette_hex
-    };
-    */
 
     var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
     chart.draw(data, options);
