@@ -610,6 +610,7 @@ $.ajax({
 
 
 /// Buffer input begins //////
+$scope.buffer_radius = '';
 $scope.bufferFunction = function () {
     if ($scope.buffer_radius == ''){
       $scope._value='btn btn-primary disabled';
@@ -634,25 +635,6 @@ $scope.executeBuffer = function () {
 
     var capabilities,data_,jobId,
       processDescription;
-
-
-      var capabilitiesCallback = function(response) {
-        var capabilities = response;
-        var processes = response.capabilities.processes;
-        console.log(capabilities.capabilities.processes[3]);
-      };
-
-      var describeProcessCallback = function(response) {
-        processDescription = response;
-        //set value of textarea
-        var processDocument = processDescription.responseDocument;
-        var xml = new XMLSerializer().serializeToString(processDocument);
-        console.log(processDocument);
-      };
-
-    // wpsService.getResult_WPS_2_0(resultCallback, '888e6472-cad7-4245-8124-72e04b45bf68');
-    // <!-- wpsService.getResult_WPS_2_0(resultCallback,'f7fdb7b3-9f4d-4abb-8495-3964e5694842'); -->
-
     //Execute process callback function
     var executeCallback = function (response){
     	var status = response.executeResponse.responseDocument.status;
@@ -660,8 +642,6 @@ $scope.executeBuffer = function () {
     	jobId = response.executeResponse.responseDocument.jobId;
     	return jobId;
     	}
-    jobId = response.executeResponse.responseDocument.jobId;
-    return jobId;
     };
 
     setTimeout(function(){wpsService.getStatus_WPS_2_0(statusCallback, jobId)},1350);
@@ -675,6 +655,7 @@ $scope.executeBuffer = function () {
 
   $scope.clearBuffer = function (){
     assetLayerGroup.clearLayers();
+
   }
 
     var resultCallback = function(response){
@@ -691,6 +672,7 @@ $scope.executeBuffer = function () {
       var status = response.executeResponse.responseDocument.status;
       if (status == "Succeeded"){
     	wpsService.getResult_WPS_2_0(resultCallback,jobId);
+      alert('Success');
       }
       else {
     	alert('Oops! something went wrong, please try again.');
@@ -728,7 +710,7 @@ $scope.executeBuffer = function () {
     //WPS execute
     // wpsService.execute(callbackFunction, processIdentifier, responseFormat, executionMode, lineage, inputs, outputs);
     wpsService.execute(executeCallback, 'org.n52.wps.server.algorithm.SimpleBufferAlgorithm', 'document', 'async', false, [literalInput,complexInput], [complexOutput]);
-  };
+  }
 }
 /////// wps service ends /////////
 }])
