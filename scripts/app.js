@@ -80,8 +80,8 @@ angular.module('UAS_2018', [
       center: [51.944990, 7.572810],
       zoom: 17,
       layers: [topo],
-      maxZoom: 19,
-      maxNativeZoom: 19
+      maxZoom: 20,
+      maxNativeZoom: 20
     });
 
     var mapHome = {
@@ -472,7 +472,7 @@ angular.module('UAS_2018', [
     var orthophotoRGB = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_RGB/MapServer",
       zIndex: 200,
-      maxZoom: 19
+      maxZoom: 20
     })
 
     // .addTo(map);
@@ -482,14 +482,14 @@ angular.module('UAS_2018', [
     var orthophotoMS = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_Multispectral/MapServer",
       zIndex: 200,
-      maxZoom: 19
+      maxZoom: 20
     })
 
     ////// DSM layer //////
     var DSMlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/DSM/MapServer",
       zIndex: 200,
-      maxZoom: 19
+      maxZoom: 20
     })
 
 
@@ -497,7 +497,7 @@ angular.module('UAS_2018', [
     var hillshadelayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Hillshade_2018/MapServer",
       // zIndex: 200,
-      maxZoom: 19
+      maxZoom: 20
       // maxNativeZoom:21
     })
 
@@ -507,8 +507,8 @@ angular.module('UAS_2018', [
     var NDVIlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
       zIndex: 200,
-      maxZoom: 19,
-      maxNativeZoom: 19
+      maxZoom: 20,
+      maxNativeZoom: 20
     })
 
     ////// Slope layer //////
@@ -516,8 +516,8 @@ angular.module('UAS_2018', [
     var slopelayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Slope_2018/MapServer",
       zIndex: 200,
-      maxZoom: 19,
-      maxNativeZoom: 19
+      maxZoom: 20,
+      maxNativeZoom: 20
     })
 
 
@@ -526,8 +526,8 @@ angular.module('UAS_2018', [
     var aspectlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Aspect_2018/MapServer",
       zIndex: 200,
-      maxZoom: 19,
-      maxNativeZoom: 19
+      maxZoom: 20,
+      maxNativeZoom: 20
     })
 
     ////// Flight plan layer //////
@@ -538,16 +538,17 @@ angular.module('UAS_2018', [
     };
 
     // Sets color based on altitude
-    $scope.getColor = function(x) {
-      return x < 46 ? '#ffeda0' :
-        x < 48.1 ? '#feb24c' :
-        x < 50.8 ? '#f03b20' :
-        '#f01010';
-    };
+    // $scope.getColor = function(x) {
+    //   return x < 46 ? '#ffeda0' :
+    //     x < 48.1 ? '#feb24c' :
+    //     x < 50.8 ? '#f03b20' :
+    //     '#f01010';
+    // };
 
     //Flight plan
     var flightPlanLayer = L.esri.featureLayer({
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPath/FeatureServer/0",
+      style: {color: "red"}
       // style: function(feature) {
       //   return {
       //     "color": $scope.getColor(feature.properties.Altitude),
@@ -646,6 +647,14 @@ angular.module('UAS_2018', [
 
     // Land cover CORINE
 
+    // Create Popup for polygons
+    $scope.classCorineOnEachFeature = function(feature, layer) {
+      var popupContent = "Corine L1: " + feature.properties.CorineL1 + "<br>" + "Corine L2: " + feature.properties.CorineL2 + "<br>" + "Corine L3: " + feature.properties.CorineL3;
+      // var popupContent = "sdfgkujhsdkjgnk \n sanfkjnf: asuasjdgbfhjsdbf \n hwbfsdbfkjsdf: jhsydbfjhsdbfkjsdbfkj"
+      console.log(popupContent)
+      layer.bindPopup(popupContent);
+    };
+
     // Define colours for classes
     $scope.getClassificationColorCORINE = function(className) {
       var color = "#FFFFFF";
@@ -676,7 +685,7 @@ angular.module('UAS_2018', [
         };
       },
       // style: style,
-      onEachFeature: $scope.classUasOnEachFeature
+      onEachFeature: $scope.classCorineOnEachFeature
     });
     // })
 
