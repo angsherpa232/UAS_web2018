@@ -650,8 +650,6 @@ angular.module('UAS_2018', [
     // Create Popup for polygons
     $scope.classCorineOnEachFeature = function(feature, layer) {
       var popupContent = "Corine L1: " + feature.properties.CorineL1 + "<br>" + "Corine L2: " + feature.properties.CorineL2 + "<br>" + "Corine L3: " + feature.properties.CorineL3;
-      // var popupContent = "sdfgkujhsdkjgnk \n sanfkjnf: asuasjdgbfhjsdbf \n hwbfsdbfkjsdf: jhsydbfjhsdbfkjsdbfkj"
-      console.log(popupContent)
       layer.bindPopup(popupContent);
     };
 
@@ -674,7 +672,6 @@ angular.module('UAS_2018', [
     var landCoverCORINELayer = L.esri.featureLayer({
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover_CORINE/FeatureServer/0",
       style: function(feature) {
-        console.log(feature)
         return {
           fillColor: $scope.getClassificationColorCORINE(feature.properties.CorineL1),
           weight: 0.5,
@@ -689,17 +686,14 @@ angular.module('UAS_2018', [
     });
     // })
 
-
-
-
-
-
-
+    $scope.getInfoBox = function() {
+        alert("inputLayer");
+    }
 
     //Add here if additional overlays are to be added
     var overlays = {
-      "Orthophoto RGB": orthophotoRGB,
-      "Orthophoto Multispectral": orthophotoMS,
+      "Orthophoto RGB <button id=\"ortRGBbtn\" onclick=\"getInfoBox();\" type='button' class='btn-xs btn-primary'>+</button>": orthophotoRGB,
+      "Orthophoto Multispectral <button>+</button>": orthophotoMS,
       "Digital Surface Model": DSMlayer,
       "Hillshade": hillshadelayer,
       "NDVI": NDVIlayer,
@@ -712,9 +706,14 @@ angular.module('UAS_2018', [
       "Ground Sensors": sensorLayer
     };
 
+    // var elem = document.getElementById("ortRGBbtn")
+    // elem.addEventListener("click", function(){
+    //   alert("hello world")
+    // })
     //Initiate layers control method and add to map
     L.control.layers(baseLayers, overlays, {
-      position: 'topleft'
+      position: 'topleft',
+      autoZIndex: true
     }).addTo(map);
 
     // set view for layers
