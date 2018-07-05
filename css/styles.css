@@ -60,6 +60,11 @@ p {
   text-align: justify;
 }
 
+#legend{
+  background-color: white;
+  display: none;
+}
+
 /* CSS for Control Layers icons in LEAFLET*/
 .leaflet-control-container {
 display: block;

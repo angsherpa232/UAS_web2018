@@ -9,6 +9,10 @@ uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', f
 
 }]);
 
+// uas2018.controller('legend_controller', ['$scope', function($scope){
+//
+// }])
+
 
 angular.module('Authentication', []);
 angular.module('Home', []);
@@ -166,12 +170,18 @@ angular.module('UAS_2018', [
     }).addTo(map);
 
     // Display legend button
-    L.easyButton('<span><img src="./home/resources/icons/meeting-point-32.png" style="width: 15px; height: 15px;"></img></span>', function(btn) {
-      console.log("wank")
-    }, 'Zoom To Home', {
+    var legendBt = L.easyButton('<p style="font-size:10px;">Legend</p>', function() {
+      var x = document.getElementById("legend");
+      if (x.style.display === "none") {
+        x.style.display = "block";
+      } else {
+        x.style.display = "none";
+      }
+    }, 'Show Legend', {
       position: 'bottomleft'
     }).addTo(map);
 
+    legendBt.button.style.width = '50px';
 
     // Default base layers when the app initiates
     var baseLayers = {
@@ -285,7 +295,9 @@ angular.module('UAS_2018', [
     })
 
     //creates a cluster object
-    var sensorLayer = L.markerClusterGroup();
+    var sensorLayer = L.markerClusterGroup({
+      name: "Ground Sensors"
+    });
 
     //Add the variable that contains all the markers to the cluster object
     sensorLayer.addLayer(markers);
@@ -525,6 +537,7 @@ angular.module('UAS_2018', [
 
     //////Orthophoto RGB//////
     var orthophotoRGBlayer = L.esri.tiledMapLayer({
+      name: "Orthophoto RGB",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_RGB/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -535,6 +548,7 @@ angular.module('UAS_2018', [
 
     //////Orthophoto RGB//////
     var orthophotoMSlayer = L.esri.tiledMapLayer({
+      name: "Orthophoto Multispectral",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_Multispectral/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -543,6 +557,7 @@ angular.module('UAS_2018', [
 
     ////// DSM layer //////
     var DSMlayer = L.esri.tiledMapLayer({
+      name: "Digital Surface Model",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/DSM/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -552,6 +567,7 @@ angular.module('UAS_2018', [
 
     ////// Hillshade layer //////
     var hillshadelayer = L.esri.tiledMapLayer({
+      name: "Hillshade",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Hillshade_2018/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -561,6 +577,7 @@ angular.module('UAS_2018', [
 
     ////// NDVI layer //////
     var NDVIlayer = L.esri.tiledMapLayer({
+      name: "NDVI",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -569,6 +586,7 @@ angular.module('UAS_2018', [
 
     ////// Slope layer //////
     var slopelayer = L.esri.tiledMapLayer({
+      name: "Slope",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Slope_2018/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -578,6 +596,7 @@ angular.module('UAS_2018', [
 
     ////// Aspect  layer //////
     var aspectlayer = L.esri.tiledMapLayer({
+      name: "Aspect",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Aspect_2018/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -594,6 +613,7 @@ angular.module('UAS_2018', [
 
     //Flight plan
     var flightPlanLayer = L.esri.featureLayer({
+      name: "Flight plan",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPath/FeatureServer/0",
       style: {
         color: "#41b6c4"
@@ -616,6 +636,7 @@ angular.module('UAS_2018', [
     };
 
     var flightPointLayer = L.esri.featureLayer({
+      name: "Flight points",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPoints/FeatureServer/0",
       // style: function(feature){
       //   console.log(feature)
@@ -685,6 +706,7 @@ angular.module('UAS_2018', [
 
     // Compile land cover UAS layer
     var landCoverUASLayer = L.esri.featureLayer({
+      name: "Classification UAS",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover/FeatureServer/0",
       style: function(feature) {
         return {
@@ -737,6 +759,7 @@ angular.module('UAS_2018', [
     }
 
     var landCoverCORINELayer = L.esri.featureLayer({
+      name: "Classification CORINE",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover_CORINE/FeatureServer/0",
       style: function(feature) {
         return {
@@ -773,140 +796,203 @@ angular.module('UAS_2018', [
       "Ground Sensors": sensorLayer
     };
 
+    var mapLayers = [orthophotoMSlayer, orthophotoRGBlayer, DSMlayer, hillshadelayer, NDVIlayer, slopelayer, aspectlayer, flightPlanLayer, flightPointLayer, landCoverUASLayer, landCoverCORINELayer, sensorLayer]
+    var layerNames = [];
+
     //Initiate layers control method and add to map
     $scope.ctrl = L.control.layers(baseLayers, overlays, {
       position: 'topleft',
       autoZIndex: true
     }).addTo(map);
 
-    var descriptionBox = L.control({position: 'bottomleft'});
-
-    $scope.infoBox = function () {
-      descriptionBox.onAdd = function () {
-                    var div = L.DomUtil.create('UAaSLayers', 'layers-description');
-
-                    var overlayLayers = $scope.ctrl.getActiveOverlays();
-                    var orthophotoRGBDisplayValue = "none";
-                    var orthophotoMSDisplayValue = "none";
-                    var DSMDisplayValue = "none";
-                    var hillshadeDisplayValue = "none";
-                    var ndviDisplayValue = "none";
-                    var slopeDisplayValue = "none";
-                    var aspectDisplayValue = "none";
-                    var flightPlanDisplayValue = "none";
-                    var flightPointDisplayValue = "none";
-                    var classificationUASDisplayValue = "none";
-                    var classificationCORINEDisplayValue = "none";
-                    var groundSensorsDisplayValue = "none";
-
-
-                    for (var overlayId in overlayLayers) {
-                        //console.log(overlayLayers[overlayId].name);
-                        var layerName = overlayLayers[overlayId].name;
-                        if (layerName === 'Orthophoto RGB') {
-                            orthophotoRGBDisplayValue = "";
-                        }
-                        if (layerName === 'Orthophoto Multispectral') {
-                            orthophotoMSDisplayValue = "";
-                        }
-                        if (layerName === 'Digital Surface Model') {
-                            DSMDisplayValue = "";
-                        }
-                        if (layerName === "Hillshade") {
-                            hillshadeDisplayValue = "";
-                        }
-                        if (layerName === "NDVI") {
-                            ndviDisplayValue = "";
-                        }
-                        if (layerName === 'Slope') {
-                            slopeDisplayValue = "";
-                        }
-                        if (layerName === "Aspect") {
-                            aspectDisplayValue = "";
-                        }
-                        if (layerName === 'Flight Plan') {
-                            flightPlanDisplayValue = "";
-                        }
-                        if (layerName === "Flight Points") {
-                            flightPointDisplayValue = "";
-                        }
-                        if (layerName === "Classification UAS") {
-                            classificationUASDisplayValue = "";
-                        }
-                        if (layerName === "Classification CORINE") {
-                            classificationCORINEDisplayValue = "";
-                        }
-                        if (layerName === "Ground Sensors") {
-                            groundSensorsDisplayValue = "";
-                        }
-                    }
-
-
-                    var valuesTable = '<span class="layer-description-title">Layers description:</span> <br>';
-                    valuesTable += '<div class="layer-description-container">';
-
-                    valuesTable += '<div id="Mosaic" style="display: ' + orthophotoRGBDisplayValue + '"><span>';
-                    valuesTable += '<b>Mosaic:</b> Orthomosaic of RGB bands (Red, Green, Blue).';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="DSM" style="display: ' + orthophotoMSDisplayValue + '"><span>';
-                    valuesTable += '<b>DSM:</b> Digital Surface Model of the the project area, dervied from overlapped images taken by the drone.';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="NDVI" style="display: ' + DSMDisplayValue + '"><span>';
-                    valuesTable += '<b>NDVI:</b> Normalized Difference Vegetation Index of the project area depicting the health condition of surrounding vegetation.';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="FalseColor" style="display: ' + hillshadeDisplayValue + '"><span>';
-                    valuesTable += '<b>False Color:</b> A multisppectral image of the project area composed of five bands: Green, Red, Red Edge, NIR1, NIR2.';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="FlightPlan" style="display: ' + ndviDisplayValue + '"><span>';
-                    valuesTable += '<b>Flight Plan:</b> The path followed by the drone, displaying the route and the flight\'s altitude.';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="Aspect" style="display: ' + slopeDisplayValue + '"><span>';
-                    valuesTable += '<b>Aspect:</b> This layer displays the direction the slopes face to illustrate the surface terrain in the study area.';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="Slope" style="display: ' + aspectDisplayValue + '"><span>';
-                    valuesTable += '<b>Slope:</b> Derived from the DSM, this layer contains slope angle of project area to demonstrate topograpy.';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="Hillshade" style="display: ' + flightPlanDisplayValue + '"><span>';
-                    valuesTable += '<b>Hillshade:</b> This layer is a shaded relief raster created by the DSM and the sun angle.';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="Classification" style="display: ' + flightPointDisplayValue + '"><span>';
-                    valuesTable += '<b>Classification:</b> A supervised classification of land use and land cover of the study area.';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="FloatingPoints" style="display: ' + classificationUASDisplayValue + '"><span>';
-                    valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="FloatingPoints" style="display: ' + classificationCORINEDisplayValue + '"><span>';
-                    valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
-                    valuesTable += '</span></div>';
-
-                    valuesTable += '<div id="FloatingPoints" style="display: ' + groundSensorsDisplayValue + '"><span>';
-                    valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
-                    valuesTable += '</span></div>';
-
-
-                    valuesTable += '</div>';
-
-                    div.innerHTML += '<div ng-if="!screenIsXS">' + valuesTable + '</div>';
-
-                    var linkFunction = $compile(angular.element(div));
-                    var newScope = $scope.$new();
-
-                    return linkFunction(newScope)[0];
-
-                    return div;
-                };
-                descriptionBox.addTo(map);
+    // Legend Control
+    for (i = 0; i < mapLayers.length; i++) {
+      layerNames.push(mapLayers[i].options.name)
     }
+
+    $scope.layerNames = layerNames
+
+    console.log($scope.layerNames)
+
+    $scope.createLegend = function(layer) {
+      var legendText
+      var legendImage
+      switch (layer) {
+        case "Orthophoto RGB":
+          break;
+        case "Orthophoto Multispectral":
+          break;
+        case "Digital Surface Model":
+          document.getElementById("legendImage").src = ".\home\resources\legend\DSM_withoutName.png";
+          break;
+        case "Hillshade":
+
+          break;
+        case "NDVI":
+
+          break;
+        case "Slope":
+
+          break;
+        case "Aspect":
+
+          break;
+        case "Flight plan":
+
+          break;
+        case "Flight Points":
+
+          break;
+        case "Land Cover UAS":
+
+          break;
+        case "Land Cover CORINE":
+
+          break;
+        case "Ground Sensors":
+
+          break;
+        default:
+
+      }
+
+
+    }
+
+    $scope.onChange = function() {
+      console.log($scope.selectedLayer)
+      $scope.layerDescription = $scope.createLegend
+    }
+
+
+    // var descriptionBox = L.control({position: 'bottomleft'});
+    //
+    // $scope.infoBox = function () {
+    //   descriptionBox.onAdd = function () {
+    //                 var div = L.DomUtil.create('UAaSLayers', 'layers-description');
+    //
+    //                 var overlayLayers = $scope.ctrl.getActiveOverlays();
+    //                 var orthophotoRGBDisplayValue = "none";
+    //                 var orthophotoMSDisplayValue = "none";
+    //                 var DSMDisplayValue = "none";
+    //                 var hillshadeDisplayValue = "none";
+    //                 var ndviDisplayValue = "none";
+    //                 var slopeDisplayValue = "none";
+    //                 var aspectDisplayValue = "none";
+    //                 var flightPlanDisplayValue = "none";
+    //                 var flightPointDisplayValue = "none";
+    //                 var classificationUASDisplayValue = "none";
+    //                 var classificationCORINEDisplayValue = "none";
+    //                 var groundSensorsDisplayValue = "none";
+    //
+    //
+    //                 for (var overlayId in overlayLayers) {
+    //                     //console.log(overlayLayers[overlayId].name);
+    //                     var layerName = overlayLayers[overlayId].name;
+    //                     if (layerName === 'Orthophoto RGB') {
+    //                         orthophotoRGBDisplayValue = "";
+    //                     }
+    //                     if (layerName === 'Orthophoto Multispectral') {
+    //                         orthophotoMSDisplayValue = "";
+    //                     }
+    //                     if (layerName === 'Digital Surface Model') {
+    //                         DSMDisplayValue = "";
+    //                     }
+    //                     if (layerName === "Hillshade") {
+    //                         hillshadeDisplayValue = "";
+    //                     }
+    //                     if (layerName === "NDVI") {
+    //                         ndviDisplayValue = "";
+    //                     }
+    //                     if (layerName === 'Slope') {
+    //                         slopeDisplayValue = "";
+    //                     }
+    //                     if (layerName === "Aspect") {
+    //                         aspectDisplayValue = "";
+    //                     }
+    //                     if (layerName === 'Flight Plan') {
+    //                         flightPlanDisplayValue = "";
+    //                     }
+    //                     if (layerName === "Flight Points") {
+    //                         flightPointDisplayValue = "";
+    //                     }
+    //                     if (layerName === "Classification UAS") {
+    //                         classificationUASDisplayValue = "";
+    //                     }
+    //                     if (layerName === "Classification CORINE") {
+    //                         classificationCORINEDisplayValue = "";
+    //                     }
+    //                     if (layerName === "Ground Sensors") {
+    //                         groundSensorsDisplayValue = "";
+    //                     }
+    //                 }
+    //
+    //
+    //                 var valuesTable = '<span class="layer-description-title">Layers description:</span> <br>';
+    //                 valuesTable += '<div class="layer-description-container">';
+    //
+    //                 valuesTable += '<div id="Mosaic" style="display: ' + orthophotoRGBDisplayValue + '"><span>';
+    //                 valuesTable += '<b>Mosaic:</b> Orthomosaic of RGB bands (Red, Green, Blue).';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="DSM" style="display: ' + orthophotoMSDisplayValue + '"><span>';
+    //                 valuesTable += '<b>DSM:</b> Digital Surface Model of the the project area, dervied from overlapped images taken by the drone.';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="NDVI" style="display: ' + DSMDisplayValue + '"><span>';
+    //                 valuesTable += '<b>NDVI:</b> Normalized Difference Vegetation Index of the project area depicting the health condition of surrounding vegetation.';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="FalseColor" style="display: ' + hillshadeDisplayValue + '"><span>';
+    //                 valuesTable += '<b>False Color:</b> A multisppectral image of the project area composed of five bands: Green, Red, Red Edge, NIR1, NIR2.';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="FlightPlan" style="display: ' + ndviDisplayValue + '"><span>';
+    //                 valuesTable += '<b>Flight Plan:</b> The path followed by the drone, displaying the route and the flight\'s altitude.';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="Aspect" style="display: ' + slopeDisplayValue + '"><span>';
+    //                 valuesTable += '<b>Aspect:</b> This layer displays the direction the slopes face to illustrate the surface terrain in the study area.';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="Slope" style="display: ' + aspectDisplayValue + '"><span>';
+    //                 valuesTable += '<b>Slope:</b> Derived from the DSM, this layer contains slope angle of project area to demonstrate topograpy.';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="Hillshade" style="display: ' + flightPlanDisplayValue + '"><span>';
+    //                 valuesTable += '<b>Hillshade:</b> This layer is a shaded relief raster created by the DSM and the sun angle.';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="Classification" style="display: ' + flightPointDisplayValue + '"><span>';
+    //                 valuesTable += '<b>Classification:</b> A supervised classification of land use and land cover of the study area.';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="FloatingPoints" style="display: ' + classificationUASDisplayValue + '"><span>';
+    //                 valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="FloatingPoints" style="display: ' + classificationCORINEDisplayValue + '"><span>';
+    //                 valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
+    //                 valuesTable += '</span></div>';
+    //
+    //                 valuesTable += '<div id="FloatingPoints" style="display: ' + groundSensorsDisplayValue + '"><span>';
+    //                 valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
+    //                 valuesTable += '</span></div>';
+    //
+    //
+    //                 valuesTable += '</div>';
+    //
+    //                 div.innerHTML += '<div ng-if="!screenIsXS">' + valuesTable + '</div>';
+    //
+    //                 var linkFunction = $compile(angular.element(div));
+    //                 var newScope = $scope.$new();
+    //
+    //                 return linkFunction(newScope)[0];
+    //
+    //                 return div;
+    //             };
+    //             descriptionBox.addTo(map);
+    // }
 
     // $scope.onOverlayAdd = function (e) {
     //             if (e.name === 'Mosaic') {
@@ -914,14 +1000,19 @@ angular.module('UAS_2018', [
     //                 $scope.zoomRiver();
     //             }
 
-    $scope.infoBox();
+    // $scope.infoBox();
+
+    // $scope.overlays
+
+
+
 
     var overlays
 
     // set view for layers
     map.on('overlayadd', function(layer) {
       overlays = $scope.ctrl.getActiveOverlays()
-      console.log(overlays)
+      console.log(layer)
       if (layer.name == "Ground Sensors") {
         map.fitBounds(sensorLayer.getBounds());
         // } else {
