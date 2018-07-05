@@ -64,11 +64,33 @@ angular.module('UAS_2018', [
       });
   }])
 
-  .controller('uas2018_map_controller', ['$scope', '$http', function($scope, $http) {
+  .controller('uas2018_map_controller', ['$scope', '$http', '$compile', function($scope, $http, $compile) {
 
     //load google packages for the charts
     google.charts.load('current', {
       packages: ['corechart', 'line']
+    });
+
+    L.Control.Layers.include({
+      getActiveOverlays: function() {
+
+        // Create array for holding active layers
+        var active = [];
+        var context = this;
+        // Iterate all layers in control
+        context._layers.forEach(function(obj) {
+
+          // Check if it's an overlay and added to the map
+          if (obj.overlay && context._map.hasLayer(obj.layer)) {
+
+            // Push layer to active array
+            active.push(obj);
+          }
+        });
+
+        // Return array
+        return active;
+      }
     });
 
     // Load basemaps
@@ -77,48 +99,48 @@ angular.module('UAS_2018', [
     // var imagery = L.esri.basemapLayer("Imagery");
 
     var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                    'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+      '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+      'Imagery © <a href="http://mapbox.com">Mapbox</a>'
 
     var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ';
 
     var grayscale = L.tileLayer(mbUrl, {
-            id: 'mapbox.light',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-        })
+      id: 'mapbox.light',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var streets = L.tileLayer(mbUrl, {
-            id: 'mapbox.streets',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-        })
+      id: 'mapbox.streets',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var outdoors = L.tileLayer(mbUrl, {
-            id: 'mapbox.outdoors',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-      })
+      id: 'mapbox.outdoors',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var satellite = L.tileLayer(mbUrl, {
-            id: 'mapbox.satellite',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-      })
+      id: 'mapbox.satellite',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var dark = L.tileLayer(mbUrl, {
-            id: 'mapbox.dark',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-      })
+      id: 'mapbox.dark',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
 
     var satellitestreets = L.tileLayer(mbUrl, {
-            id: 'mapbox.streets-satellite',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-      });
+      id: 'mapbox.streets-satellite',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    });
 
     // Main map object
     var map = L.map('map', {
@@ -139,6 +161,13 @@ angular.module('UAS_2018', [
     // Center on AOI button
     L.easyButton('<span><img src="./home/resources/icons/meeting-point-32.png" style="width: 15px; height: 15px;"></img></span>', function(btn, map) {
       map.setView([mapHome.lat, mapHome.lng], mapHome.zoom);
+    }, 'Zoom To Home', {
+      position: 'bottomright'
+    }).addTo(map);
+
+    // Display legend button
+    L.easyButton('<span><img src="./home/resources/icons/meeting-point-32.png" style="width: 15px; height: 15px;"></img></span>', function(btn) {
+      console.log("wank")
     }, 'Zoom To Home', {
       position: 'bottomleft'
     }).addTo(map);
@@ -495,7 +524,7 @@ angular.module('UAS_2018', [
 
 
     //////Orthophoto RGB//////
-    var orthophotoRGB = L.esri.tiledMapLayer({
+    var orthophotoRGBlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_RGB/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -505,7 +534,7 @@ angular.module('UAS_2018', [
     // .addTo(map);
 
     //////Orthophoto RGB//////
-    var orthophotoMS = L.esri.tiledMapLayer({
+    var orthophotoMSlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_Multispectral/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -566,17 +595,19 @@ angular.module('UAS_2018', [
     //Flight plan
     var flightPlanLayer = L.esri.featureLayer({
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPath/FeatureServer/0",
-      style: {color: "#41b6c4"}
+      style: {
+        color: "#41b6c4"
+      }
     });
 
     ////Flight Point////
-    $scope.getColor = function (x) {
-    return x < 94 ? '#ffffb2' :
+    $scope.getColor = function(x) {
+      return x < 94 ? '#ffffb2' :
         x < 95 ? '#fecc5c' :
         x < 95.5 ? '#fd8d3c' :
         x < 96 ? '#f03b20' :
-            x > 96 ? '#bd0026' :
-                '#f01010';
+        x > 96 ? '#bd0026' :
+        '#f01010';
     };
 
     $scope.coordsOnEachFeature = function(feature, layer) {
@@ -719,7 +750,7 @@ angular.module('UAS_2018', [
       },
       // style: style,
       onEachFeature: $scope.classCorineOnEachFeature
-    });
+    })
     // })
 
     // $scope.getInfoBox = function() {
@@ -728,8 +759,8 @@ angular.module('UAS_2018', [
 
     //Add here if additional overlays are to be added
     var overlays = {
-      "Orthophoto RGB": orthophotoRGB,
-      "Orthophoto Multispectral": orthophotoMS,
+      "Orthophoto RGB": orthophotoRGBlayer,
+      "Orthophoto Multispectral": orthophotoMSlayer,
       "Digital Surface Model": DSMlayer,
       "Hillshade": hillshadelayer,
       "NDVI": NDVIlayer,
@@ -742,25 +773,159 @@ angular.module('UAS_2018', [
       "Ground Sensors": sensorLayer
     };
 
-    // var elem = document.getElementById("ortRGBbtn")
-    // elem.addEventListener("click", function(){
-    //   alert("hello world")
-    // })
-
     //Initiate layers control method and add to map
-    L.control.layers(baseLayers, overlays, {
+    $scope.ctrl = L.control.layers(baseLayers, overlays, {
       position: 'topleft',
       autoZIndex: true
     }).addTo(map);
 
+    var descriptionBox = L.control({position: 'bottomleft'});
+
+    $scope.infoBox = function () {
+      descriptionBox.onAdd = function () {
+                    var div = L.DomUtil.create('UAaSLayers', 'layers-description');
+
+                    var overlayLayers = $scope.ctrl.getActiveOverlays();
+                    var orthophotoRGBDisplayValue = "none";
+                    var orthophotoMSDisplayValue = "none";
+                    var DSMDisplayValue = "none";
+                    var hillshadeDisplayValue = "none";
+                    var ndviDisplayValue = "none";
+                    var slopeDisplayValue = "none";
+                    var aspectDisplayValue = "none";
+                    var flightPlanDisplayValue = "none";
+                    var flightPointDisplayValue = "none";
+                    var classificationUASDisplayValue = "none";
+                    var classificationCORINEDisplayValue = "none";
+                    var groundSensorsDisplayValue = "none";
+
+
+                    for (var overlayId in overlayLayers) {
+                        //console.log(overlayLayers[overlayId].name);
+                        var layerName = overlayLayers[overlayId].name;
+                        if (layerName === 'Orthophoto RGB') {
+                            orthophotoRGBDisplayValue = "";
+                        }
+                        if (layerName === 'Orthophoto Multispectral') {
+                            orthophotoMSDisplayValue = "";
+                        }
+                        if (layerName === 'Digital Surface Model') {
+                            DSMDisplayValue = "";
+                        }
+                        if (layerName === "Hillshade") {
+                            hillshadeDisplayValue = "";
+                        }
+                        if (layerName === "NDVI") {
+                            ndviDisplayValue = "";
+                        }
+                        if (layerName === 'Slope') {
+                            slopeDisplayValue = "";
+                        }
+                        if (layerName === "Aspect") {
+                            aspectDisplayValue = "";
+                        }
+                        if (layerName === 'Flight Plan') {
+                            flightPlanDisplayValue = "";
+                        }
+                        if (layerName === "Flight Points") {
+                            flightPointDisplayValue = "";
+                        }
+                        if (layerName === "Classification UAS") {
+                            classificationUASDisplayValue = "";
+                        }
+                        if (layerName === "Classification CORINE") {
+                            classificationCORINEDisplayValue = "";
+                        }
+                        if (layerName === "Ground Sensors") {
+                            groundSensorsDisplayValue = "";
+                        }
+                    }
+
+
+                    var valuesTable = '<span class="layer-description-title">Layers description:</span> <br>';
+                    valuesTable += '<div class="layer-description-container">';
+
+                    valuesTable += '<div id="Mosaic" style="display: ' + orthophotoRGBDisplayValue + '"><span>';
+                    valuesTable += '<b>Mosaic:</b> Orthomosaic of RGB bands (Red, Green, Blue).';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="DSM" style="display: ' + orthophotoMSDisplayValue + '"><span>';
+                    valuesTable += '<b>DSM:</b> Digital Surface Model of the the project area, dervied from overlapped images taken by the drone.';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="NDVI" style="display: ' + DSMDisplayValue + '"><span>';
+                    valuesTable += '<b>NDVI:</b> Normalized Difference Vegetation Index of the project area depicting the health condition of surrounding vegetation.';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="FalseColor" style="display: ' + hillshadeDisplayValue + '"><span>';
+                    valuesTable += '<b>False Color:</b> A multisppectral image of the project area composed of five bands: Green, Red, Red Edge, NIR1, NIR2.';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="FlightPlan" style="display: ' + ndviDisplayValue + '"><span>';
+                    valuesTable += '<b>Flight Plan:</b> The path followed by the drone, displaying the route and the flight\'s altitude.';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="Aspect" style="display: ' + slopeDisplayValue + '"><span>';
+                    valuesTable += '<b>Aspect:</b> This layer displays the direction the slopes face to illustrate the surface terrain in the study area.';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="Slope" style="display: ' + aspectDisplayValue + '"><span>';
+                    valuesTable += '<b>Slope:</b> Derived from the DSM, this layer contains slope angle of project area to demonstrate topograpy.';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="Hillshade" style="display: ' + flightPlanDisplayValue + '"><span>';
+                    valuesTable += '<b>Hillshade:</b> This layer is a shaded relief raster created by the DSM and the sun angle.';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="Classification" style="display: ' + flightPointDisplayValue + '"><span>';
+                    valuesTable += '<b>Classification:</b> A supervised classification of land use and land cover of the study area.';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="FloatingPoints" style="display: ' + classificationUASDisplayValue + '"><span>';
+                    valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="FloatingPoints" style="display: ' + classificationCORINEDisplayValue + '"><span>';
+                    valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
+                    valuesTable += '</span></div>';
+
+                    valuesTable += '<div id="FloatingPoints" style="display: ' + groundSensorsDisplayValue + '"><span>';
+                    valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
+                    valuesTable += '</span></div>';
+
+
+                    valuesTable += '</div>';
+
+                    div.innerHTML += '<div ng-if="!screenIsXS">' + valuesTable + '</div>';
+
+                    var linkFunction = $compile(angular.element(div));
+                    var newScope = $scope.$new();
+
+                    return linkFunction(newScope)[0];
+
+                    return div;
+                };
+                descriptionBox.addTo(map);
+    }
+
+    // $scope.onOverlayAdd = function (e) {
+    //             if (e.name === 'Mosaic') {
+    //                 $("#Mosaic").css("display", "");
+    //                 $scope.zoomRiver();
+    //             }
+
+    $scope.infoBox();
+
+    var overlays
+
     // set view for layers
     map.on('overlayadd', function(layer) {
-      // console.log(layer.name)
-      console.log(layer)
+      overlays = $scope.ctrl.getActiveOverlays()
+      console.log(overlays)
       if (layer.name == "Ground Sensors") {
         map.fitBounds(sensorLayer.getBounds());
-      // } else {
-      //   map.setView([51.944990, 7.572810], 17);
+        // } else {
+        //   map.setView([51.944990, 7.572810], 17);
       }
     });
   }])
