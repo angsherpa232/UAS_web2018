@@ -1,17 +1,7 @@
-<div id="sidebar">
-  <div id="CheckboxDIV">
-  </div>
-  <div id="chart_div"></div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div id='map' class="col-md-12"></div>
-    <div id='process_input'>
+<div id='map'></div>
+<div id='process_input'>
   <label for='buffer'>Buffer (meter)</label>
   <input type='number' id='buffer' name='buffer' placeholder='Eg: 0.003' ng-init="_value='btn btn-primary disabled'" ng-model="buffer_radius" ng-change="bufferFunction()"></input>
   <button type="button" id="buffer_button" class="{{_value}}" ng-click="executeBuffer()">Execute</button>
   <button type="button" id="buffer_button" class="btn btn-primary enabled" ng-click="clearBuffer()">Clear</button>
 </div>
-    </div>
-  </div>
