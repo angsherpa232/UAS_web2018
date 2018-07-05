@@ -566,9 +566,11 @@ angular.module('UAS_2018', [
 
     ////Flight Point////
     $scope.getColor = function (x) {
-    return x < 94 ? '#ffeda0' :
-        x < 96 ? '#feb24c' :
-            x > 96 ? '#f03b20' :
+    return x < 94 ? '#ffffb2' :
+        x < 95 ? '#fecc5c' :
+        x < 95.5 ? '#fd8d3c' :
+        x < 96 ? '#f03b20' :
+            x > 96 ? '#bd0026' :
                 '#f01010';
     };
 
