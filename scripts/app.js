@@ -561,7 +561,7 @@ angular.module('UAS_2018', [
     //Flight plan
     var flightPlanLayer = L.esri.featureLayer({
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPath/FeatureServer/0",
-      style: {color: "red"}
+      style: {color: "#41b6c4"}
     });
 
     ////Flight Point////
@@ -581,9 +581,9 @@ angular.module('UAS_2018', [
 
     var flightPointLayer = L.esri.featureLayer({
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPoints/FeatureServer/0",
-      style: function(feature){
-        console.log(feature)
-      },
+      // style: function(feature){
+      //   console.log(feature)
+      // },
       pointToLayer: function(feature, latlng) {
         return new L.CircleMarker(latlng, {
           radius: 1.5,
