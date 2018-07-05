@@ -64,7 +64,7 @@ angular.module('UAS_2018', [
       });
   }])
 
-  .controller('uas2018_map_controller', ['$scope', '$http', function($scope, $http) {
+  .controller('uas2018_map_controller', ['$scope', '$compile', '$http', function($scope, $compile, $http) {
 
     //load google packages for the chart
     google.charts.load('current', {
@@ -77,43 +77,48 @@ angular.module('UAS_2018', [
     // var imagery = L.esri.basemapLayer("Imagery");
 
     var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                    'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+      '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+      'Imagery © <a href="http://mapbox.com">Mapbox</a>'
 
     var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ';
 
     var grayscale = L.tileLayer(mbUrl, {
-            id: 'mapbox.light',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-        })
+      id: 'mapbox.light',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var streets = L.tileLayer(mbUrl, {
-            id: 'mapbox.streets',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-        })
+      id: 'mapbox.streets',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var outdoors = L.tileLayer(mbUrl, {
-            id: 'mapbox.outdoors',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-        })
+      id: 'mapbox.outdoors',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var satellite = L.tileLayer(mbUrl, {
-            id: 'mapbox.satellite',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-        })
-    var dark = L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr, maxZoom: 22, maxNativeZoom: 18})
+      id: 'mapbox.satellite',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
+    var dark = L.tileLayer(mbUrl, {
+      id: 'mapbox.dark',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
 
     var satellitestreets = L.tileLayer(mbUrl, {
-            id: 'mapbox.streets-satellite',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-        });
+      id: 'mapbox.streets-satellite',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    });
 
     // Main map object
     var map = L.map('map', {
@@ -573,7 +578,9 @@ angular.module('UAS_2018', [
     //Flight plan
     var flightPlanLayer = L.esri.featureLayer({
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPath/FeatureServer/0",
-      style: {color: "red"}
+      style: {
+        color: "red"
+      }
       // style: function(feature) {
       //   return {
       //     "color": $scope.getColor(feature.properties.Altitude),
@@ -639,8 +646,71 @@ angular.module('UAS_2018', [
     //     dashArray: '0.1',
     //     fillOpacity: 0.8
     //   };
-    // }
+    // // }
+    // $scope.createMap = function () {
+    //
+    //         L.Control.Layers.include({
+    //             getActiveOverlays: function () {
+    //
+    //                 // Create array for holding active layers
+    //                 var active = [];
+    //                 var context = this;
+    //                 // Iterate all layers in control
+    //                 context._layers.forEach(function (obj) {
+    //
+    //                     // Check if it's an overlay and added to the map
+    //                     if (obj.overlay && context._map.hasLayer(obj.layer)) {
+    //
+    //                         // Push layer to active array
+    //                         active.push(obj);
+    //                     }
+    //                 });
+    //
+    //                 // Return array
+    //                 return active;
+    //             }
+    //         });
+    map.on('overlayadd', onOverlayAdd);
 
+    function onOverlayAdd(e) {
+      var descriptionBox = L.control({
+        position: 'topleft'
+      });
+      /*Layers Legend*/
+      descriptionBox.onAdd = function() {
+        var div = L.DomUtil.create('UAaSLayers', 'layers-description');
+
+        var overlayLayers ;
+        var hillshadeDisplayValue = "none";
+        for (var overlayId in overlayLayers) {
+          //console.log(overlayLayers[overlayId].name);
+          var layerName = overlayLayers[overlayId].name;
+          if (layerName === 'Hillshade') {
+            hillshadeDisplayValue = "";
+          }
+        }
+        var valuesTable = '<span class="layer-description-title">Layers description:</span> <br>';
+        valuesTable += '<div class="layer-description-container">';
+
+        valuesTable += '<div id="Hillshade" style="display: ' + hillshadeDisplayValue + '"><span>';
+        valuesTable += '<b>Hillshade:</b> This layer is a shaded relief raster created by the DSM and the sun angle.';
+        valuesTable += '</span></div>';
+
+        valuesTable += '</div>';
+
+        div.innerHTML += '<div ng-if="!screenIsXS">' + valuesTable + '</div>';
+        var linkFunction = $compile(angular.element(div));
+        var newScope = $scope.$new();
+        console.log(linkFunction(newScope)[0]);
+        //  console.log(div);
+        return linkFunction(newScope)[0];
+        return div;
+
+      };
+      //L.control.layers(descriptionBox, overlays, {position:'bottomleft'}).addTo(map);
+      descriptionBox.addTo(map);
+
+    }
     // Compile land cover UAS layer
     var landCoverUASLayer = L.esri.featureLayer({
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover/FeatureServer/0",
@@ -730,7 +800,10 @@ angular.module('UAS_2018', [
       "Land Cover CORINE": landCoverCORINELayer,
       "Ground Sensors": sensorLayer
     };
+   $scope.ctrl = L.control.layers(baseLayers, $scope.overlays);
+//};//end of createMap
 
+ //$scope.createMap();
     // var elem = document.getElementById("ortRGBbtn")
     // elem.addEventListener("click", function(){
     //   alert("hello world")
@@ -745,11 +818,11 @@ angular.module('UAS_2018', [
     // set view for layers
     map.on('overlayadd', function(layer) {
       // console.log(layer.name)
-      console.log(layer)
+      //console.log(layer)
       if (layer.name == "Ground Sensors") {
         map.fitBounds(sensorLayer.getBounds());
-      // } else {
-      //   map.setView([51.944990, 7.572810], 17);
+        // } else {
+        //   map.setView([51.944990, 7.572810], 17);
       }
     });
   }])
