@@ -99,21 +99,26 @@ angular.module('UAS_2018', [
             attribution: mbAttr,
             maxZoom: 22,
             maxNativeZoom: 18
-        })
+      })
     var satellite = L.tileLayer(mbUrl, {
             id: 'mapbox.satellite',
             attribution: mbAttr,
             maxZoom: 22,
             maxNativeZoom: 18
-        })
-    var dark = L.tileLayer(mbUrl, {id: 'mapbox.dark', attribution: mbAttr, maxZoom: 22, maxNativeZoom: 18})
+      })
+    var dark = L.tileLayer(mbUrl, {
+            id: 'mapbox.dark',
+            attribution: mbAttr,
+            maxZoom: 22,
+            maxNativeZoom: 18
+      })
 
     var satellitestreets = L.tileLayer(mbUrl, {
             id: 'mapbox.streets-satellite',
             attribution: mbAttr,
             maxZoom: 22,
             maxNativeZoom: 18
-        });
+      });
 
     // Main map object
     var map = L.map('map', {
