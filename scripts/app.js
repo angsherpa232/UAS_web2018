@@ -66,7 +66,7 @@ angular.module('UAS_2018', [
 
   .controller('uas2018_map_controller', ['$scope', '$http', function($scope, $http) {
 
-    //load google packages for the chart
+    //load google packages for the charts
     google.charts.load('current', {
       packages: ['corechart', 'line']
     });
@@ -124,12 +124,14 @@ angular.module('UAS_2018', [
       maxNativeZoom: 18
     });
 
+    // Map default extent
     var mapHome = {
       lat: 51.944990,
       lng: 7.572810,
       zoom: 17
     };
 
+    // Center on AOI button
     L.easyButton('<span><img src="./home/resources/icons/meeting-point-32.png" style="width: 15px; height: 15px;"></img></span>', function(btn, map) {
       map.setView([mapHome.lat, mapHome.lng], mapHome.zoom);
     }, 'Zoom To Home', {
@@ -483,14 +485,11 @@ angular.module('UAS_2018', [
       var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
       //Plot the coordinates on it.
       chart.draw(data, options);
-
-
     }
 
 
 
     //////Orthophoto RGB//////
-
     var orthophotoRGB = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_RGB/MapServer",
       zIndex: 200,
@@ -501,7 +500,6 @@ angular.module('UAS_2018', [
     // .addTo(map);
 
     //////Orthophoto RGB//////
-
     var orthophotoMS = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_Multispectral/MapServer",
       zIndex: 200,
@@ -528,7 +526,6 @@ angular.module('UAS_2018', [
 
 
     ////// NDVI layer //////
-
     var NDVIlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
       zIndex: 200,
@@ -537,7 +534,6 @@ angular.module('UAS_2018', [
     })
 
     ////// Slope layer //////
-
     var slopelayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Slope_2018/MapServer",
       zIndex: 200,
@@ -547,7 +543,6 @@ angular.module('UAS_2018', [
 
 
     ////// Aspect  layer //////
-
     var aspectlayer = L.esri.tiledMapLayer({
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Aspect_2018/MapServer",
       zIndex: 200,
@@ -555,37 +550,48 @@ angular.module('UAS_2018', [
       // maxNativeZoom: 18
     })
 
-    ////// Flight plan layer //////
+    ////// Flight plan layers //////
 
-    $scope.flightPlanOnEachFeature = function(feature, layer) {
-      var popupContent = "Altitude: " + feature.properties.Altitude;
-      layer.bindPopup(popupContent);
-    };
-
-    // Sets color based on altitude
-    // $scope.getColor = function(x) {
-    //   return x < 46 ? '#ffeda0' :
-    //     x < 48.1 ? '#feb24c' :
-    //     x < 50.8 ? '#f03b20' :
-    //     '#f01010';
+    //// Flight plan popup ////  omitted because layer has only one feature (multiline) and no altitude attribute
+    // $scope.flightPlanOnEachFeature = function(feature, layer) {
+    //   var popupContent = "Altitude: " + feature.properties.Altitude;
+    //   layer.bindPopup(popupContent);
     // };
 
     //Flight plan
     var flightPlanLayer = L.esri.featureLayer({
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPath/FeatureServer/0",
-      style: {color: "red"}
-      // style: function(feature) {
-      //   return {
-      //     "color": $scope.getColor(feature.properties.Altitude),
-      //     "opacity": 1,
-      //   };
-      // },
-      // onEachFeature: $scope.flightPlanOnEachFeature
+      style: {color: "#41b6c4"}
     });
 
-    //Flight Point
+    ////Flight Point////
+    $scope.getColor = function (x) {
+    return x < 94 ? '#ffffb2' :
+        x < 95 ? '#fecc5c' :
+        x < 95.5 ? '#fd8d3c' :
+        x < 96 ? '#f03b20' :
+            x > 96 ? '#bd0026' :
+                '#f01010';
+    };
+
+    $scope.coordsOnEachFeature = function(feature, layer) {
+      var popupContent = "Latitude: " + feature.properties.Latitude + "<br>" + "Longitude: " + feature.properties.Longitude + "<br>" + "Altitude: " + feature.properties.Altitude + " masl";
+      layer.bindPopup(popupContent);
+    };
+
     var flightPointLayer = L.esri.featureLayer({
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPoints/FeatureServer/0",
+      // style: function(feature){
+      //   console.log(feature)
+      // },
+      pointToLayer: function(feature, latlng) {
+        return new L.CircleMarker(latlng, {
+          radius: 1.5,
+          fillOpacity: 0.85,
+          color: $scope.getColor(feature.properties.Altitude)
+        });
+      },
+      onEachFeature: $scope.coordsOnEachFeature
     });
 
     /////// Land Classification //////
