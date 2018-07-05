@@ -30,9 +30,7 @@ var baseLayers = {
   var assetLayerGroup = L.layerGroup().addTo(map);
 
 //// Retrieving geojson file begins ///////
-
 var dataURL = "./home/resources/markers_process.geojson"
-
 $.ajax({
   url: dataURL,
   async: false,
@@ -126,9 +124,7 @@ $scope.executeBuffer = function () {
     // var complexInput = inputGenerator.createComplexDataInput_wps_1_0_and_2_0(identifier,
     // 					mimeType, schema, encoding, asReference, complexPayload);
     var complexInput = inputGenerator.createComplexDataInput_wps_1_0_and_2_0('data',
-
     					'application/vnd.geo+json', undefined, undefined, true, 'https://api.myjson.com/bins/wteyi');
-
 
 
     ////////////////// OUTPUT /////////////////////
