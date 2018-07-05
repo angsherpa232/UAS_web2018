@@ -12,6 +12,16 @@ html, body {
   background-position: center;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+img {
+  height: 100%;
+  width: 100%;
+}
+
 #bg {
   margin: auto;
   overflow: auto;
@@ -22,6 +32,12 @@ html, body {
   padding-top:50px;
   padding-bottom:30px;
   margin: 0px;
+  overflow: auto;
+}
+
+.homeText{
+  font-size: 20px;
+  padding: 0;
   overflow: auto;
 }
 
@@ -66,7 +82,7 @@ left: 5px;
   left: 5%;
   width: 87%;
   height: 97%;
-  padding: 40px;
+  padding: 80px;
 }
 
 .top-left {
@@ -106,7 +122,8 @@ left: 5px;
 } */
 
 #teamDiv{
-  padding-top: 80px;
+  padding-top: 50px;
+  padding-bottom: 50px;
 }
 
 
@@ -135,7 +152,19 @@ main {
   height: 88%;
   position: fixed;
   top: 50px;
-  left: 0;
+  bottom: 50px;
+}
+
+
+#process_input {
+  background-color: #476855;
+  display: block;
+  color: white;
+  position: absolute;
+  bottom: 70%;
+  left: 0.5%;
+  border: 2px solid #becec9;
+  border-radius: 0.4rem;
 }
 
 /*Styling the authentication form begins*/

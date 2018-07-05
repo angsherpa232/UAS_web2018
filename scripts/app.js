@@ -1,7 +1,7 @@
 var uas2018 = angular.module('uas2018', []);
 
 uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
-  if ($location.path() == '/login'){
+  if ($location.path() == '/login') {
     $scope.x = false;
   } else {
     $scope.x = true;
@@ -9,21 +9,12 @@ uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', f
 
 }]);
 
-// uas2018.controller('text_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
-//   $('.pagelink').click(function() {
-//     $('body').animate({
-//       scrollTop: eval($('#' + $(this).attr('target')).offset().top - 70)
-//     }, 1000);
-//   });
-// }]);
-
-
-
 
 angular.module('Authentication', []);
 angular.module('Home', []);
 
 angular.module('UAS_2018', [
+
   'Authentication',
   'Home',
   'ngRoute',
@@ -154,11 +145,12 @@ angular.module('UAS_2018', [
     }
   }).responseJSON
 
-  // Boolean value for closed (0) and opened (1) chart sidebar
-  var sidebar_opened = 0;
 
-  var markers = L.geoJson(jsonData, {
-    pointToLayer: function(feature, latlng) {
+    // Load ground sensor coordinate data, create markers and add as map layer
+    var marker_id;
+
+    var dataURL = "./home/resources/markers_project.geojson"
+
 
       switch ( feature.properties.Station ) {
         case "A":
@@ -215,9 +207,12 @@ angular.module('UAS_2018', [
         //console.log(feature);
         sidebar.show();
 
-        //ensure that all times a marked is clicked,
-        //all the checkbox from the class ".cb_chart_var" initiate as checked
-        $(".cb_chart_var").prop("checked", true)
+
+
+          //ensure that all times a marked is clicked,
+          //all the checkbox from the class ".cb_chart_var" initiate as checked
+          $(".cb_chart_var").prop("checked", true)
+
 
         if (sidebar_opened == 0) {
           sidebar_opened = 1;
@@ -228,11 +223,13 @@ angular.module('UAS_2018', [
     //EDIT_matheus
   }).addTo(map);
 
-  //creates a cluster object
-  var sensorLayer = L.markerClusterGroup();
 
-  //Add the variable that contains all the markers to the cluster object
-  sensorLayer.addLayer(markers);
+    //creates a cluster object
+    var sensorLayer = L.markerClusterGroup();
+
+    //Add the variable that contains all the markers to the cluster object
+    sensorLayer.addLayer(markers);
+
 
   //event listener for hiding the sidebar_popup when the user clicks in the map
   map.on('click', function(e) {
@@ -246,254 +243,22 @@ angular.module('UAS_2018', [
     process_marker_click(station_value);
   });
 
+
   $("#RadioDIV").on("change", ".radiobut", function() {
     //for each click(change) in the checkbox a new requestion to the fusion table is made.
     AirQuality_Chart();
   });
 
-  function process_marker_click(marker_station){
-    console.log("Station: "+marker_station);
-    switch ( marker_station ) {
-      //Water parameters points  ||  Fusiontable name: Water_parameters_river  ||  Fusiontable ID: 1MgGVSpMf3w7HHq5t4sPCsJPc8Wat1nVioG-TAJO3
-      case "A":
-      WaterParameters_Chart("A");
-      console.log('WaterParameters_Chart("A");');
-      break;
-      case "B":
-      WaterParameters_Chart("B");
-      console.log('WaterParameters_Chart("B");');
-      break;
-      case "C":
-      WaterParameters_Chart("C");
-      console.log('WaterParameters_Chart("C");');
-      break;
-      case "D":
-      WaterParameters_Chart("D");
-      console.log('WaterParameters_Chart("D");');
-      break;
 
-      //Air Quality points  ||  Fusiontable name: AQ_Processed  || Fusiontable ID: 1AkX22UU-fqR_gIyv_hBTYR55_7ksr1jjejr1N6ur
-      case "E":
-      case "F":
-      console.log('AirQuality_Chart();');
-      AirQuality_Chart();
-      break;
-
-      //Water Level points  ||  Fusiontable name: Water_level_processed ||  Fusiontable ID: 1h2_7KqG_3hHQZDLJijqFqSvILuM26unc5Hnksnhn
-      case "G": //OK
-      console.log('WaterLevel_Chart()');
-      WaterLevel_Chart();
-      break;
-
-      //Weather stations points  ||  Fusiontable name: WEATHER1_Processed  || Fusiontable ID: 1CBn0rAtMSTFH2jNbF7wXx8bkkwjn1xLnBdMCXqV6
-      case "H":
-      console.log('WeatherStation_Chart(H');
-      WeatherStation_Chart("1CBn0rAtMSTFH2jNbF7wXx8bkkwjn1xLnBdMCXqV6");
-      break;
-
-      //Weather stations points  ||  Fusiontable name: WEATHER2_Processed  ||  Fusiontable ID: 1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR
-      case "I": //OK
-      console.log('WeatherStation_Chart(I');
-      WeatherStation_Chart("1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR");
-      break;
-    }
-
-  }
-
-    function WaterParameters_Chart(Station_name){
-    document.getElementById("CheckboxDIV").innerHTML = "";
-    document.getElementById("RadioDIV").innerHTML = "";
-    document.getElementById("chart_div").innerHTML = "";
-
-    //===================- FUNCTION request_fusiontable_data ===================
-    var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
-    url.push('sql=');
-    var query = "SELECT * "
-    query = query + " FROM 1MgGVSpMf3w7HHq5t4sPCsJPc8Wat1nVioG-TAJO3 ";
-    query = query + " WHERE 'Station' LIKE '" + Station_name +"'";
-    query = query + " ORDER BY 'Timestamp' ASC ";
-    var encodedQuery = encodeURIComponent(query);
-    url.push(encodedQuery);
-    url.push('&key=AIzaSyCoC9A3WgFneccRufbysInygnWrhCie-T0');
-
-    var queryData = $.ajax({
-      url: url.join(''),
-      async: false,
-    }).responseText
-    var queryJson = JSON.parse(queryData)
-
-    console.log( "++++Data from Fusiontable:" )
-    console.log( queryJson )
-
-    var rows = queryJson['rows'];
-
-    var checkbox_div = document.getElementById("CheckboxDIV");
-
-    for(var i=0;i<rows.length;i++){
-
-      var newInput = document.createElement("span");
-      newInput.setAttribute("id", "span_"+rows[i][0]);
-      checkbox_div.appendChild(newInput);
-
-      var date_replace = new Date( rows[i][4].replace(" ", "T") )
-      document.getElementById("span_"+rows[i][0]).innerHTML = date_replace+"</br>";
-
-      var newInput = document.createElement("div");
-      newInput.setAttribute("id", "div_"+rows[i][0]);
-      checkbox_div.appendChild(newInput);
-
-      var gaugeOptions_Temp = {min: 0, max: 40,
-        yellowFrom: 20, yellowTo: 25,redFrom: 25, redTo: 40,
-        minorTicks: 10, majorTicks:5, width: 250, height: 250};
-
-
-
-        gaugeData_Temp = new google.visualization.DataTable();
-        gaugeData_Temp.addColumn('number', 'Water Temp ºC');
-        gaugeData_Temp.addColumn('number', 'Ph');
-        gaugeData_Temp.addRows(2);
-        gaugeData_Temp.setCell(0, 0, rows[i][5]);
-        gaugeData_Temp.setCell(0, 1, rows[i][6]);
-
-        var gauge_Temp = new google.visualization.Gauge(document.getElementById("div_"+rows[i][0]));
-        gauge_Temp.draw(gaugeData_Temp, gaugeOptions_Temp);
-      }
-    }
-
-    function WaterLevel_Chart(){
-
-      document.getElementById("CheckboxDIV").innerHTML = "";
-      document.getElementById("RadioDIV").innerHTML = "";
-      document.getElementById("chart_div").innerHTML = "";
-
-
-      var text_html = '<iframe width="750" height="500" scrolling="no" frameborder="no" src="https://fusiontables.google.com/embedviz?containerId=googft-gviz-canvas&amp;viz=GVIZ&amp;t=LINE_AGGREGATE&amp;isXyPlot=true&amp;bsize=0.0&amp;q=select+col1%2C+col2+from+1h2_7KqG_3hHQZDLJijqFqSvILuM26unc5Hnksnhn&amp;qrs=+where+col1+%3E%3D+&amp;qre=+and+col1+%3C%3D+&amp;qe=+order+by+col1+asc&amp;uiversion=2&amp;gco_forceIFrame=true&amp;gco_hasLabelsColumn=true&amp;width=750&amp;height=500"></iframe>';
-      document.getElementById("chart_div").innerHTML = text_html;
-    }
-
-    function AirQuality_Chart(){
-      document.getElementById("CheckboxDIV").innerHTML = "";
-      document.getElementById("RadioDIV").innerHTML = "";
-      document.getElementById("chart_div").innerHTML = "";
-
-      var rb_html = '<input type="radio" class="radiobut" name="rb" value="pm25" checked> PM2.5<br>';
-      rb_html = rb_html+ '<input type="radio" class="radiobut" name="rb" value="pm10"> PM10<br>'
-      rb_html = rb_html+ '<input type="radio" class="radiobut" name="rb" value="rh"> Relative Humidity'
-      document.getElementById("RadioDIV").innerHTML = rb_html;
-
-
-      var radio_checked_value = $("input[type='radio'][class='radiobut']:checked").val();
-      switch ( radio_checked_value ) {
-        case "pm25":
-        document.getElementById("chart_div").innerHTML = '<iframe width="750" height="500" frameborder="0" scrolling="no" src="//plot.ly/~lore_abad6/4.embed"></iframe>';
-        break;
-        case "pm10":
-        document.getElementById("chart_div").innerHTML = '<iframe width="750" height="500" frameborder="0" scrolling="no" src="//plot.ly/~lore_abad6/1.embed"></iframe>';
-        break;
-        case "rh":
-        document.getElementById("chart_div").innerHTML = '<iframe width="750" height="500" frameborder="0" scrolling="no" src="//plot.ly/~lore_abad6/6.embed"></iframe>';
-        break;
-      }
-    }
-
-    function WeatherStation_Chart(fusiontable_id){
-
-      var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
-      url.push('sql=');
-      var query = "SELECT * "
-      query = query + " FROM "+ fusiontable_id +" ";
-      query = query + " ORDER BY 'Timestamp' ASC ";
-      var encodedQuery = encodeURIComponent(query);
-      url.push(encodedQuery);
-      url.push('&key=AIzaSyCoC9A3WgFneccRufbysInygnWrhCie-T0');
-
-      var queryData = $.ajax({
-        url: url.join(''),
-        async: false,
-      }).responseText
-      var queryJson = JSON.parse(queryData)
-
-      //=================== FUNCTION process_fusiontable_data ===================
-      console.log( "++++ Data from Fusiontable:" )
-      console.log( queryJson )
-
-      var columns = queryJson['columns'];
-      var rows = queryJson['rows'];
-
-      document.getElementById("RadioDIV").innerHTML = "";
-      document.getElementById("CheckboxDIV").innerHTML = "";
-      document.getElementById("chart_div").innerHTML = "";
-      var checkbox_div = document.getElementById("CheckboxDIV");
-      for(var i=0;i<columns.length;i++){
-        if(i===0){
-          continue;
-        }else{
-          //var cb_name = columns[i].split("(")[0];
-          var cb_name = columns[i];
-          var cb_id = "cb_id_"+ i.toString() ;
-          var cb_value = i;
-          //<input type="checkbox" class="cb_chart_var" id="cb_temp" name="Temperature" value="1" checked>
-          var newInput = document.createElement("input");
-          newInput.setAttribute("type",'checkbox');
-          newInput.setAttribute("id", cb_id);
-          newInput.setAttribute("class",'cb_chart_var');
-          newInput.setAttribute("name", cb_name);
-          newInput.setAttribute("value", cb_value );
-          checkbox_div.appendChild(newInput);
-
-          document.getElementById(cb_id).checked = true;
-
-          //<label for="cb_temp">Temperature</label>
-          var newlabel = document.createElement("label");
-          newlabel.setAttribute("for",cb_id);
-          newlabel.innerHTML = cb_name;
-          checkbox_div.appendChild(newlabel);
-
-        }
-      }
-      //=================== FUNCTION drawChart ===================
-      var data = new google.visualization.DataTable();
-
-      var PointsToPlot = [];
-      for(var i=0;i<rows.length;i++){
-        //"6/9/2018 19:30"
-        var eachrow = [];
-        //console.log("i: ", i);
-        for(var j=0;j<rows[i].length;j++){
-          //console.log("j: ", j);
-          //if (j === 4) { break; }
-          if (j == 0){
-            var split_date_value = rows[i][0].split(" ");
-            var date_split = split_date_value[0].split("/");
-            var time_split = split_date_value[1].split(":");
-
-            var date_replace = new Date(parseInt(date_split[2]),  parseInt(date_split[0])-1, parseInt(date_split[1]), parseInt(time_split[0]), parseInt(time_split[1]))
-            eachrow.push(date_replace);
-          }else{
-            eachrow.push(parseFloat(rows[i][j]));
-          }
-        }
-        PointsToPlot.push(eachrow);
-      }
-      console.log("1+++PointsToPlot:");
-      console.log(PointsToPlot);
-
-      var position_to_remove = [];
-      var color_palette_hex = ['#DB3340', '#E8B71A', '#1FDA9A', '#28ABE3', '#8C4646', '#8cb709'];
-      var number_of_variables = 0;
-
-      data.addColumn('date', columns[0]);
-
-      $('.cb_chart_var:checkbox').each(function() {
-        if ($(this).prop("checked")) {
-          data.addColumn('number', $(this).attr("name"));
-        } else {
+   
           position_to_remove.push(parseInt($(this).prop("value")));
         }
         number_of_variables++;
       });
 
+
       color_palette_hex.splice(number_of_variables);
+
 
       position_to_remove.reverse();
       if (position_to_remove.length > 0) {
@@ -563,6 +328,7 @@ angular.module('UAS_2018', [
         },
         //enableInteractivity: false,
         colors: color_palette_hex
+
 
       };
 
@@ -700,9 +466,8 @@ angular.module('UAS_2018', [
       if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
         $location.path('/login');
 
+
       }
     });
-
-
   }
 ]);
