@@ -198,6 +198,7 @@ main {
 /*Styling the authentication form begins*/
 
 #loginBox {
+  border-radius: 5px;
   width: inherit;
   margin: auto;
   background-color: rgba(211, 211, 211, 0.8);

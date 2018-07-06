@@ -544,7 +544,7 @@ angular.module('UAS_2018', [
       zIndex: 200,
       maxZoom: 22,
       maxNativeZoom: 22
-    })
+    }).addTo(map)
 
     // .addTo(map);
 
