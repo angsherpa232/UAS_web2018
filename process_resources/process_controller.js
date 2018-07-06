@@ -31,7 +31,7 @@ var baseLayers = {
 
 //// Retrieving geojson file begins ///////
 var dataURL = "./home/resources/markers_process.geojson"
-$.ajax({
+var go = $.ajax({
   url: dataURL,
   async: false,
   success: function(response) {
@@ -40,7 +40,14 @@ $.ajax({
   }
 }).responseJSON
 
-////// Map loading session ends here ////////
+var layer = L.geoJSON(go, {
+ onEachFeature: function (f, l) {
+   l.bindPopup('<p>'+JSON.stringify(f.properties.Type,null,' ').replace(/[\{\}"]/g,'')+'</p>');
+ }
+}).addTo(map);
+
+
+
 
 
 /// Buffer input begins //////
