@@ -9,6 +9,10 @@ uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', f
 
 }]);
 
+// uas2018.controller('legend_controller', ['$scope', function($scope){
+//
+// }])
+
 
 angular.module('Authentication', []);
 angular.module('Home', []);
@@ -64,11 +68,33 @@ angular.module('UAS_2018', [
       });
   }])
 
-  .controller('uas2018_map_controller', ['$scope', '$http', function($scope, $http) {
+  .controller('uas2018_map_controller', ['$scope', '$http', '$compile', function($scope, $http, $compile) {
 
     //load google packages for the charts
     google.charts.load('current', {
       packages: ['corechart', 'line']
+    });
+
+    L.Control.Layers.include({
+      getActiveOverlays: function() {
+
+        // Create array for holding active layers
+        var active = [];
+        var context = this;
+        // Iterate all layers in control
+        context._layers.forEach(function(obj) {
+
+          // Check if it's an overlay and added to the map
+          if (obj.overlay && context._map.hasLayer(obj.layer)) {
+
+            // Push layer to active array
+            active.push(obj);
+          }
+        });
+
+        // Return array
+        return active;
+      }
     });
 
     // Load basemaps
@@ -77,48 +103,48 @@ angular.module('UAS_2018', [
     // var imagery = L.esri.basemapLayer("Imagery");
 
     var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
-                    '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                    'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+      '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+      'Imagery © <a href="http://mapbox.com">Mapbox</a>'
 
     var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ';
 
     var grayscale = L.tileLayer(mbUrl, {
-            id: 'mapbox.light',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-        })
+      id: 'mapbox.light',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var streets = L.tileLayer(mbUrl, {
-            id: 'mapbox.streets',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-        })
+      id: 'mapbox.streets',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var outdoors = L.tileLayer(mbUrl, {
-            id: 'mapbox.outdoors',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-      })
+      id: 'mapbox.outdoors',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var satellite = L.tileLayer(mbUrl, {
-            id: 'mapbox.satellite',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-      })
+      id: 'mapbox.satellite',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
     var dark = L.tileLayer(mbUrl, {
-            id: 'mapbox.dark',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-      })
+      id: 'mapbox.dark',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    })
 
     var satellitestreets = L.tileLayer(mbUrl, {
-            id: 'mapbox.streets-satellite',
-            attribution: mbAttr,
-            maxZoom: 22,
-            maxNativeZoom: 18
-      });
+      id: 'mapbox.streets-satellite',
+      attribution: mbAttr,
+      maxZoom: 22,
+      maxNativeZoom: 18
+    });
 
     // Main map object
     var map = L.map('map', {
@@ -140,9 +166,23 @@ angular.module('UAS_2018', [
     L.easyButton('<span><img src="./home/resources/icons/meeting-point-32.png" style="width: 15px; height: 15px;"></img></span>', function(btn, map) {
       map.setView([mapHome.lat, mapHome.lng], mapHome.zoom);
     }, 'Zoom To Home', {
-      position: 'bottomleft'
+      position: 'bottomright'
     }).addTo(map);
 
+    // Display legend button
+    var legendBt = L.easyButton('<p style="font-size:15px;">Info</p>', function() {
+      var x = document.getElementById("legendDiv");
+      if (x.style.display === "none") {
+        x.style.display = "inline-block";
+      } else {
+        x.style.display = "none";
+      }
+    }, 'Show Legend', {
+      position: 'topleft'
+    }).addTo(map);
+
+    legendBt.button.style.width = '40px';
+    // legendBt.button.style.height = '50px';
 
     // Default base layers when the app initiates
     var baseLayers = {
@@ -256,7 +296,9 @@ angular.module('UAS_2018', [
     })
 
     //creates a cluster object
-    var sensorLayer = L.markerClusterGroup();
+    var sensorLayer = L.markerClusterGroup({
+      name: "Ground Sensors"
+    });
 
     //Add the variable that contains all the markers to the cluster object
     sensorLayer.addLayer(markers);
@@ -269,6 +311,7 @@ angular.module('UAS_2018', [
     //event listener for hiding the sidebar_popup when the user clicks in the map
     map.on('click', function(e) {
       sidebar.hide();
+      document.getElementById("legendDiv").style.display = "none"
       // sidebar_opened = 0;
       // $('#side_popup').hide().css({
       //   right: ($('#side_popup').width())
@@ -495,7 +538,8 @@ angular.module('UAS_2018', [
 
 
     //////Orthophoto RGB//////
-    var orthophotoRGB = L.esri.tiledMapLayer({
+    var orthophotoRGBlayer = L.esri.tiledMapLayer({
+      name: "Orthophoto RGB",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_RGB/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -505,7 +549,8 @@ angular.module('UAS_2018', [
     // .addTo(map);
 
     //////Orthophoto RGB//////
-    var orthophotoMS = L.esri.tiledMapLayer({
+    var orthophotoMSlayer = L.esri.tiledMapLayer({
+      name: "Orthophoto Multispectral",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Orthophoto_Multispectral/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -514,6 +559,7 @@ angular.module('UAS_2018', [
 
     ////// DSM layer //////
     var DSMlayer = L.esri.tiledMapLayer({
+      name: "Digital Surface Model",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/DSM/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -523,6 +569,7 @@ angular.module('UAS_2018', [
 
     ////// Hillshade layer //////
     var hillshadelayer = L.esri.tiledMapLayer({
+      name: "Hillshade",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Hillshade_2018/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -532,6 +579,7 @@ angular.module('UAS_2018', [
 
     ////// NDVI layer //////
     var NDVIlayer = L.esri.tiledMapLayer({
+      name: "NDVI",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/NDVI/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -540,6 +588,7 @@ angular.module('UAS_2018', [
 
     ////// Slope layer //////
     var slopelayer = L.esri.tiledMapLayer({
+      name: "Slope",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Slope_2018/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -549,6 +598,7 @@ angular.module('UAS_2018', [
 
     ////// Aspect  layer //////
     var aspectlayer = L.esri.tiledMapLayer({
+      name: "Aspect",
       url: "https://tiles.arcgis.com/tiles/W47q82gM5Y2xNen1/arcgis/rest/services/Aspect_2018/MapServer",
       zIndex: 200,
       maxZoom: 22,
@@ -565,18 +615,21 @@ angular.module('UAS_2018', [
 
     //Flight plan
     var flightPlanLayer = L.esri.featureLayer({
+      name: "Flight plan",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPath/FeatureServer/0",
-      style: {color: "#41b6c4"}
+      style: {
+        color: "#41b6c4"
+      }
     });
 
     ////Flight Point////
-    $scope.getColor = function (x) {
-    return x < 94 ? '#ffffb2' :
+    $scope.getColor = function(x) {
+      return x < 94 ? '#ffffb2' :
         x < 95 ? '#fecc5c' :
         x < 95.5 ? '#fd8d3c' :
         x < 96 ? '#f03b20' :
-            x > 96 ? '#bd0026' :
-                '#f01010';
+        x > 96 ? '#bd0026' :
+        '#f01010';
     };
 
     $scope.coordsOnEachFeature = function(feature, layer) {
@@ -585,6 +638,7 @@ angular.module('UAS_2018', [
     };
 
     var flightPointLayer = L.esri.featureLayer({
+      name: "Flight points",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPoints/FeatureServer/0",
       // style: function(feature){
       //   console.log(feature)
@@ -654,6 +708,7 @@ angular.module('UAS_2018', [
 
     // Compile land cover UAS layer
     var landCoverUASLayer = L.esri.featureLayer({
+      name: "Land Cover UAS",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover/FeatureServer/0",
       style: function(feature) {
         return {
@@ -667,19 +722,6 @@ angular.module('UAS_2018', [
       },
       onEachFeature: $scope.classUasOnEachFeature
     });
-
-    // var classUasJSONurl = "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover/FeatureServer/0?f=pjson"
-    //
-    // var classData = $.ajax({
-    //   url: classUasJSONurl,
-    //   async: false,
-    //   success: function(res) {
-    //     return res
-    //   }
-    // }).responseText
-    //
-    // var classJSON = JSON.parse(classData)
-
 
     // Land cover CORINE
 
@@ -706,6 +748,7 @@ angular.module('UAS_2018', [
     }
 
     var landCoverCORINELayer = L.esri.featureLayer({
+      name: "Land Cover CORINE",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover_CORINE/FeatureServer/0",
       style: function(feature) {
         return {
@@ -719,7 +762,7 @@ angular.module('UAS_2018', [
       },
       // style: style,
       onEachFeature: $scope.classCorineOnEachFeature
-    });
+    })
     // })
 
     // $scope.getInfoBox = function() {
@@ -728,39 +771,116 @@ angular.module('UAS_2018', [
 
     //Add here if additional overlays are to be added
     var overlays = {
-      "Orthophoto RGB": orthophotoRGB,
-      "Orthophoto Multispectral": orthophotoMS,
+      "Orthophoto RGB": orthophotoRGBlayer,
+      "Orthophoto Multispectral": orthophotoMSlayer,
       "Digital Surface Model": DSMlayer,
       "Hillshade": hillshadelayer,
       "NDVI": NDVIlayer,
       "Slope": slopelayer,
       "Aspect": aspectlayer,
       "Flight plan": flightPlanLayer,
-      "Flight Points": flightPointLayer,
+      "Flight points": flightPointLayer,
       "Land Cover UAS": landCoverUASLayer,
       "Land Cover CORINE": landCoverCORINELayer,
       "Ground Sensors": sensorLayer
     };
 
-    // var elem = document.getElementById("ortRGBbtn")
-    // elem.addEventListener("click", function(){
-    //   alert("hello world")
-    // })
+    var mapLayers = [orthophotoMSlayer, orthophotoRGBlayer, DSMlayer, hillshadelayer, NDVIlayer, slopelayer, aspectlayer, flightPlanLayer, flightPointLayer, landCoverUASLayer, landCoverCORINELayer, sensorLayer]
+    var layerNames = [];
 
     //Initiate layers control method and add to map
-    L.control.layers(baseLayers, overlays, {
-      position: 'topleft',
+    $scope.ctrl = L.control.layers(baseLayers, overlays, {
+      position: 'topright',
       autoZIndex: true
     }).addTo(map);
 
+    // Legend Control
+    for (i = 0; i < mapLayers.length; i++) {
+      layerNames.push(mapLayers[i].options.name)
+    }
+
+    $scope.layerNames = layerNames
+
+    console.log($scope.layerNames)
+
+    var legendText
+    var legendImage
+
+    $scope.createLegend = function(layer) {
+
+      switch (layer) {
+        case "Orthophoto RGB":
+          legendText = "Orthorectified image that displays the features of the study area using the channels of the visible range of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using a camera sony alpha 5100, flight height 40 meters"
+          document.getElementById("legendImage").src = "";
+          break;
+        case "Orthophoto Multispectral":
+          legendText = "Orthorectified multiespectral image that displays the features of the study area using the channels Red, Green and Near infrared of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using the multiespectral camera Mapir, flight height 60 meters."
+          document.getElementById("legendImage").src = "";
+          break;
+        case "Digital Surface Model":
+          legendText = "Photogrammetric product of a drone flight using the multiespectral camera Mapir. Flight height 60 meters."
+          document.getElementById("legendImage").src = "./home/resources/legend/DSM_withoutName.png";
+          break;
+        case "Hillshade":
+          legendText="This layer is a shaded relief raster created by the DSM and the sun angle."
+          document.getElementById("legendImage").src = "./home/resources/legend/hillshade_withoutName.png";
+          break;
+        case "NDVI":
+          legendText = "NDVI is a standardized way to measure healthy vegetation. It is a product that compares values of red and near infrared. Dark green indicates high NDVI whereas red has low NDVI."
+          document.getElementById("legendImage").src = "./home/resources/legend/NDVI_withoutname.png";
+          break;
+        case "Slope":
+          legendText = "Derived from the DSM, this layer contains slope angle of project area to demonstrate topograpy."
+          document.getElementById("legendImage").src = "./home/resources/legend/slope_withotName.png";
+          break;
+        case "Aspect":
+          legendText = "This layer displays the direction the slopes face to illustrate the surface terrain in the study area."
+          document.getElementById("legendImage").src = "./home/resources/legend/aspectf.jpg";
+          break;
+        case "Flight plan":
+          legendText = "This layer shows the path followed by the drone during th data acquisition. The altitude was maintained approximately at 40m above ground."
+          document.getElementById("legendImage").src = "";
+          break;
+        case "Flight points":
+          legendText = "The points in this layer show the coordinates where the drone stopped to create immagery. The point symbology is adjusted according to the altitude."
+          document.getElementById("legendImage").src = "./home/resources/legend/flightPointsf.jpg";
+          break;
+        case "Land Cover UAS":
+          legendText = "After processing the imagery a classification algorithm was applied and pixels classified into various classes."
+          document.getElementById("legendImage").src = "./home/resources/legend/landCoverUASfff.jpg";
+          break;
+        case "Land Cover CORINE":
+          legendText = "In this layer the polygons were classified using CORINE land cover (CLC) classes and nomenclature."
+          document.getElementById("legendImage").src = "./home/resources/legend/landCoverCORINE.jpg";
+          break;
+        case "Ground Sensors":
+          legendText = "The points on the map represent locations where data was acquired using a senseBox. The data acquired include water parameters, water level and meteorological parameters"
+          document.getElementById("legendImage").src = "./home/resources/legend/gSensors.jpeg";
+          break;
+        default:
+
+      }
+
+
+    }
+
+    $scope.onChange = function() {
+      console.log($scope.selectedLayer)
+       $scope.createLegend($scope.selectedLayer)
+       $scope.layerDescription = legendText
+    }
+
+
+    var overlays
+
     // set view for layers
     map.on('overlayadd', function(layer) {
-      // console.log(layer.name)
+      overlays = $scope.ctrl.getActiveOverlays()
       console.log(layer)
       if (layer.name == "Ground Sensors") {
         map.fitBounds(sensorLayer.getBounds());
-      // } else {
-      //   map.setView([51.944990, 7.572810], 17);
+        // } else {
+        //   map.setView([51.944990, 7.572810], 17);
       }
     });
   }])
