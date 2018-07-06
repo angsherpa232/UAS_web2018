@@ -177,6 +177,7 @@ angular.module('UAS_2018', [
       } else {
         x.style.display = "none";
       }
+      // $scope.createLegend($scope.layerNames[0])
     }, 'Show Legend', {
       position: 'topleft'
     }).addTo(map);
@@ -293,6 +294,7 @@ angular.module('UAS_2018', [
       //event listener for hiding the sidebar_popup when the user clicks in the map
       map.on('click', function(e) {
         sidebar.hide();
+        document.getElementById("legendDiv").style.display = "none"
       });
 
       //Jquery function that map changes in the "#CheckboxDIV",
@@ -418,7 +420,7 @@ angular.module('UAS_2018', [
           var gauge_Temp = new google.visualization.Gauge(document.getElementById("div_"+rows[i][0]));
           gauge_Temp.draw(gaugeData_Temp, gaugeOptions_Temp);
         }
-        
+
       }
 
       function WaterLevel_Chart(){
@@ -895,7 +897,7 @@ angular.module('UAS_2018', [
 
     };
 
-    var mapLayers = [orthophotoMSlayer, orthophotoRGBlayer, DSMlayer, hillshadelayer, NDVIlayer, slopelayer, aspectlayer, flightPlanLayer, flightPointLayer, landCoverUASLayer, landCoverCORINELayer, sensorLayer]
+    var mapLayers = [orthophotoRGBlayer, orthophotoMSlayer, DSMlayer, hillshadelayer, NDVIlayer, slopelayer, aspectlayer, flightPlanLayer, flightPointLayer, landCoverUASLayer, landCoverCORINELayer, sensorLayer]
     var layerNames = [];
 
     //Initiate layers control method and add to map
@@ -913,7 +915,10 @@ angular.module('UAS_2018', [
 
     console.log($scope.layerNames)
 
-    var legendText
+    var legendText = "Orthorectified image that displays the features of the study area using the channels of the visible range of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using a camera sony alpha 5100, flight height 40 meters"
+    $scope.layerDescription = legendText
+
+
     var legendImage
 
     $scope.createLegend = function(layer) {
@@ -968,16 +973,27 @@ angular.module('UAS_2018', [
           document.getElementById("legendImage").src = "./home/resources/legend/gSensors.jpeg";
           break;
         default:
+          legendText = "Orthorectified image that displays the features of the study area using the channels of the visible range of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using a camera sony alpha 5100, flight height 40 meters"
+          document.getElementById("legendImage").src = "";
 
       }
 
 
     }
 
+    // $scope.selectedLayer = "Orthophoto RGB"
+
+    // $scope.dropdownDefault = function() {
+    //   $scope.selectedLayer =
+    //   createLegend
+    // }
+
+    // $scope.dropdownDefault = "Choose layer"
+
     $scope.onChange = function() {
-      console.log($scope.selectedLayer)
-       $scope.createLegend($scope.selectedLayer)
-       $scope.layerDescription = legendText
+        console.log($scope.selectedLayer)
+        $scope.createLegend($scope.selectedLayer)
+        $scope.layerDescription = legendText
     }
 
 
