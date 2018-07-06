@@ -309,25 +309,31 @@ angular.module('UAS_2018', [
         AirQuality_Chart();
       });
 
+var Active_Station = ""
     function process_marker_click(marker_station){
       console.log("Station: "+marker_station);
+      console.log("Active Station: "+Active_Station);
       switch ( marker_station ) {
           //Water parameters points  ||  Fusiontable name: Water_parameters_river  ||  Fusiontable ID: 1MgGVSpMf3w7HHq5t4sPCsJPc8Wat1nVioG-TAJO3
           case "A":
             WaterParameters_Chart("A");
             console.log('WaterParameters_Chart("A");');
+            Active_Station = "A";
             break;
           case "B":
             WaterParameters_Chart("B");
             console.log('WaterParameters_Chart("B");');
+            Active_Station = "B";
             break;
           case "C":
             WaterParameters_Chart("C");
             console.log('WaterParameters_Chart("C");');
+            Active_Station = "C";
             break;
           case "D":
             WaterParameters_Chart("D");
             console.log('WaterParameters_Chart("D");');
+            Active_Station = "D";
             break;
 
           //Air Quality points  ||  Fusiontable name: AQ_Processed  || Fusiontable ID: 1AkX22UU-fqR_gIyv_hBTYR55_7ksr1jjejr1N6ur
@@ -335,24 +341,28 @@ angular.module('UAS_2018', [
           case "F":
             console.log('AirQuality_Chart();');
             AirQuality_Chart();
+            Active_Station = "E";
             break;
 
           //Water Level points  ||  Fusiontable name: Water_level_processed ||  Fusiontable ID: 1h2_7KqG_3hHQZDLJijqFqSvILuM26unc5Hnksnhn
           case "G": //OK
             console.log('WaterLevel_Chart()');
             WaterLevel_Chart();
+            Active_Station = "G";
             break;
 
           //Weather stations points  ||  Fusiontable name: WEATHER1_Processed  || Fusiontable ID: 1CBn0rAtMSTFH2jNbF7wXx8bkkwjn1xLnBdMCXqV6
           case "H":
-            console.log('WeatherStation_Chart(H');
-            WeatherStation_Chart("1CBn0rAtMSTFH2jNbF7wXx8bkkwjn1xLnBdMCXqV6");
+            console.log('WeatherStation_Chart(H)');
+            WeatherStation_Chart("H");
+            Active_Station = "H";
             break;
 
           //Weather stations points  ||  Fusiontable name: WEATHER2_Processed  ||  Fusiontable ID: 1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR
-          case "I": //OK
-            console.log('WeatherStation_Chart(I');
-            WeatherStation_Chart("1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR");
+          case "I":
+            console.log('WeatherStation_Chart(I)');
+            WeatherStation_Chart("I");
+            Active_Station = "I";
             break;
         }
 
@@ -436,11 +446,11 @@ angular.module('UAS_2018', [
 
 
       function AirQuality_Chart(){
+
         document.getElementById("CheckboxDIV").innerHTML = "";
         document.getElementById("chart_div").innerHTML = "";
 
-        if ( !sidebar.isVisible() ){
-          document.getElementById("RadioDIV").innerHTML = "";
+        if ( !sidebar.isVisible() || Active_Station != "E" ){
           var rb_html = '<input type="radio" class="radiobut" name="rb" value="pm25" checked> PM2.5<br>';
           rb_html = rb_html+ '<input type="radio" class="radiobut" name="rb" value="pm10"> PM10<br>'
           rb_html = rb_html+ '<input type="radio" class="radiobut" name="rb" value="rh"> Relative Humidity'
@@ -463,7 +473,15 @@ angular.module('UAS_2018', [
         }
       }
 
-      function WeatherStation_Chart(fusiontable_id){
+      function WeatherStation_Chart(Station_Letter){
+
+        if (Station_Letter == "H"){
+          fusiontable_id = "1CBn0rAtMSTFH2jNbF7wXx8bkkwjn1xLnBdMCXqV6";
+        }else if (Station_Letter == "I"){
+          fusiontable_id = "1KyssrYpcg9JT9ps0kRAfxGargS-KekSlr7PrWRmR";
+        }else{
+          alert("Fusion table not defined for Station: "+ Station_Letter )
+        }
 
         var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
         url.push('sql=');
@@ -490,7 +508,9 @@ angular.module('UAS_2018', [
         document.getElementById("RadioDIV").innerHTML = "";
         document.getElementById("chart_div").innerHTML = "";
 
-        if ( !sidebar.isVisible() ){
+
+
+        if ( !sidebar.isVisible() || Active_Station != Station_Letter){
           document.getElementById("CheckboxDIV").innerHTML = "";
 
           var checkbox_div = document.getElementById("CheckboxDIV");
