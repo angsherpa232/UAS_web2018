@@ -956,19 +956,19 @@ var Active_Station = ""
           break;
         case "Digital Surface Model":
           legendText = "Photogrammetric product of a drone flight using the multiespectral camera Mapir. Flight height 60 meters."
-          document.getElementById("legendImage").src = "./home/resources/legend/DSM_withoutName.png";
+          document.getElementById("legendImage").src = "./home/resources/legend/DSM_withoutNamef.png";
           break;
         case "Hillshade":
           legendText="This layer is a shaded relief raster created by the DSM and the sun angle."
-          document.getElementById("legendImage").src = "./home/resources/legend/hillshade_withoutName.png";
+          document.getElementById("legendImage").src = "./home/resources/legend/hillshade_withoutNamef.png";
           break;
         case "NDVI":
           legendText = "NDVI is a standardized way to measure healthy vegetation. It is a product that compares values of red and near infrared. Dark green indicates high NDVI whereas red has low NDVI."
-          document.getElementById("legendImage").src = "./home/resources/legend/NDVI_withoutname.png";
+          document.getElementById("legendImage").src = "./home/resources/legend/NDVI_withoutnamef.png";
           break;
         case "Slope":
           legendText = "Derived from the DSM, this layer contains slope angle of project area to demonstrate topograpy."
-          document.getElementById("legendImage").src = "./home/resources/legend/slope_withotName.png";
+          document.getElementById("legendImage").src = "./home/resources/legend/slope_withotNamef.png";
           break;
         case "Aspect":
           legendText = "This layer displays the direction the slopes face to illustrate the surface terrain in the study area."
