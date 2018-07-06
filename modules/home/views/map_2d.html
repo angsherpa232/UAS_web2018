@@ -8,16 +8,27 @@
   <div id="chart_div"></div>
 </div>
 <div id="map"></div>
-<div class="row" style="padding-left: 50px; padding-top: 500px">
-  <div class="col-md-6">
-    <div id="legend">
-      <h4>Legend</h4>
-      <select ng-model="selectedLayer" ng-options="layer for layer in layerNames" ng-change=onChange()>
-        <option value="" selected hidden>Choose layer legend</option>
+<div id="legendDiv" class="row" >
+  <div class="col-md-5">
+    <div id="legend" style="display:inline-block">
+      <h4>Layer Info</h4>
+      <select class="dropdown" ng-model="selectedLayer" ng-options="layer for layer in layerNames" ng-change=onChange()>
+        <option value="" selected hidden>Choose layer</option>
       </select>
-      <div ng-model="lDescription">
-        <img id="legendImage" src="" alt="">
-        <p>{{layerDescription}}</p>
+      <div ng-model="lDescription" >
+          <div class="row" >
+            <div class="col-sm-8" >
+              <p class="legendText">{{layerDescription}}</p>
+            </div>
+            <div class="col-sm-4" class="centerBlock" >
+              <img id="legendImage" src="" alt="">
+            </div>
+            <!-- <div class="col-md-6">
+              <img id="legendImage" src="" alt="">
+            </div> -->
+
+          </div>
+        <!-- <p>{{layerDescription}}</p> -->
       </div>
     </div>
   </div>

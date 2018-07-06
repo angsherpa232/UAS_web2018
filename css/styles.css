@@ -60,9 +60,32 @@ p {
   text-align: justify;
 }
 
+#legendDiv{
+  padding-left: 80px;
+  padding-top: 40px;
+  box-sizing: border-box;
+  display:inline-block
+}
+
 #legend{
+  border-radius: 5px;
+  border: 2px solid black;
+  border-spacing: 15px;
   background-color: white;
   display: none;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+#legendImage{
+  height: auto;
+  max-width: 100%;
+  min-width: 100%;
+
+}
+
+.legendText{
+  font-size: 15px;
 }
 
 /* CSS for Control Layers icons in LEAFLET*/

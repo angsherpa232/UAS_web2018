@@ -170,7 +170,7 @@ angular.module('UAS_2018', [
     }).addTo(map);
 
     // Display legend button
-    var legendBt = L.easyButton('<p style="font-size:10px;">Legend</p>', function() {
+    var legendBt = L.easyButton('<p style="font-size:15px;">Info</p>', function() {
       var x = document.getElementById("legend");
       if (x.style.display === "none") {
         x.style.display = "block";
@@ -178,10 +178,11 @@ angular.module('UAS_2018', [
         x.style.display = "none";
       }
     }, 'Show Legend', {
-      position: 'bottomleft'
+      position: 'topleft'
     }).addTo(map);
 
-    legendBt.button.style.width = '50px';
+    legendBt.button.style.width = '40px';
+    // legendBt.button.style.height = '50px';
 
     // Default base layers when the app initiates
     var baseLayers = {
@@ -310,6 +311,7 @@ angular.module('UAS_2018', [
     //event listener for hiding the sidebar_popup when the user clicks in the map
     map.on('click', function(e) {
       sidebar.hide();
+      document.getElementById("legend").style.display = "none"
       // sidebar_opened = 0;
       // $('#side_popup').hide().css({
       //   right: ($('#side_popup').width())
@@ -706,7 +708,7 @@ angular.module('UAS_2018', [
 
     // Compile land cover UAS layer
     var landCoverUASLayer = L.esri.featureLayer({
-      name: "Classification UAS",
+      name: "Land Cover UAS",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover/FeatureServer/0",
       style: function(feature) {
         return {
@@ -720,19 +722,6 @@ angular.module('UAS_2018', [
       },
       onEachFeature: $scope.classUasOnEachFeature
     });
-
-    // var classUasJSONurl = "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover/FeatureServer/0?f=pjson"
-    //
-    // var classData = $.ajax({
-    //   url: classUasJSONurl,
-    //   async: false,
-    //   success: function(res) {
-    //     return res
-    //   }
-    // }).responseText
-    //
-    // var classJSON = JSON.parse(classData)
-
 
     // Land cover CORINE
 
@@ -759,7 +748,7 @@ angular.module('UAS_2018', [
     }
 
     var landCoverCORINELayer = L.esri.featureLayer({
-      name: "Classification CORINE",
+      name: "Land Cover CORINE",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover_CORINE/FeatureServer/0",
       style: function(feature) {
         return {
@@ -790,7 +779,7 @@ angular.module('UAS_2018', [
       "Slope": slopelayer,
       "Aspect": aspectlayer,
       "Flight plan": flightPlanLayer,
-      "Flight Points": flightPointLayer,
+      "Flight points": flightPointLayer,
       "Land Cover UAS": landCoverUASLayer,
       "Land Cover CORINE": landCoverCORINELayer,
       "Ground Sensors": sensorLayer
@@ -801,7 +790,7 @@ angular.module('UAS_2018', [
 
     //Initiate layers control method and add to map
     $scope.ctrl = L.control.layers(baseLayers, overlays, {
-      position: 'topleft',
+      position: 'topright',
       autoZIndex: true
     }).addTo(map);
 
@@ -814,43 +803,59 @@ angular.module('UAS_2018', [
 
     console.log($scope.layerNames)
 
+    var legendText
+    var legendImage
+
     $scope.createLegend = function(layer) {
-      var legendText
-      var legendImage
+
       switch (layer) {
         case "Orthophoto RGB":
+          legendText = "Orthorectified image that displays the features of the study area using the channels of the visible range of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using a camera sony alpha 5100, flight height 40 meters"
+          document.getElementById("legendImage").src = "";
           break;
         case "Orthophoto Multispectral":
+          legendText = "Orthorectified multiespectral image that displays the features of the study area using the channels Red, Green and Near infrared of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using the multiespectral camera Mapir, flight height 60 meters."
+          document.getElementById("legendImage").src = "";
           break;
         case "Digital Surface Model":
-          document.getElementById("legendImage").src = ".\home\resources\legend\DSM_withoutName.png";
+          legendText = "Photogrammetric product of a drone flight using the multiespectral camera Mapir. Flight height 60 meters."
+          document.getElementById("legendImage").src = "./home/resources/legend/DSM_withoutName.png";
           break;
         case "Hillshade":
-
+          legendText="This layer is a shaded relief raster created by the DSM and the sun angle."
+          document.getElementById("legendImage").src = "./home/resources/legend/hillshade_withoutName.png";
           break;
         case "NDVI":
-
+          legendText = "NDVI is a standardized way to measure healthy vegetation. It is a product that compares values of red and near infrared. Dark green indicates high NDVI whereas red has low NDVI."
+          document.getElementById("legendImage").src = "./home/resources/legend/NDVI_withoutname.png";
           break;
         case "Slope":
-
+          legendText = "Derived from the DSM, this layer contains slope angle of project area to demonstrate topograpy."
+          document.getElementById("legendImage").src = "./home/resources/legend/slope_withotName.png";
           break;
         case "Aspect":
-
+          legendText = "This layer displays the direction the slopes face to illustrate the surface terrain in the study area."
+          document.getElementById("legendImage").src = "./home/resources/legend/aspectf.jpg";
           break;
         case "Flight plan":
-
+          legendText = "This layer shows the path followed by the drone during th data acquisition. The altitude was maintained approximately at 40m above ground."
+          document.getElementById("legendImage").src = "";
           break;
-        case "Flight Points":
-
+        case "Flight points":
+          legendText = "The points in this layer show the coordinates where the drone stopped to create immagery. The point symbology is adjusted according to the altitude."
+          document.getElementById("legendImage").src = "./home/resources/legend/flightPointsf.jpg";
           break;
         case "Land Cover UAS":
-
+          legendText = "After processing the imagery a classification algorithm was applied and pixels classified into various classes."
+          document.getElementById("legendImage").src = "./home/resources/legend/landCoverUASfff.jpg";
           break;
         case "Land Cover CORINE":
-
+          legendText = "In this layer the polygons were classified using CORINE land cover (CLC) classes and nomenclature."
+          document.getElementById("legendImage").src = "./home/resources/legend/landCoverCORINE.jpg";
           break;
         case "Ground Sensors":
-
+          legendText = "The points on the map represent locations where data was acquired using a senseBox. The data acquired include water parameters, water level and meteorological parameters"
+          document.getElementById("legendImage").src = "./home/resources/legend/gSensors.jpeg";
           break;
         default:
 
@@ -861,150 +866,9 @@ angular.module('UAS_2018', [
 
     $scope.onChange = function() {
       console.log($scope.selectedLayer)
-      $scope.layerDescription = $scope.createLegend
+       $scope.createLegend($scope.selectedLayer)
+       $scope.layerDescription = legendText
     }
-
-
-    // var descriptionBox = L.control({position: 'bottomleft'});
-    //
-    // $scope.infoBox = function () {
-    //   descriptionBox.onAdd = function () {
-    //                 var div = L.DomUtil.create('UAaSLayers', 'layers-description');
-    //
-    //                 var overlayLayers = $scope.ctrl.getActiveOverlays();
-    //                 var orthophotoRGBDisplayValue = "none";
-    //                 var orthophotoMSDisplayValue = "none";
-    //                 var DSMDisplayValue = "none";
-    //                 var hillshadeDisplayValue = "none";
-    //                 var ndviDisplayValue = "none";
-    //                 var slopeDisplayValue = "none";
-    //                 var aspectDisplayValue = "none";
-    //                 var flightPlanDisplayValue = "none";
-    //                 var flightPointDisplayValue = "none";
-    //                 var classificationUASDisplayValue = "none";
-    //                 var classificationCORINEDisplayValue = "none";
-    //                 var groundSensorsDisplayValue = "none";
-    //
-    //
-    //                 for (var overlayId in overlayLayers) {
-    //                     //console.log(overlayLayers[overlayId].name);
-    //                     var layerName = overlayLayers[overlayId].name;
-    //                     if (layerName === 'Orthophoto RGB') {
-    //                         orthophotoRGBDisplayValue = "";
-    //                     }
-    //                     if (layerName === 'Orthophoto Multispectral') {
-    //                         orthophotoMSDisplayValue = "";
-    //                     }
-    //                     if (layerName === 'Digital Surface Model') {
-    //                         DSMDisplayValue = "";
-    //                     }
-    //                     if (layerName === "Hillshade") {
-    //                         hillshadeDisplayValue = "";
-    //                     }
-    //                     if (layerName === "NDVI") {
-    //                         ndviDisplayValue = "";
-    //                     }
-    //                     if (layerName === 'Slope') {
-    //                         slopeDisplayValue = "";
-    //                     }
-    //                     if (layerName === "Aspect") {
-    //                         aspectDisplayValue = "";
-    //                     }
-    //                     if (layerName === 'Flight Plan') {
-    //                         flightPlanDisplayValue = "";
-    //                     }
-    //                     if (layerName === "Flight Points") {
-    //                         flightPointDisplayValue = "";
-    //                     }
-    //                     if (layerName === "Classification UAS") {
-    //                         classificationUASDisplayValue = "";
-    //                     }
-    //                     if (layerName === "Classification CORINE") {
-    //                         classificationCORINEDisplayValue = "";
-    //                     }
-    //                     if (layerName === "Ground Sensors") {
-    //                         groundSensorsDisplayValue = "";
-    //                     }
-    //                 }
-    //
-    //
-    //                 var valuesTable = '<span class="layer-description-title">Layers description:</span> <br>';
-    //                 valuesTable += '<div class="layer-description-container">';
-    //
-    //                 valuesTable += '<div id="Mosaic" style="display: ' + orthophotoRGBDisplayValue + '"><span>';
-    //                 valuesTable += '<b>Mosaic:</b> Orthomosaic of RGB bands (Red, Green, Blue).';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="DSM" style="display: ' + orthophotoMSDisplayValue + '"><span>';
-    //                 valuesTable += '<b>DSM:</b> Digital Surface Model of the the project area, dervied from overlapped images taken by the drone.';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="NDVI" style="display: ' + DSMDisplayValue + '"><span>';
-    //                 valuesTable += '<b>NDVI:</b> Normalized Difference Vegetation Index of the project area depicting the health condition of surrounding vegetation.';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="FalseColor" style="display: ' + hillshadeDisplayValue + '"><span>';
-    //                 valuesTable += '<b>False Color:</b> A multisppectral image of the project area composed of five bands: Green, Red, Red Edge, NIR1, NIR2.';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="FlightPlan" style="display: ' + ndviDisplayValue + '"><span>';
-    //                 valuesTable += '<b>Flight Plan:</b> The path followed by the drone, displaying the route and the flight\'s altitude.';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="Aspect" style="display: ' + slopeDisplayValue + '"><span>';
-    //                 valuesTable += '<b>Aspect:</b> This layer displays the direction the slopes face to illustrate the surface terrain in the study area.';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="Slope" style="display: ' + aspectDisplayValue + '"><span>';
-    //                 valuesTable += '<b>Slope:</b> Derived from the DSM, this layer contains slope angle of project area to demonstrate topograpy.';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="Hillshade" style="display: ' + flightPlanDisplayValue + '"><span>';
-    //                 valuesTable += '<b>Hillshade:</b> This layer is a shaded relief raster created by the DSM and the sun angle.';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="Classification" style="display: ' + flightPointDisplayValue + '"><span>';
-    //                 valuesTable += '<b>Classification:</b> A supervised classification of land use and land cover of the study area.';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="FloatingPoints" style="display: ' + classificationUASDisplayValue + '"><span>';
-    //                 valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="FloatingPoints" style="display: ' + classificationCORINEDisplayValue + '"><span>';
-    //                 valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
-    //                 valuesTable += '</span></div>';
-    //
-    //                 valuesTable += '<div id="FloatingPoints" style="display: ' + groundSensorsDisplayValue + '"><span>';
-    //                 valuesTable += '<b>Floating Points:</b> The experiment carried out by the Video Processing Group. The movement of three heat-emitting floating objects (visualized as markers) was used to measure the stream velocity of the River Aa with the aid of a thermal camera. Select in the timeslider the Experiment you wish to view and press "PLAY". ';
-    //                 valuesTable += '</span></div>';
-    //
-    //
-    //                 valuesTable += '</div>';
-    //
-    //                 div.innerHTML += '<div ng-if="!screenIsXS">' + valuesTable + '</div>';
-    //
-    //                 var linkFunction = $compile(angular.element(div));
-    //                 var newScope = $scope.$new();
-    //
-    //                 return linkFunction(newScope)[0];
-    //
-    //                 return div;
-    //             };
-    //             descriptionBox.addTo(map);
-    // }
-
-    // $scope.onOverlayAdd = function (e) {
-    //             if (e.name === 'Mosaic') {
-    //                 $("#Mosaic").css("display", "");
-    //                 $scope.zoomRiver();
-    //             }
-
-    // $scope.infoBox();
-
-    // $scope.overlays
-
-
 
 
     var overlays
