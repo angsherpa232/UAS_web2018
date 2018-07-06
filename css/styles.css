@@ -65,6 +65,7 @@ p {
   padding-top: 40px;
   box-sizing: border-box;
   display: none;
+  margin-left: 20px
 }
 
 #legend{

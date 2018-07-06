@@ -8,17 +8,17 @@
 <div id="legendDiv" class="row" >
   <div class="col-md-5">
     <div id="legend" style="display:inline-block">
-      <h4>Layer Info</h4>
-      <select ng-init="selectedLayer = layerNames[0]" ng-model="selectedLayer" ng-options="layer for layer in layerNames" ng-change=onChange() >
+      <h4 style="margin: 20px">Layer Info</h4>
+      <select ng-init="selectedLayer = layerNames[0]" ng-model="selectedLayer" ng-options="layer for layer in layerNames" ng-change=onChange() style="margin: 20px">
         <!-- <option value="" selected hidden>{{dropdown.defaultValue}}</option> -->
         <!-- <option value="" ng-selected="selected" disabled>Whatever</option> -->
       </select>
       <div ng-model="lDescription" >
           <div class="row" >
             <div class="col-sm-8" >
-              <p class="legendText">{{layerDescription}}</p>
+              <p class="legendText" style="margin: 20px">{{layerDescription}}</p>
             </div>
-            <div class="col-sm-4" class="centerBlock" >
+            <div class="col-sm-4" class="centerBlock">
               <img id="legendImage" src="" alt="">
             </div>
             <!-- <div class="col-md-6">
