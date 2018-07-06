@@ -72,7 +72,7 @@ angular.module('UAS_2018', [
 
     //load google packages for the charts
     google.charts.load('current', {
-      packages: ['corechart', 'line']
+      packages: ['corechart', 'line', 'timeline', 'gauge' ]
     });
 
     L.Control.Layers.include({
@@ -407,7 +407,7 @@ angular.module('UAS_2018', [
 
 
           gaugeData_Temp = new google.visualization.DataTable();
-          gaugeData_Temp.addColumn('number', 'Water Temp ยบC');
+          gaugeData_Temp.addColumn('number', 'Water Temp(C)');
           gaugeData_Temp.addColumn('number', 'Ph');
           gaugeData_Temp.addRows(2);
           gaugeData_Temp.setCell(0, 0, rows[i][5]);
