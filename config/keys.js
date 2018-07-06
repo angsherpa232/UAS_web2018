@@ -1,6 +1,6 @@
 module.exports = {
 	users: {
-	username: 'elipss_uas2018',
+	username: 'elippss_uas2018',
 	password: 'flydronefly2018'
 	}
 }
