@@ -171,9 +171,9 @@ angular.module('UAS_2018', [
 
     // Display legend button
     var legendBt = L.easyButton('<p style="font-size:15px;">Info</p>', function() {
-      var x = document.getElementById("legend");
+      var x = document.getElementById("legendDiv");
       if (x.style.display === "none") {
-        x.style.display = "block";
+        x.style.display = "inline-block";
       } else {
         x.style.display = "none";
       }
@@ -311,7 +311,7 @@ angular.module('UAS_2018', [
     //event listener for hiding the sidebar_popup when the user clicks in the map
     map.on('click', function(e) {
       sidebar.hide();
-      document.getElementById("legend").style.display = "none"
+      document.getElementById("legendDiv").style.display = "none"
       // sidebar_opened = 0;
       // $('#side_popup').hide().css({
       //   right: ($('#side_popup').width())
