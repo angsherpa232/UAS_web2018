@@ -286,7 +286,9 @@ angular.module('UAS_2018', [
       })
 
       //creates a cluster object
-      var sensorLayer = L.markerClusterGroup();
+      var sensorLayer = L.markerClusterGroup({
+        name: "Ground Sensors"
+      });
 
       //Add the variable that contains all the markers to the cluster object
       sensorLayer.addLayer(markers);
