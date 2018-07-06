@@ -385,7 +385,9 @@ angular.module('UAS_2018', [
 
         var rows = queryJson['rows'];
 
-        var checkbox_div = document.getElementById("CheckboxDIV");
+        var checkbox_div = document.getElementById("chart_div");
+
+
 
         for(var i=0;i<rows.length;i++){
 
@@ -416,6 +418,7 @@ angular.module('UAS_2018', [
           var gauge_Temp = new google.visualization.Gauge(document.getElementById("div_"+rows[i][0]));
           gauge_Temp.draw(gaugeData_Temp, gaugeOptions_Temp);
         }
+        
       }
 
       function WaterLevel_Chart(){
