@@ -11,10 +11,10 @@ ELIPPSS was developed in HTML, CSS, javascript. It launches its own node express
 
 The following web technologies are necessary to run this application
 
-```
+
 [node.js](https://nodejs.org/en/)
 [git][https://git-scm.com/downloads]
-```
+
 
 ### Installing
 
