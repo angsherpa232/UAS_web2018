@@ -13,16 +13,16 @@ The following web technologies are necessary to run this application
 
 
 [node.js](https://nodejs.org/en/)
-[git][https://git-scm.com/downloads]
+[git](https://git-scm.com/downloads)
 
 
 ### Installing
 
-From your console (e.g. cmd or GitBash) first clone the repository:
+From your console (e.g. cmd or GitBash) first clone the repository and enter the app root directory:
 
 ```
 git clone https://github.com/angsherpa232/UAS_web2018
-
+cd UASapp_2018
 ```
 
 Install the necessary node modules (specified in [package.json](https://github.com/angsherpa232/UAS_web2018/blob/master/package.json)) using:
@@ -31,59 +31,34 @@ Install the necessary node modules (specified in [package.json](https://github.c
 npm install
 ```
 
-
-
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
+Optional: We recommend installing nodemon so you avoid having to restart the server every time you modify the project. This is very useful for testing
 
 ```
-Give an example
+npm install nodemon -g
 ```
 
-### And coding style tests
+## Running
 
-Explain what these tests test and why
+To run the application, from the root directory, run:
 
 ```
-Give an example
+node serverd.js
 ```
 
-## Deployment
+If you use nodemon, run:
 
-Add additional notes about how to deploy this on a live system
+```
+nodemon serverd.js
+```
 
-## Built With
+Open your web browser and view the app at ```localhost:5000``` or ```127.0.0.1:5000```
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+Find the username and password in [keys.js](https://github.com/angsherpa232/UAS_web2018/blob/master/config/keys.js)
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags).
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
-## Acknowledgments
-
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+Ang Dawa Sherpa (angsherpa232@gmail.com)
+Fana Gebremeskel (fani06mit@gmail.com)
+Matheus S. Barros (matheus.eco.2010@gmail.com)
+Daniel Marsh-Hunn (al373405@uji.es)
