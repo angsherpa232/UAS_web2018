@@ -22,7 +22,7 @@ From your console (e.g. cmd or GitBash) first clone the repository and enter the
 
 ```
 git clone https://github.com/angsherpa232/UAS_web2018
-cd UASapp_2018
+cd UAS_web2018
 ```
 
 Install the necessary node modules (specified in [package.json](https://github.com/angsherpa232/UAS_web2018/blob/master/package.json)) using:
