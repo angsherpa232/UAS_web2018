@@ -12,7 +12,7 @@ ELIPPSS was developed in HTML, CSS, javascript. It launches its own node express
 The following web technologies are necessary to run this application
 
 
-[node.js](https://nodejs.org/en/)
+[node.js](https://nodejs.org/en/)<br/>
 [git](https://git-scm.com/downloads)
 
 
@@ -31,7 +31,7 @@ Install the necessary node modules (specified in [package.json](https://github.c
 npm install
 ```
 
-Optional: We recommend installing nodemon so you avoid having to restart the server every time you modify the project. This is very useful for testing
+Optional: We recommend installing nodemon so you avoid having to restart the server every time you modify the project. This is very useful for testing.
 
 ```
 npm install nodemon -g
@@ -58,7 +58,7 @@ Find the username and password in [keys.js](https://github.com/angsherpa232/UAS_
 
 ## Authors
 
-Ang Dawa Sherpa (angsherpa232@gmail.com)
-Fana Gebremeskel (fani06mit@gmail.com)
-Matheus S. Barros (matheus.eco.2010@gmail.com)
+Ang Dawa Sherpa (angsherpa232@gmail.com)<br/>
+Fana Gebremeskel (fani06mit@gmail.com)<br/>
+Matheus S. Barros (matheus.eco.2010@gmail.com)<br/>
 Daniel Marsh-Hunn (al373405@uji.es)
