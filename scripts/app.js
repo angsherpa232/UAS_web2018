@@ -792,7 +792,7 @@ var Active_Station = ""
 
     // Create Popup for polygons
     $scope.classUasOnEachFeature = function(feature, layer) {
-      var popupContent = "Class: " + feature.properties.class;
+      var popupContent = feature.properties.class;
       layer.bindPopup(popupContent);
     };
 
@@ -860,20 +860,20 @@ var Active_Station = ""
 
     // Create Popup for polygons
     $scope.classCorineOnEachFeature = function(feature, layer) {
-      var popupContent = "Corine L1: " + feature.properties.CorineL1 + "<br>" + "Corine L2: " + feature.properties.CorineL2 + "<br>" + "Corine L3: " + feature.properties.CorineL3;
+      var popupContent = feature.properties.CorineL3;
       layer.bindPopup(popupContent);
     };
 
     // Define colours for classes
     $scope.getClassificationColorCORINE = function(className) {
       var color = "#FFFFFF";
-      if (className === "Water bodies") {
+      if (className === "Water courses") {
         color = "#6699ff";
       }
-      if (className === "Agricultural areas") {
+      if (className === "Land principally occupied by agriculture, with significant areas of natural vegetation") {
         color = "#e1cd01";
       }
-      if (className === "Artificial surfaces") {
+      if (className === "Road and rail networks and associated land") {
         color = "#bb1214";
       }
 
@@ -885,7 +885,7 @@ var Active_Station = ""
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCoverDissolve_2018/FeatureServer/0",
       style: function(feature) {
         return {
-          fillColor: $scope.getClassificationColorCORINE(feature.properties.CorineL1),
+          fillColor: $scope.getClassificationColorCORINE(feature.properties.CorineL3),
           weight: 0.5,
           opacity: 0.2,
           color: 'black',
