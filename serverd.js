@@ -13,9 +13,9 @@ console.log("Starting server");
 
 app.use(express.static(path.join(__dirname + '/modules')));
 app.use(express.static(path.join(__dirname + '/css')));
-app.use(express.static(path.join(__dirname + '/scripts')));
+//app.use(express.static(path.join(__dirname + '/scripts')));
 app.use(express.static(path.join(__dirname + '/node_modules')));
-app.use(express.static(path.join(__dirname + '/process_resources')));
+//app.use(express.static(path.join(__dirname + '/process_resources')));
 
 // Allow cross origin
 app.use(function(req, res, next) {
@@ -49,5 +49,6 @@ app.post('/login', function(req, res, next){
 })
 
 app.listen(port, function() {
+  console.log("You've been served!")
   console.log("Node app is running at localhost:" + app.get('port'))
 });
