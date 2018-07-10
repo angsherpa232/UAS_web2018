@@ -842,7 +842,7 @@ var Active_Station = ""
     // Compile land cover UAS layer
     var landCoverUASLayer = L.esri.featureLayer({
       name: "Land Cover UAS",
-      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover/FeatureServer/0",
+      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCoverDissolve_2018/FeatureServer/1",
       style: function(feature) {
         return {
           fillColor: $scope.getClassificationColorUAS(feature.properties.class),
@@ -882,7 +882,7 @@ var Active_Station = ""
 
     var landCoverCORINELayer = L.esri.featureLayer({
       name: "Land Cover CORINE",
-      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCover_CORINE/FeatureServer/0",
+      url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCoverDissolve_2018/FeatureServer/0",
       style: function(feature) {
         return {
           fillColor: $scope.getClassificationColorCORINE(feature.properties.CorineL1),
