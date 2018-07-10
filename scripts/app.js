@@ -983,7 +983,7 @@ var Active_Station = ""
           document.getElementById("legendImage").src = "./home/resources/legend/flightPointsf.jpg";
           break;
         case "Land Cover UAS":
-          legendText = "After processing the imagery a classification algorithm was applied and pixels classified into various classes."
+          legendText = "After processing the imagery a classification algorithm was applied and pixels classified into various classes, defined by the project's image processing team."
           document.getElementById("legendImage").src = "./home/resources/legend/landCoverUASfff.jpg";
           break;
         case "Land Cover CORINE":
