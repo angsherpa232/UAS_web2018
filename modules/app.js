@@ -3,7 +3,7 @@ angular.module('UAS_2018', [
     'ngRoute'
   ])
 
-  .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+  .config(['$routeProvider', function($routeProvider) {
     $routeProvider
 
 
@@ -21,7 +21,6 @@ angular.module('UAS_2018', [
       })
 
       .when('/3D', {
-        controller: 'HomeController',
         templateUrl: './home/views/map_3d.html'
       })
 
