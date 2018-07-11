@@ -85,7 +85,7 @@ $scope.executeBuffer = function () {
     	}
     };
 
-    setTimeout(function(){wpsService.getStatus_WPS_2_0(statusCallback, jobId)},1350);
+    setTimeout(function(){wpsService.getStatus_WPS_2_0(statusCallback, jobId)},1450);
 
 ////// $scope.plot first parse the callback returned string and then plot ///////
     $scope.plot = function(d){
