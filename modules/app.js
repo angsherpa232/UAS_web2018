@@ -1,27 +1,14 @@
 var uas2018 = angular.module('uas2018', []);
 
-uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
-  if ($location.path() == '/login') {
-    $scope.x = false;
-  } else {
-    $scope.x = true;
-  }
 
-}]);
-
-
-angular.module('Authentication', []);
 angular.module('Home', []);
 
 angular.module('UAS_2018', [
-
-    'Authentication',
     'Home',
     'ngRoute',
     'ngCookies',
     'uas2018'
   ])
-
 
   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
