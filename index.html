@@ -35,9 +35,11 @@
 </head>
 
 <body>
-    <main ng-view>
-  <div  ng-include = "'./home/views/header.html'"></div>
-  </main>
+  <div id="menu" ng-include = "'./home/views/header.html'"></div>
+
+    <main ng-view></main>
+
+  <div id="footer" ng-include = "'./home/views/footer.html'"></div>
 </body>
 
 </html>
