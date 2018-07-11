@@ -1,12 +1,6 @@
-var uas2018 = angular.module('uas2018', []);
-
-
-
 
 angular.module('UAS_2018', [
-    'ngRoute',
-    'ngCookies',
-    'uas2018'
+    'ngRoute'
   ])
 
   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
@@ -14,12 +8,10 @@ angular.module('UAS_2018', [
 
 
       .when('/', {
-        controller: 'HomeController',
         templateUrl: './home/views/home.html'
       })
 
       .when('/processing', {
-        controller: 'uas2018_process_controller',
         templateUrl: './home/views/processing.html'
       })
 
@@ -38,7 +30,6 @@ angular.module('UAS_2018', [
         templateUrl: './home/views/sensor.html'
       })
       .when('/about_us', {
-        controller: 'HomeController',
         templateUrl: './home/views/about_us.html'
       })
 
