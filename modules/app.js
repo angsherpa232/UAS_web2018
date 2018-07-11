@@ -29,10 +29,7 @@ angular.module('UAS_2018', [
 
   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
-      .when('/login', {
-        controller: 'LoginController',
-        templateUrl: './home/views/login.html'
-      })
+    
 
       .when('/', {
         controller: 'HomeController',

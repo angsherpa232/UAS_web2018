@@ -40,13 +40,13 @@ app.get('/', function(req, res) {
 var loginName = keys.users.username;
 var loginPassword = keys.users.password;
 
-app.post('/login', function(req, res, next){
+/* app.post('/login', function(req, res, next){
 
   if (loginName == req.body.username && loginPassword == req.body.password){
     res.render(path.join(__dirname + '/index.html'));
   }else{
   }
-})
+}) */
 
 app.listen(port, function() {
   console.log("You've been served!")
