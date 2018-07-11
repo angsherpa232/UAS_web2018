@@ -1,10 +1,9 @@
 var uas2018 = angular.module('uas2018', []);
 
 
-angular.module('Home', []);
+
 
 angular.module('UAS_2018', [
-    'Home',
     'ngRoute',
     'ngCookies',
     'uas2018'

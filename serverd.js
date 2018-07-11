@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 const port = process.env.PORT || 5000;
 const path = require('path');
-const keys = require('./config/keys');
 var bodyParser = require("body-parser");
 app.use(bodyParser.json({type: 'application/json'}));
 
