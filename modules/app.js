@@ -827,17 +827,7 @@ var Active_Station = ""
       return color;
     }
 
-    // Function to create style object for input feature
-    // function style(feature) {
-    //   return {
-    //     fillColor: $scope.getClassificationColorUAS(feature.properties.class),
-    //     weight: 0.5,
-    //     opacity: 1,
-    //     color: 'black',
-    //     dashArray: '0.1',
-    //     fillOpacity: 0.8
-    //   };
-    // }
+
 
     // Compile land cover UAS layer
     var landCoverUASLayer = L.esri.featureLayer({
