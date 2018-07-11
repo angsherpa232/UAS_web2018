@@ -9,10 +9,6 @@ uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', f
 
 }]);
 
-// uas2018.controller('legend_controller', ['$scope', function($scope){
-//
-// }])
-
 
 angular.module('Authentication', []);
 angular.module('Home', []);
@@ -29,7 +25,7 @@ angular.module('UAS_2018', [
 
   .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
     $routeProvider
-    
+
 
       .when('/', {
         controller: 'HomeController',
@@ -1019,26 +1015,3 @@ var Active_Station = ""
       }
     });
   }])
-
-  .run(['$rootScope', '$location', '$cookieStore', '$http',
-    function($rootScope, $location, $cookieStore, $http) {
-      // keep user logged in after page refresh
-
-      $rootScope.globals = $cookieStore.get('globals') || {};
-      if ($rootScope.globals.currentUser) {
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
-      }
-
-
-      $rootScope.$on('$locationChangeStart', function(event, next, current) {
-        // redirect to login page if not logged in
-
-        if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
-          $location.path('/login');
-
-        }
-      });
-
-
-    }
-  ]);
