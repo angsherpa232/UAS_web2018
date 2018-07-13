@@ -115,7 +115,7 @@ $scope.executeBuffer = function () {
       alert('Success');
       }
       else {
-    	alert('Oops! something went wrong, please try again.');
+    	alert('Oops! slow network detected, please try again.');
       }
     }
 
