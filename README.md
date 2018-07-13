@@ -55,7 +55,7 @@ Open your web browser and view the app at ```localhost:5000``` or ```127.0.0.1:5
 
 Find the username and password in [keys.js](https://github.com/angsherpa232/UAS_web2018/blob/master/config/keys.js)
 
-Click to see a [demo](http://uas2018.herokuapp.com) of the app.
+Click to see a [demo](http://elippss.herokuapp.com) of the app.
 
 
 ## Authors
