@@ -30,17 +30,16 @@
   <link rel="stylesheet" href="./home/css/L.Control.Sidebar.css" type="text/css" />
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script src="./app.js"></script>
-  <script src="./authentication/services.js"></script>
-  <script src="./authentication/controllers.js"></script>
-  <script src="./home/controllers.js"></script>
   <script src='./processing/process_controller.js'></script>
   <script src="./processing/wps-js-all.min.js"></script>
 </head>
 
-<body ng-controller="uas2018_controller">
-  <div id="menu" ng-controller="uas2018_controller" ng-include = "x ? './home/views/header.html' : ''"></div>
+<body>
+  <div id="menu" ng-include = "'./home/views/header.html'"></div>
+
     <main ng-view></main>
-  <div id="footer" ng-controller="uas2018_controller" ng-include = "x ? './home/views/footer.html' : ''"></div>
+
+  <div id="footer" ng-include = "'./home/views/footer.html'"></div>
 </body>
 
 </html>

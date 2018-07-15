@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 const port = process.env.PORT || 5000;
 const path = require('path');
-const keys = require('./config/keys');
 var bodyParser = require("body-parser");
 app.use(bodyParser.json({type: 'application/json'}));
 
@@ -36,17 +35,6 @@ app.get('/', function(req, res) {
   res.render(path.join(__dirname + '/index.html'));
 });
 
-
-var loginName = keys.users.username;
-var loginPassword = keys.users.password;
-
-app.post('/login', function(req, res, next){
-
-  if (loginName == req.body.username && loginPassword == req.body.password){
-    res.render(path.join(__dirname + '/index.html'));
-  }else{
-  }
-})
 
 app.listen(port, function() {
   console.log("You've been served!")

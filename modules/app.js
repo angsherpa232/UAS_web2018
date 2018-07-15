@@ -1,41 +1,13 @@
-var uas2018 = angular.module('uas2018', []);
-
-uas2018.controller('uas2018_controller', ['$scope', '$location', '$rootScope', function($scope, $location, $rootScope) {
-  if ($location.path() == '/login') {
-    $scope.x = false;
-  } else {
-    $scope.x = true;
-  }
-
-}]);
-
-// uas2018.controller('legend_controller', ['$scope', function($scope){
-//
-// }])
-
-
-angular.module('Authentication', []);
-angular.module('Home', []);
 
 angular.module('UAS_2018', [
-
-    'Authentication',
-    'Home',
-    'ngRoute',
-    'ngCookies',
-    'uas2018'
+    'ngRoute'
   ])
 
-
-  .config(['$routeProvider', '$locationProvider', function($routeProvider, $locationProvider) {
+  .config(['$routeProvider', function($routeProvider) {
     $routeProvider
-      .when('/login', {
-        controller: 'LoginController',
-        templateUrl: './home/views/login.html'
-      })
+
 
       .when('/', {
-        controller: 'HomeController',
         templateUrl: './home/views/home.html'
       })
 
@@ -50,7 +22,6 @@ angular.module('UAS_2018', [
       })
 
       .when('/3D', {
-        controller: 'HomeController',
         templateUrl: './home/views/map_3d.html'
       })
 
@@ -59,7 +30,6 @@ angular.module('UAS_2018', [
         templateUrl: './home/views/sensor.html'
       })
       .when('/about_us', {
-        controller: 'HomeController',
         templateUrl: './home/views/about_us.html'
       })
 
@@ -1022,26 +992,3 @@ var Active_Station = ""
       }
     });
   }])
-
-  .run(['$rootScope', '$location', '$cookieStore', '$http',
-    function($rootScope, $location, $cookieStore, $http) {
-      // keep user logged in after page refresh
-
-      $rootScope.globals = $cookieStore.get('globals') || {};
-      if ($rootScope.globals.currentUser) {
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata; // jshint ignore:line
-      }
-
-
-      $rootScope.$on('$locationChangeStart', function(event, next, current) {
-        // redirect to login page if not logged in
-
-        if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
-          $location.path('/login');
-
-        }
-      });
-
-
-    }
-  ]);

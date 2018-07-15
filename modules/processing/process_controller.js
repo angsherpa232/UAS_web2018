@@ -85,7 +85,7 @@ $scope.executeBuffer = function () {
     	}
     };
 
-    setTimeout(function(){wpsService.getStatus_WPS_2_0(statusCallback, jobId)},1350);
+    setTimeout(function(){wpsService.getStatus_WPS_2_0(statusCallback, jobId)},1400);
 
 ////// $scope.plot first parse the callback returned string and then plot ///////
     $scope.plot = function(d){
@@ -108,7 +108,7 @@ $scope.executeBuffer = function () {
 
 
     var statusCallback = function(response){
-      <!-- var jobId = response.executeResponse.responseDocument.jobId; -->
+      var jobId = response.executeResponse.responseDocument.jobId;
       var status = response.executeResponse.responseDocument.status;
       if (status == "Succeeded"){
     	wpsService.getResult_WPS_2_0(resultCallback,jobId);
