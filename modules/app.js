@@ -34,7 +34,6 @@ angular.module('UAS_2018', [
       })
 
       .when('/', {
-        controller: 'HomeController',
         templateUrl: './home/views/home.html'
       })
 
