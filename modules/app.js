@@ -40,7 +40,7 @@ angular.module('UAS_2018', [
 
       .when('/processing', {
         controller: 'uas2018_process_controller',
-        templateUrl: './home/views/processing.html'
+        templateUrl: './processing/processing.html'
       })
 
       .when('/map', {
