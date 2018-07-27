@@ -30,11 +30,11 @@ angular.module('UAS_2018', [
     $routeProvider
       .when('/login', {
         controller: 'LoginController',
-        templateUrl: './home/views/login.html'
+        templateUrl: './assets/views/login.html'
       })
 
       .when('/', {
-        templateUrl: './home/views/home.html'
+        templateUrl: './assets/views/home.html'
       })
 
       .when('/processing', {
@@ -49,16 +49,16 @@ angular.module('UAS_2018', [
 
       .when('/3D', {
         controller: 'HomeController',
-        templateUrl: './home/views/map_3d.html'
+        templateUrl: './assets/views/map_3d.html'
       })
 
       .when('/sensor', {
         controller: 'sensor_controller',
-        templateUrl: './home/views/sensor.html'
+        templateUrl: './assets/views/sensor.html'
       })
       .when('/about_us', {
         controller: 'HomeController',
-        templateUrl: './home/views/about_us.html'
+        templateUrl: './assets/views/about_us.html'
       })
 
       .otherwise({
