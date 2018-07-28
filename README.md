@@ -1,11 +1,11 @@
 # ELIPPSS
 
-ELIPPSS web portal is a web application developed in the scope of the Unmanned Aerial Systems course at the [Institute for Geoinformatics](https://www.uni-muenster.de/Geoinformatics/en/) in 2018. In groups the students applied various monitoring and exploratory approaches to assess the environment at the study area, a segment of the Aa river just west of Münster, Germany. The technologies applied range from unmanned aerial vehicles ([drones](https://www.microdrones.com/en/)) to terrestrial [LiDAR](https://www.kickstarter.com/projects/scanse/sweep-scanning-lidar) to [senseBox](https://www.sensebox.de/) in-situ ground stations.
-ELIPPSS is a mostly open source project that provides access to the data produced in the field. It includes a simple WebGIS interactive map, where users can toggle between the raster and vector data produced by some of the project groups.
+ELIPPSS web portal is a web application developed in the scope of the Unmanned Aerial Systems course at the [Institute for Geoinformatics](https://www.uni-muenster.de/Geoinformatics/en/) in 2018. In groups the students applied various monitoring and exploratory approaches to assess the environment at the study area, a segment of the Aa river just west of Münster, Germany. The applied technologies range from unmanned aerial vehicles ([drones](https://www.microdrones.com/en/)) to terrestrial [LiDAR](https://www.kickstarter.com/projects/scanse/sweep-scanning-lidar) to [senseBox](https://www.sensebox.de/) in-situ ground stations.
+ELIPPSS is a mostly open source project that provides access to the data produced in the field. It includes a simple WebGIS interactive map, where users can toggle between the raster and vector data produced by some of the project groups. It also features a simple, proof-of-concept WPS service, based on [wps-js](https://github.com/52North/wps-js) by [52north](https://52north.org/)
 
 ## Getting Started
 
-ELIPPSS was developed in HTML, CSS, javascript. It launches its own node express server and was test deployed on [Heroku](https://www.heroku.com/) web hosting service.
+ELIPPSS was developed in HTML, CSS, javascript. It launches its own node express server [serverd.js](https://github.com/angsherpa232/UAS_web2018/blob/master/serverd.js) and is  deployed on [Heroku](https://www.heroku.com/) web hosting service (though it can be deployed on any server). The app has a stand-alone authentication system, so user accessibility can be controlled on any server the app is deployed on. The user input in the login-page is sent to the server via HTTP-request and compared to the login-credentials in [keys.js](https://github.com/angsherpa232/UAS_web2018/blob/master/config/keys.js). Most components of the authentication system can be found in [authentication](https://github.com/angsherpa232/UAS_web2018/tree/master/modules/authentication). The core WPS components lie in [processing](https://github.com/angsherpa232/UAS_web2018/tree/master/modules/processing). The main UI components are in [home](https://github.com/angsherpa232/UAS_web2018/tree/master/modules/home). [app.js](https://github.com/angsherpa232/UAS_web2018/blob/master/modules/app.js) contains the core functionalities and controllers of the web applications. All contents are rendered in [index.html](https://github.com/angsherpa232/UAS_web2018/blob/master/index.html) in an ng-view HTML-tag by AngularJS.
 
 ### Prerequisites
 
@@ -53,9 +53,7 @@ nodemon serverd.js
 
 Open your web browser and view the app at ```localhost:5000``` or ```127.0.0.1:5000```
 
-Find the username and password in [keys.js](https://github.com/angsherpa232/UAS_web2018/blob/master/config/keys.js)
-
-Click to see a [demo](http://uas2018.herokuapp.com) of the app.
+Click to see a [demo](http://elippss.herokuapp.com) of the app (does not require authentication).
 
 
 ## Authors
