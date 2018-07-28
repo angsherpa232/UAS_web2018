@@ -37,7 +37,7 @@ angular.module('UAS_2018')
 
     var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
       '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-      'Imagery © <a href="http://mapbox.com">Mapbox</a>'
+      'Imagery ï¿½ <a href="http://mapbox.com">Mapbox</a>'
 
     var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ';
 
@@ -96,7 +96,7 @@ angular.module('UAS_2018')
     };
 
     // Center on AOI button
-    L.easyButton('<span><img src="./home/resources/icons/meeting-point-32.png" style="width: 15px; height: 15px;"></img></span>', function(btn, map) {
+    L.easyButton('<span><img src="./assets/resources/icons/meeting-point-32.png" style="width: 15px; height: 15px;"></img></span>', function(btn, map) {
       map.setView([mapHome.lat, mapHome.lng], mapHome.zoom);
     }, 'Zoom To Home', {
       position: 'bottomright'
@@ -140,7 +140,7 @@ angular.module('UAS_2018')
       var marker_id;
       var station_value;
 
-      var dataURL = "./home/resources/markers_project.geojson"
+      var dataURL = "./assets/resources/markers_project.geojson"
 
       var jsonData = $.ajax({
         url: dataURL,
@@ -181,7 +181,7 @@ angular.module('UAS_2018')
 
           var marker = L.marker(latlng, {
             icon: L.icon({
-              iconUrl: "./home/resources/icons/"+marker_color+".png",
+              iconUrl: "./assets/resources/icons/"+marker_color+".png",
               iconSize: [25, 41]
             })
           } );
@@ -879,23 +879,23 @@ var Active_Station = ""
           break;
         case "Digital Surface Model":
           legendText = "Photogrammetric product of a drone flight using the multiespectral camera Mapir. Flight height 60 meters."
-          document.getElementById("legendImage").src = "./home/resources/legend/DSM_withoutNamef.png";
+          document.getElementById("legendImage").src = "./assets/resources/legend/DSM_withoutNamef.png";
           break;
         case "Hillshade":
           legendText="This layer is a shaded relief raster created by the DSM and the sun angle."
-          document.getElementById("legendImage").src = "./home/resources/legend/hillshade_withoutNamef.png";
+          document.getElementById("legendImage").src = "./assets/resources/legend/hillshade_withoutNamef.png";
           break;
         case "NDVI":
           legendText = "NDVI is a standardized way to measure healthy vegetation. It is a product that compares values of red and near infrared. Dark green indicates high NDVI whereas red has low NDVI."
-          document.getElementById("legendImage").src = "./home/resources/legend/NDVI_withoutnamef.png";
+          document.getElementById("legendImage").src = "./assets/resources/legend/NDVI_withoutnamef.png";
           break;
         case "Slope":
           legendText = "Derived from the DSM, this layer contains slope angle of project area to demonstrate topograpy."
-          document.getElementById("legendImage").src = "./home/resources/legend/slope_withotNamef.png";
+          document.getElementById("legendImage").src = "./assets/resources/legend/slope_withotNamef.png";
           break;
         case "Aspect":
           legendText = "This layer displays the direction the slopes face to illustrate the surface terrain in the study area."
-          document.getElementById("legendImage").src = "./home/resources/legend/aspectf.jpg";
+          document.getElementById("legendImage").src = "./assets/resources/legend/aspectf.jpg";
           break;
         case "Flight plan":
           legendText = "This layer shows the path followed by the drone during th data acquisition. The altitude was maintained approximately at 40m above ground."
@@ -903,19 +903,19 @@ var Active_Station = ""
           break;
         case "Flight points":
           legendText = "The points in this layer show the coordinates where the drone stopped to create immagery. The point symbology is adjusted according to the altitude."
-          document.getElementById("legendImage").src = "./home/resources/legend/flightPointsf.jpg";
+          document.getElementById("legendImage").src = "./assets/resources/legend/flightPointsf.jpg";
           break;
         case "Land Cover UAS":
           legendText = "After processing the imagery a classification algorithm was applied and pixels classified into various classes, defined by the project's image processing team."
-          document.getElementById("legendImage").src = "./home/resources/legend/landCoverUASfff.jpg";
+          document.getElementById("legendImage").src = "./assets/resources/legend/landCoverUASfff.jpg";
           break;
         case "Land Cover CORINE":
           legendText = "In this layer the polygons were classified using CORINE land cover (CLC) classes and nomenclature."
-          document.getElementById("legendImage").src = "./home/resources/legend/landCoverCORINE.jpg";
+          document.getElementById("legendImage").src = "./assets/resources/legend/landCoverCORINE.jpg";
           break;
         case "Ground Sensors":
           legendText = "The points on the map represent locations where data was acquired using a senseBox. The data acquired include water parameters, water level and meteorological parameters"
-          document.getElementById("legendImage").src = "./home/resources/legend/gSensors.jpeg";
+          document.getElementById("legendImage").src = "./assets/resources/legend/gSensors.jpeg";
           break;
         default:
           legendText = "Orthorectified image that displays the features of the study area using the channels of the visible range of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using a camera sony alpha 5100, flight height 40 meters"
