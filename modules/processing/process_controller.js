@@ -30,7 +30,7 @@ var baseLayers = {
   var assetLayerGroup = L.layerGroup().addTo(map);
 
 //// Retrieving geojson file begins ///////
-var dataURL = "./home/resources/markers_process.geojson"
+var dataURL = "./assets/resources/markers_process.geojson"
 var go = $.ajax({
   url: dataURL,
   async: false,
