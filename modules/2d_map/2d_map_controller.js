@@ -8,39 +8,15 @@ angular.module('UAS_2018')
       packages: ['corechart', 'line', 'timeline', 'gauge' ]
     });
 
-    L.Control.Layers.include({
-      getActiveOverlays: function() {
-
-        // Create array for holding active layers
-        var active = [];
-        var context = this;
-        // Iterate all layers in control
-        context._layers.forEach(function(obj) {
-
-          // Check if it's an overlay and added to the map
-          if (obj.overlay && context._map.hasLayer(obj.layer)) {
-
-            // Push layer to active array
-            active.push(obj);
-          }
-        });
-
-        // Return array
-        return active;
-      }
-    });
-
-    // Load basemaps
-    // var topo = L.esri.basemapLayer("Topographic");
-    // var darkgrey = L.esri.basemapLayer("DarkGray");
-    // var imagery = L.esri.basemapLayer("Imagery");
-
+    // Define map attribution variable
     var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
       '<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
       'Imagery � <a href="http://mapbox.com">Mapbox</a>'
 
+    // Define basemap source URL
     var mbUrl = 'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibmdhdmlzaCIsImEiOiJjaXFheHJmc2YwMDdoaHNrcWM4Yjhsa2twIn0.8i1Xxwd1XifUU98dGE9nsQ';
 
+    // Define baselayers
     var grayscale = L.tileLayer(mbUrl, {
       id: 'mapbox.light',
       attribution: mbAttr,
@@ -71,7 +47,6 @@ angular.module('UAS_2018')
       maxZoom: 22,
       maxNativeZoom: 18
     })
-
     var satellitestreets = L.tileLayer(mbUrl, {
       id: 'mapbox.streets-satellite',
       attribution: mbAttr,
@@ -102,7 +77,7 @@ angular.module('UAS_2018')
       position: 'bottomright'
     }).addTo(map);
 
-    // Display legend button
+    // Add legend button
     var legendBt = L.easyButton('<p style="font-size:15px;">Info</p>', function() {
       var x = document.getElementById("legendDiv");
       if (x.style.display === "none") {
@@ -110,141 +85,138 @@ angular.module('UAS_2018')
       } else {
         x.style.display = "none";
       }
-      // $scope.createLegend($scope.layerNames[0])
     }, 'Show Legend', {
       position: 'topleft'
     }).addTo(map);
 
     legendBt.button.style.width = '40px';
-    // legendBt.button.style.height = '50px';
 
-    // Default base layers when the app initiates
+    // Include basemap layers when the app initiates
     var baseLayers = {
       "Imagery": satellite,
       "Streets": streets,
       "Gray": dark
     };
 
+    // Add sidebar for ground sensor graph visualisation
     var sidebar = L.control.sidebar('sidebar', {
       position: 'right'
-      // height: 750;
-      // width: 780;
     });
 
     map.addControl(sidebar);
 
     ///////////////////////Map Layers/////////////////////////
 
-      //////SenseBox ground sensors///////
-      // Load ground sensor coordinate data, create markers and add as map layer
-      var marker_id;
-      var station_value;
+    //////SenseBox ground sensors///////
+    // Load ground sensor coordinate data, create markers and add as map layer
+    var marker_id;
+    var station_value;
 
-      var dataURL = "./assets/resources/markers_project.geojson"
+    var dataURL = "./assets/resources/markers_project.geojson"
 
-      var jsonData = $.ajax({
-        url: dataURL,
-        async: false,
-        success: function(res) {
-          return res
+    var jsonData = $.ajax({
+      url: dataURL,
+      async: false,
+      success: function(res) {
+        return res
+      }
+    }).responseJSON
+
+    var markers = L.geoJson(jsonData, {
+      pointToLayer: function(feature, latlng) {
+
+        switch ( feature.properties.Station ) {
+          case "A":
+          case "B":
+          case "C":
+          case "D":
+          //Water parameters points:
+          marker_color = "marker-icon-blue";
+          break;
+          case "E":
+          case "F":
+          //Air Quality points:
+          marker_color = "marker-icon-red";
+          break;
+          case "G":
+          //Water Level point:
+          marker_color = "marker-icon-blue";
+          break;
+          case "H":
+          case "I":
+          //Weather stations points:
+          marker_color = "marker-icon-orange";
+          break;
+          default:
+          marker_color = "marker-icon-grey";
         }
-      }).responseJSON
 
-      var markers = L.geoJson(jsonData, {
-        pointToLayer: function(feature, latlng) {
+        var marker = L.marker(latlng, {
+          icon: L.icon({
+            iconUrl: "./assets/resources/icons/"+marker_color+".png",
+            iconSize: [25, 41]
+          })
+        } );
+        marker.bindPopup("Station ID: " + feature.properties.id + '<br/>' + "Station name: " + feature.properties.Station + '<br/>' + "Station type: " + feature.properties.Type);
+        marker.on('mouseover', function (e) {
+          this.openPopup();
+        });
+        marker.on('mouseout', function (e) {
+          this.closePopup();
+        });
 
-          switch ( feature.properties.Station ) {
-            case "A":
-            case "B":
-            case "C":
-            case "D":
-            //Water parameters points:
-            marker_color = "marker-icon-blue";
-            break;
-            case "E":
-            case "F":
-            //Air Quality points:
-            marker_color = "marker-icon-red";
-            break;
-            case "G":
-            //Water Level point:
-            marker_color = "marker-icon-blue";
-            break;
-            case "H":
-            case "I":
-            //Weather stations points:
-            marker_color = "marker-icon-orange";
-            break;
-            default:
-            marker_color = "marker-icon-grey";
-          }
-
-          var marker = L.marker(latlng, {
-            icon: L.icon({
-              iconUrl: "./assets/resources/icons/"+marker_color+".png",
-              iconSize: [25, 41]
-            })
-          } );
-          marker.bindPopup("Station ID: " + feature.properties.id + '<br/>' + "Station name: " + feature.properties.Station + '<br/>' + "Station type: " + feature.properties.Type);
-          marker.on('mouseover', function (e) {
-            this.openPopup();
-          });
-          marker.on('mouseout', function (e) {
-            this.closePopup();
-          });
-
-          return marker;
-        },
-        onEachFeature: function(feature, layer) {
-          layer.on('click', function(e) {
+        return marker;
+      },
+      onEachFeature: function(feature, layer) {
+        layer.on('click', function(e) {
 
 
-            //global variable receives the id of the marker clicked by the user
-            station_value = feature.properties.Station;
+          //global variable receives the id of the marker clicked by the user
+          station_value = feature.properties.Station;
 
-            //Run the function that request the data based on the marker clicked by the user
-            process_marker_click(station_value);
+          //Run the function that request the data based on the marker clicked by the user
+          process_marker_click(station_value);
 
-            //console.log(feature);
-            sidebar.show();
+          //console.log(feature);
+          sidebar.show();
 
-            //ensure that all times a marked is clicked,
-            //all the checkbox from the class ".cb_chart_var" initiate as checked
-            $(".cb_chart_var").prop("checked", true)
+          //ensure that all times a marked is clicked,
+          //all the checkbox from the class ".cb_chart_var" initiate as checked
+          $(".cb_chart_var").prop("checked", true)
 
 
-          }); //end Event listener 'click' for the marker
-        } //end onEachFeature
-        //EDIT_matheus
-      })
+        }); //end Event listener 'click' for the marker
+      } //end onEachFeature
+      //EDIT_matheus
+    })
 
-      //creates a cluster object
-      var sensorLayer = L.markerClusterGroup({
-        name: "Ground Sensors"
-      });
+    //creates a cluster object
+    var sensorLayer = L.markerClusterGroup({
+      name: "Ground Sensors"
+    });
 
-      //Add the variable that contains all the markers to the cluster object
-      sensorLayer.addLayer(markers);
+    //Add the variable that contains all the markers to the cluster object
+    sensorLayer.addLayer(markers);
 
-      //event listener for hiding the sidebar_popup when the user clicks in the map
-      map.on('click', function(e) {
-        sidebar.hide();
-        document.getElementById("legendDiv").style.display = "none"
-      });
+    // Event listener for hiding the sidebar_popup when the user clicks in the map
+    map.on('click', function(e) {
+      sidebar.hide();
+      document.getElementById("legendDiv").style.display = "none"
+    });
 
-      //Jquery function that map changes in the "#CheckboxDIV",
-      //when a checkbox from the class ".cb_chart_var" is clicked
-      $("#CheckboxDIV").on("change", ".cb_chart_var", function() {
-        //for each click(change) in the checkbox a new requestion to the fusion table is made.
-        process_marker_click(station_value);
-      });
+    //Jquery function that map changes in the "#CheckboxDIV",
+    //when a checkbox from the class ".cb_chart_var" is clicked
+    $("#CheckboxDIV").on("change", ".cb_chart_var", function() {
+      //for each click(change) in the checkbox a new requestion to the fusion table is made.
+      process_marker_click(station_value);
+    });
 
-      $("#RadioDIV").on("change", ".radiobut", function() {
-        //for each click(change) in the checkbox a new requestion to the fusion table is made.
-        AirQuality_Chart();
-      });
+    $("#RadioDIV").on("change", ".radiobut", function() {
+      //for each click(change) in the checkbox a new requestion to the fusion table is made.
+      AirQuality_Chart();
+    });
 
-var Active_Station = ""
+    var Active_Station = ""
     function process_marker_click(marker_station){
       console.log("Station: "+marker_station);
       console.log("Active Station: "+Active_Station);
@@ -689,6 +661,8 @@ var Active_Station = ""
     });
 
     ////Flight Point////
+
+    // Define colour range for points
     $scope.getColor = function(x) {
       return x < 94 ? '#ffffb2' :
         x < 95 ? '#fecc5c' :
@@ -698,17 +672,16 @@ var Active_Station = ""
         '#f01010';
     };
 
+    // Define popup with coordinates on point features
     $scope.coordsOnEachFeature = function(feature, layer) {
       var popupContent = "Latitude: " + feature.properties.Latitude + "<br>" + "Longitude: " + feature.properties.Longitude + "<br>" + "Altitude: " + feature.properties.Altitude + " masl";
       layer.bindPopup(popupContent);
     };
 
+    // Compile flight point layer
     var flightPointLayer = L.esri.featureLayer({
       name: "Flight points",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/FlightPoints/FeatureServer/0",
-      // style: function(feature){
-      //   console.log(feature)
-      // },
       pointToLayer: function(feature, latlng) {
         return new L.CircleMarker(latlng, {
           radius: 1.5,
@@ -760,8 +733,6 @@ var Active_Station = ""
       return color;
     }
 
-
-
     // Compile land cover UAS layer
     var landCoverUASLayer = L.esri.featureLayer({
       name: "Land Cover UAS",
@@ -779,9 +750,9 @@ var Active_Station = ""
       onEachFeature: $scope.classUasOnEachFeature
     });
 
-    // Land cover CORINE
+    //// Land cover CORINE
 
-    // Create Popup for polygons
+    // Create popup for polygons
     $scope.classCorineOnEachFeature = function(feature, layer) {
       var popupContent = feature.properties.CorineL3;
       layer.bindPopup(popupContent);
@@ -803,6 +774,7 @@ var Active_Station = ""
       return color;
     }
 
+    // Compile CORINE layer
     var landCoverCORINELayer = L.esri.featureLayer({
       name: "Land Cover CORINE",
       url: "https://services1.arcgis.com/W47q82gM5Y2xNen1/ArcGIS/rest/services/LandCoverDissolve_2018/FeatureServer/0",
@@ -816,14 +788,8 @@ var Active_Station = ""
           fillOpacity: 0.8
         };
       },
-      // style: style,
       onEachFeature: $scope.classCorineOnEachFeature
     })
-    // })
-
-    // $scope.getInfoBox = function() {
-    //     alert("inputLayer");
-    // }
 
     //Add here if additional overlays are to be added
     var overlays = {
@@ -842,32 +808,33 @@ var Active_Station = ""
 
     };
 
-    var mapLayers = [orthophotoRGBlayer, orthophotoMSlayer, DSMlayer, hillshadelayer, NDVIlayer, slopelayer, aspectlayer, flightPlanLayer, flightPointLayer, landCoverUASLayer, landCoverCORINELayer, sensorLayer]
-    var layerNames = [];
-
-    //Initiate layers control method and add to map
+    // Initiate layers control method and add to map
     $scope.ctrl = L.control.layers(baseLayers, overlays, {
       position: 'topright',
       autoZIndex: true
     }).addTo(map);
 
-    // Legend Control
+    //// Legend Control
+    var mapLayers = [orthophotoRGBlayer, orthophotoMSlayer, DSMlayer, hillshadelayer, NDVIlayer, slopelayer, aspectlayer, flightPlanLayer, flightPointLayer, landCoverUASLayer, landCoverCORINELayer, sensorLayer]
+    var layerNames = [];
+
+    // Fill array with layer names
     for (i = 0; i < mapLayers.length; i++) {
       layerNames.push(mapLayers[i].options.name)
     }
 
+    // Pass the layer names to legend drop down menu
     $scope.layerNames = layerNames
 
-    console.log($scope.layerNames)
-
+    // Info box default text
     var legendText = "Orthorectified image that displays the features of the study area using the channels of the visible range of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using a camera sony alpha 5100, flight height 40 meters"
     $scope.layerDescription = legendText
 
-
+    // Declare variable for static legend image
     var legendImage
 
+    // Define function for legend rerendering depending on selected layer
     $scope.createLegend = function(layer) {
-
       switch (layer) {
         case "Orthophoto RGB":
           legendText = "Orthorectified image that displays the features of the study area using the channels of the visible range of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using a camera sony alpha 5100, flight height 40 meters"
@@ -920,38 +887,15 @@ var Active_Station = ""
         default:
           legendText = "Orthorectified image that displays the features of the study area using the channels of the visible range of the electromagnetic spectrum (Area of 3 Ha). Moreover, it is a product of a drone flight using a camera sony alpha 5100, flight height 40 meters"
           document.getElementById("legendImage").src = "";
-
       }
-
-
     }
 
-    // $scope.selectedLayer = "Orthophoto RGB"
-
-    // $scope.dropdownDefault = function() {
-    //   $scope.selectedLayer =
-    //   createLegend
-    // }
-
-    // $scope.dropdownDefault = "Choose layer"
-
+    // Update legend on click
     $scope.onChange = function() {
-        console.log($scope.selectedLayer)
         $scope.createLegend($scope.selectedLayer)
         $scope.layerDescription = legendText
     }
 
+    //// End of legend control
 
-    var overlays
-
-    // set view for layers
-    map.on('overlayadd', function(layer) {
-      overlays = $scope.ctrl.getActiveOverlays()
-      console.log(layer)
-      if (layer.name == "Ground Sensors") {
-        map.fitBounds(sensorLayer.getBounds());
-        // } else {
-        //   map.setView([51.944990, 7.572810], 17);
-      }
-    });
   }])
