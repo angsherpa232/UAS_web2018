@@ -1,12 +1,15 @@
-// 2D map controller
+// 2D map module
 angular.module('UAS_2018')
 
+  //2D map controller
  .controller('uas2018_map_controller', ['$scope', '$http', '$compile', function($scope, $http, $compile) {
 
     //load google packages for the charts
     google.charts.load('current', {
       packages: ['corechart', 'line', 'timeline', 'gauge' ]
     });
+
+    ///////////////////////Basemaps/////////////////////////
 
     // Define map attribution variable
     var mbAttr = 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
@@ -53,6 +56,8 @@ angular.module('UAS_2018')
       maxZoom: 22,
       maxNativeZoom: 18
     });
+
+    ///////////////////////Map object + Features/////////////////////////
 
     // Main map object
     var map = L.map('map', {
@@ -112,6 +117,7 @@ angular.module('UAS_2018')
     var marker_id;
     var station_value;
 
+    // Load JSON file containing station coordinates
     var dataURL = "./assets/resources/markers_project.geojson"
 
     var jsonData = $.ajax({
@@ -170,7 +176,6 @@ angular.module('UAS_2018')
       onEachFeature: function(feature, layer) {
         layer.on('click', function(e) {
 
-
           //global variable receives the id of the marker clicked by the user
           station_value = feature.properties.Station;
 
@@ -184,18 +189,16 @@ angular.module('UAS_2018')
           //all the checkbox from the class ".cb_chart_var" initiate as checked
           $(".cb_chart_var").prop("checked", true)
 
-
         }); //end Event listener 'click' for the marker
       } //end onEachFeature
-      //EDIT_matheus
     })
 
-    //creates a cluster object
+    // Creates a cluster object
     var sensorLayer = L.markerClusterGroup({
       name: "Ground Sensors"
     });
 
-    //Add the variable that contains all the markers to the cluster object
+    // Add the variable that contains all the markers to the cluster object
     sensorLayer.addLayer(markers);
 
     // Event listener for hiding the sidebar_popup when the user clicks in the map
@@ -204,8 +207,8 @@ angular.module('UAS_2018')
       document.getElementById("legendDiv").style.display = "none"
     });
 
-    //Jquery function that map changes in the "#CheckboxDIV",
-    //when a checkbox from the class ".cb_chart_var" is clicked
+    // Jquery function that map changes in the "#CheckboxDIV",
+    // When a checkbox from the class ".cb_chart_var" is clicked
     $("#CheckboxDIV").on("change", ".cb_chart_var", function() {
       //for each click(change) in the checkbox a new requestion to the fusion table is made.
       process_marker_click(station_value);
@@ -275,14 +278,16 @@ angular.module('UAS_2018')
 
       }
 
+      //// Functions for different station types
+
+      // WaterParameters stations
       function WaterParameters_Chart(Station_name){
 
         document.getElementById("CheckboxDIV").innerHTML = "";
         document.getElementById("RadioDIV").innerHTML = "";
         document.getElementById("chart_div").innerHTML = "";
 
-
-        //===================- FUNCTION request_fusiontable_data ===================
+        //=================== FUNCTION request_fusiontable_data ===================
         var url = ['https://www.googleapis.com/fusiontables/v2/query?'];
         url.push('sql=');
         var query = "SELECT * "
@@ -299,14 +304,9 @@ angular.module('UAS_2018')
         }).responseText
         var queryJson = JSON.parse(queryData)
 
-        console.log( "++++Data from Fusiontable:" )
-        console.log( queryJson )
-
         var rows = queryJson['rows'];
 
         var checkbox_div = document.getElementById("chart_div");
-
-
 
         for(var i=0;i<rows.length;i++){
 
@@ -325,8 +325,6 @@ angular.module('UAS_2018')
           yellowFrom: 20, yellowTo: 25,redFrom: 25, redTo: 40,
           minorTicks: 10, majorTicks:5, width: 250, height: 250};
 
-
-
           gaugeData_Temp = new google.visualization.DataTable();
           gaugeData_Temp.addColumn('number', 'Water Temp(C)');
           gaugeData_Temp.addColumn('number', 'Ph');
@@ -340,6 +338,7 @@ angular.module('UAS_2018')
 
       }
 
+      // WaterLevel stations
       function WaterLevel_Chart(){
 
         document.getElementById("CheckboxDIV").innerHTML = "";
@@ -351,7 +350,7 @@ angular.module('UAS_2018')
         document.getElementById("chart_div").innerHTML = text_html;
       }
 
-
+      // AirQuality stations
       function AirQuality_Chart(){
 
         document.getElementById("CheckboxDIV").innerHTML = "";
@@ -380,6 +379,7 @@ angular.module('UAS_2018')
         }
       }
 
+      //WeatherStation
       function WeatherStation_Chart(Station_Letter){
 
         if (Station_Letter == "H"){
@@ -563,9 +563,6 @@ angular.module('UAS_2018')
               colors: color_palette_hex
 
             };
-
-        // var chart = new google.charts.Line(document.getElementById('chart_div'));
-        // chart.draw(data, google.charts.Line.convertOptions(options));
 
         var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
         chart.draw(data, options);
@@ -814,6 +811,8 @@ angular.module('UAS_2018')
       autoZIndex: true
     }).addTo(map);
 
+    ///////////////////////Legend (Infobox)/////////////////////////
+
     //// Legend Control
     var mapLayers = [orthophotoRGBlayer, orthophotoMSlayer, DSMlayer, hillshadelayer, NDVIlayer, slopelayer, aspectlayer, flightPlanLayer, flightPointLayer, landCoverUASLayer, landCoverCORINELayer, sensorLayer]
     var layerNames = [];
@@ -895,7 +894,5 @@ angular.module('UAS_2018')
         $scope.createLegend($scope.selectedLayer)
         $scope.layerDescription = legendText
     }
-
-    //// End of legend control
 
   }])
